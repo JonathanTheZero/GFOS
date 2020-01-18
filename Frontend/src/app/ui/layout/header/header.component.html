@@ -1,16 +1,14 @@
 <header class="header-1">
   <div class="branding">
-    <a class="nav-link">
+    <a [routerLink]="['/']" class="nav-link">
       <clr-icon shape="shield"></clr-icon>
       <span class="title">Angular CLI</span>
     </a>
   </div>
   <div class="header-nav">
-    <a class="active nav-link nav-icon">
-      <clr-icon shape="home"></clr-icon>
-    </a>
-    <a class=" nav-link nav-icon">
-      <clr-icon shape="cog"></clr-icon>
+    <a *ngFor="let headerLink of headerLinks" [routerLink]="headerLink.link" routerLinkActive="active"
+      class="nav-link nav-icon">
+      <clr-icon [attr.shape]="headerLink.icon"></clr-icon>
     </a>
   </div>
   <form class="search">
@@ -18,8 +16,8 @@
       <input id="search_input" type="text" placeholder="Search for keywords...">
     </label>
   </form>
-  <div class="header-actions">
-    <clr-dropdown class="dropdown bottom-right">
+  <div class="header-actions dropdown bottom-right">
+    <!--<clr-dropdown class="dropdown bottom-right">
       <button class="nav-icon" clrDropdownToggle>
         <clr-icon shape="user"></clr-icon>
         <clr-icon shape="caret down"></clr-icon>
@@ -29,22 +27,24 @@
         <a clrDropdownItem>Preferences</a>
         <a clrDropdownItem>Log out</a>
       </div>
-    </clr-dropdown>
+    </clr-dropdown>--
+    <clr-dropdown [clrCloseMenuOnItemClick]="false" class="dropdown bottom-right" style="margin-right: 20px;">
+      <button clrDropdownTrigger class="dropdown-toggle">
+        <clr-icon shape="user"></clr-icon>
+        <clr-icon shape="caret down"></clr-icon>
+      </button>
+      <clr-dropdown-menu *clrIfOpen>
+        <label class="dropdown-header" aria-hidden="true">Menü</label>
+        <a clrDropdownItem>Link 1</a>
+        <a clrDropdownItem>Link 2</a>
+      </clr-dropdown-menu>
+    </clr-dropdown>-->
   </div>
 </header>
 <nav class="subnav">
   <ul class="nav">
-    <li class="nav-item">
-      <a class="nav-link active" href="#">Dashboard</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Projects</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Reports</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Users</a>
+    <li *ngFor="let subLink of subLinks" class="nav-item">
+      <a class="nav-link" routerLinkActive="active" [routerLink]="subLink.link">{{subLink.label}}</a>
     </li>
   </ul>
 </nav>

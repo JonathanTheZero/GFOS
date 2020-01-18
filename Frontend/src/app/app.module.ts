@@ -1,50 +1,28 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from "@angular/router";
-
-//clarity UX theme
+import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-import { UiModule } from './ui/ui.module';
-
-import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
-import { Error404Component } from './error404/error404.component';
-import { LoginComponent } from './login/login.component';
-
-const appRoutes: Routes = [
-  {
-    path: "login",
-    component: LoginComponent
-  },
-  {
-    path: "**",
-    component: Error404Component
-  }
-];
+import { UiModule } from './ui/ui.module';
+import { AppRoutingModule } from './app-routing.module';
+import { PagesModule } from './pages/pages.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    Error404Component,
-    LoginComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    RouterModule.forRoot(
-      appRoutes
-    ),
+    FormsModule,
     ClarityModule,
-    BrowserAnimationsModule,
-    UiModule
+    UiModule,
+    PagesModule,
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-
-export class AppModule {
+export class AppModule { 
 
 }
