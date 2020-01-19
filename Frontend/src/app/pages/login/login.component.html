@@ -1,5 +1,5 @@
 <div class="login-wrapper">
-  <form class="login">
+  <form class="login" (ngSubmit)="validate()">
     <section class="title">
       <h3 class="welcome">Welcome to</h3>
       X Dashboard
@@ -28,8 +28,25 @@
       <div class="error">
         Invalid user name or password
       </div>
-      <button type="submit" class="btn btn-primary" (click)="validate()">NEXT</button>
-      <a href="javascript://" class="signup">Sign up for a Company ID</a>
+      <button type="submit" class="btn btn-primary">NEXT</button>
+      <a href="/register" class="signup">Sign up for a Company ID</a>
     </div>
   </form>
 </div>
+
+<!--<form clrForm [formGroup]="form" (ngSubmit)="submit()">
+  <clr-input-container>
+    <label>Email</label>
+    <input clrInput formControlName="email" type="email" />
+    <!-- <clr-control-error *clrIfError="'required'">Email Required</clr-control-error> --
+    <clr-control-error *clrIfError="'email'">Email Invalid</clr-control-error>
+  </clr-input-container>
+
+  <clr-password-container>
+    <label>Password</label>
+    <input clrPassword formControlName="password" type="password" />
+    <clr-control-error *clrIfError="'required'">Password Required</clr-control-error>
+  </clr-password-container>
+
+  <button class="btn">Login</button>
+</form>-->

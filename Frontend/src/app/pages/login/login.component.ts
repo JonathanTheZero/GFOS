@@ -8,10 +8,24 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class LoginComponent {
   
-  constructor() {
+  form: FormGroup;
+
+  constructor(private formBuilder: FormBuilder) {
+    this.form = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required]
+    });
   }
 
-  public validate(){
+  public submit(){
+    if (this.form.valid) {
+      console.log(this.form.value);
+    }
+  }
 
+  public validate(): void {
+    if (this.form.valid){
+      alert("Success");
+    }
   }
 }

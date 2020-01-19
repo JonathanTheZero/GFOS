@@ -12,6 +12,7 @@ export class PageNotFoundComponent implements OnInit, AfterViewInit {
   constructor() { }
 
   ngOnInit() {
+    
   }
 
   ngAfterViewInit(){
