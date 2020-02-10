@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import * as $ from "jquery";
 
@@ -7,16 +7,14 @@ import * as $ from "jquery";
   templateUrl: './page-not-found.component.html',
   styleUrls: ['./page-not-found.component.scss']
 })
-export class PageNotFoundComponent implements OnInit, AfterViewInit {
+export class PageNotFoundComponent implements OnInit {
 
-  constructor() { }
+  constructor() { 
 
-  ngOnInit() {
-    
   }
 
-  ngAfterViewInit(){
-    $("body").html();
+  ngOnInit() {
+
   }
 
 }
