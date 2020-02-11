@@ -21,15 +21,15 @@ export class UtilsService {
   public logIn(): internal.success | internal.error {
     const id = this.generateId(20);
     sessionStorage.setItem("loggedin", id);
-    $.getJSON(`${internal.apiUrl}/auth?id=${id}`, (data: answer.success | answer.error) => {
-      if(answer.instanceOfSuccess(data)){
+    $.getJSON(`${internal.apiUrl}/auth?id=${id}`, (data: request.success | request.error) => {
+      if(request.instanceOfSuccess(data)){
         console.log("Success");
       }
-      else if(answer.instanceOfError(data)){
+      else if(request.instanceOfError(data)){
         console.log("Error: " + data.reason);
       }
       else {
-        console.log("Error: Unknown answer");
+        console.log("Error: Unknown request");
       }
     });
 
