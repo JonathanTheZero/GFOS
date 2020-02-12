@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UtilsService } from "./../../services/utils.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -8,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 
 export class DashboardComponent implements OnInit {
 
-  public readonly samples: todo[] = [
+  public readonly samples: internal.todo[] = [
     {
       title: "Test"
     },
@@ -28,14 +29,17 @@ export class DashboardComponent implements OnInit {
     }
   ]
 
-  constructor() { }
+  constructor(private utils: UtilsService) { }
 
   ngOnInit() {
+    if(!this.utils.loggedIn()){
+      //https://stackoverflow.com/questions/34331478/angular-redirect-to-login-page
+    }
   }
 
   public check(event: any): void{ 
 
-    const flatTodos = (arr: todo[]): todo[] => {
+    const flatTodos = (arr: internal.todo[]): internal.todo[] => {
       var newArr = [];
       for(let i = 0;i< arr.length;i++){
         newArr.push(arr[i]);
@@ -46,7 +50,7 @@ export class DashboardComponent implements OnInit {
 
     var bar : any = document.getElementById("bar");
     bar.value += 100 / flatTodos(this.samples).length;
-    console.log(event);
+
     if(event.path.length >= 19){ //if user clicks on the icon, disable the button nevertheless
       event.path[1].disabled = true;
     }
@@ -55,9 +59,4 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-}
-
-interface todo {
-  title: string;
-  subs?: todo[]
 }

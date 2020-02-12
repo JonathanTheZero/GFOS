@@ -18,32 +18,25 @@ export class UtilsService {
     return false;
   }
 
-  public logIn(): internal.success | internal.error {
-    const id = this.generateId(20);
+  public logIn(): boolean {
+    const id = this.generateId();
     sessionStorage.setItem("loggedin", id);
-    $.getJSON(`${internal.apiUrl}/auth?id=${id}`, (data: request.success | request.error) => {
-      if(request.instanceOfSuccess(data)){
-        console.log("Success");
-      }
-      else if(request.instanceOfError(data)){
-        console.log("Error: " + data.reason);
+    $.getJSON(`${internal.apiUrl}/auth?id=${id}`, (data: request.authAnswer) => {
+      if(data.error){
+        console.log("Error, answer was: " + data.error);
       }
       else {
-        console.log("Error: Unknown request");
+        console.log("Success: " + data.message);
       }
     });
 
     if(this.loggedIn()){
-      return {
-        message: "Session created successfully"
-      };
+      return true;
     }
-    return {
-      reason: "Something went wrong" 
-    };
+    return false;
   }
   
-  private generateId (len=40) : string {
+  private generateId (len=20) : string {
     const dec2hex = (dec) =>  ('0' + dec.toString(16)).substr(-2);
     var arr = new Uint8Array(len / 2);
     window.crypto.getRandomValues(arr);
