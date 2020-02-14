@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { UtilsService } from "./../../services/utils.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -9,7 +8,7 @@ import { UtilsService } from "./../../services/utils.service";
 
 export class DashboardComponent implements OnInit {
 
-  public readonly samples: internal.todo[] = [
+  public readonly samples: todo[] = [
     {
       title: "Test"
     },
@@ -29,17 +28,14 @@ export class DashboardComponent implements OnInit {
     }
   ]
 
-  constructor(private utils: UtilsService) { }
+  constructor() { }
 
   ngOnInit() {
-    if(!this.utils.loggedIn()){
-      //https://stackoverflow.com/questions/34331478/angular-redirect-to-login-page
-    }
   }
 
   public check(event: any): void{ 
 
-    const flatTodos = (arr: internal.todo[]): internal.todo[] => {
+    const flatTodos = (arr: todo[]): todo[] => {
       var newArr = [];
       for(let i = 0;i< arr.length;i++){
         newArr.push(arr[i]);
@@ -59,4 +55,9 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+}
+
+interface todo {
+  title: string;
+  subs?: todo[];
 }

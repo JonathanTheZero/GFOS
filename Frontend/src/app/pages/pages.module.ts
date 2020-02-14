@@ -9,6 +9,7 @@ import { DashboardComponent } from "./dashboard/dashboard.component";
 import { LoginComponent } from "./login/login.component";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
 import { RegisterComponent } from "./register/register.component";
+import { SettingsComponent } from './settings/settings.component';
 
 
 const components = [
@@ -29,6 +30,7 @@ const components = [
   ],
   declarations: [
     ...components,
+    SettingsComponent,
   ],
   exports: [
     ...components,

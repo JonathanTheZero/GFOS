@@ -17,15 +17,7 @@ export class LoginComponent {
     });
   }
 
-  public submit(){
-    if (this.form.valid) {
-      console.log(this.form.value);
-    }
-  }
-
-  public validate(): void {
-    if (this.form.valid){
-      alert("Success");
-    }
+  public submit(e: any){
+    console.log(e);
   }
 }

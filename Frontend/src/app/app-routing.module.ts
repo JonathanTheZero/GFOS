@@ -5,6 +5,8 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { LoginComponent } from './pages/login/login.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { AuthGuard } from './utils/auth-guard.guard';
+import { SettingsComponent } from './pages/settings/settings.component';
 
 const routes: Routes = [
   {
@@ -22,15 +24,27 @@ const routes: Routes = [
       { 
         path: 'dashboard', 
         component: DashboardComponent,
+        canActivate: [AuthGuard]
       },
       {
         path: "sing-up",
         component: RegisterComponent,
       },
       {
+        path: "settings",
+        component: SettingsComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: "api",
+        redirectTo: "dashboard",
+        pathMatch: "full"
+      },
+      {
         path: "**",
         component: PageNotFoundComponent
-      }
+      },
+      
     ]
   }
 ];
