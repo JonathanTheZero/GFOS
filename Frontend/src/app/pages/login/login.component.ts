@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, Form } from '@angular/forms';
+import { ClarityModule } from '@clr/angular';
 
 @Component({
   selector: 'app-login',
@@ -8,16 +9,19 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class LoginComponent {
   
-  form: FormGroup;
+ // form: FormGroup;
+ form : any = {
+   type: "",
+   username: "",
+   password: "",
+   rememberMe: ""
+ };
 
   constructor(private formBuilder: FormBuilder) {
-    this.form = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
-    });
+    
   }
 
-  public submit(e: any){
-    console.log(e);
+  public submit(){
+    alert(this.form.username);
   }
 }

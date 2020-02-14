@@ -1,17 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import * as _swal from 'sweetalert';
-import { SweetAlert } from 'sweetalert/typings/core';
-
-const swal: SweetAlert = _swal as any;
+import Swal from 'sweetalert2';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
 
     constructor(private router: Router) { }
 
-    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
         //user is logged in
+        return true;
+
         if (localStorage.getItem('currentUser')) {
             return true;
         }
@@ -22,7 +21,12 @@ export class AuthGuard implements CanActivate {
             returnUrl: state.url 
           }
         });
-        swal("Fehler!", "Du bist nicht eingeloggt!", "error");
+
+        Swal.fire(
+          "Fehler!", 
+          "Du bist nicht eingeloggt!", 
+          "error"
+        );
         return false;
     }
 }
