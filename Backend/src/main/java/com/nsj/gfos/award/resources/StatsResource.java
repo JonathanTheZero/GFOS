@@ -1,4 +1,4 @@
-package com.mycompany.sha3;
+package com.nsj.gfos.award.resources;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
