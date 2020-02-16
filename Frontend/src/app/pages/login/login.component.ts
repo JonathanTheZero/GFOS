@@ -1,27 +1,30 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, Form } from '@angular/forms';
-import { ClarityModule } from '@clr/angular';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
+
 export class LoginComponent {
-  
- // form: FormGroup;
- form : any = {
+ form : login = {
    type: "",
    username: "",
    password: "",
-   rememberMe: ""
+   rememberMe: false
  };
 
-  constructor(private formBuilder: FormBuilder) {
-    
+  constructor() {
   }
 
   public submit(){
-    alert(this.form.username);
+    alert(this.form.rememberMe);
   }
+}
+
+interface login {
+  type: string;
+  username: string;
+  password: string;
+  rememberMe: boolean;
 }

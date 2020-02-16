@@ -1,6 +1,14 @@
 <div class="content-container">
-  <div class="content-area">
+  <div class="content-area" id="content-area">
     <router-outlet></router-outlet>
   </div>
-  <app-sidebar class="sidenav" id="sidebar"></app-sidebar>
+  <div class="sidenav" id="outerSidebar">
+    <!-- no idea why the "container" has to be before the element and not outside of it but that's just Angular being weird-->
+    <span #container></span>
+    <app-sidebar id="innerSidebarSelector"></app-sidebar>
+  </div>
 </div>
+
+
+<button (click)="openSidebar()">Add</button>
+<button (click)="closeSidebar()">Remove</button>

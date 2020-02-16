@@ -23,12 +23,13 @@ const components= [
     ClarityModule,
   ],
   declarations: [
-    ...components
+    ...components,
   ],
   exports: [
-    LayoutComponent,
+    LayoutComponent
   ]
 })
+
 export class UiModule {
 
 }

@@ -11,13 +11,4 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {
   }
-
-  close(): void {
-    var p = document.getElementById("sidebar");
-    //document.getElementById("sidebar").style.height = "0";
-    //document.getElementById("sidebar").style.width = "0";
-
-    p.parentNode.removeChild(p);
-  }
-
 }
