@@ -25,7 +25,7 @@ public class StatsResource {
 				return JsonHandler.fehler("Es ist ein Fehler in der Datenbank aufgetreten");
 			count = rs.getString("Anzahl_Mitarbeiter");
 		} catch (SQLException e) {
-			JsonHandler.fehler("Es ist ein Fehler in der Datenbank aufgetreten");
+			return JsonHandler.fehler("Es ist ein Fehler in der Datenbank aufgetreten");
 		}
 		return JsonHandler.erfolg("Es wurden " + count + " Mitarbeiter gefunden.");
 	}
