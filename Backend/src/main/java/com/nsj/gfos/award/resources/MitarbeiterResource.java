@@ -29,7 +29,6 @@ public class MitarbeiterResource {
     @Produces(MediaType.APPLICATION_JSON)
     public String getAllMitarbeiter() {
         ResultSet rs = null;
-        String res = "";
         try {
             rs = QueryHandler.query("SELECT * FROM mitarbeiter;");
             ArrayList<Mitarbeiter> allEmpl = new ArrayList<Mitarbeiter>();
@@ -39,18 +38,17 @@ public class MitarbeiterResource {
                     Mitarbeiter m  = createMitarbeiterFromQuery(rs);
                     allEmpl.add(m);
                 } catch (Exception e) {
-                	res = e.toString();
+                	return JsonHandler.fehler(e.toString());
                 }       
             }
             try {
-                res = om.writeValueAsString(allEmpl);
+                return om.writeValueAsString(allEmpl);
             } catch (Exception e) {
-            	res = e.toString();
+            	return JsonHandler.fehler(e.toString());
             }          
         } catch (Exception e) {
-        	res = e.toString();
+        	return JsonHandler.fehler(e.toString());
         }            
-        return res;
     }
     
     @GET
@@ -68,6 +66,7 @@ public class MitarbeiterResource {
     	String auth = attributes[0].split("=")[1];
     	if(!SessionHandler.checkSessionID(auth))
     		return JsonHandler.fehler("SessionID ist ungültig.");
+    	//TODO checkRights
     	String pn = "\"" + attributes[1].split("=")[1] + "\"";
     	String name = "\"" + attributes[2].split("=")[1] + "\"";
     	String vorname = "\"" + attributes[3].split("=")[1] + "\"";
@@ -91,6 +90,37 @@ public class MitarbeiterResource {
 		}
     }
     //http://localhost:8080/award/api/mitarbeiter/add:auth=123456789012&pn=000000000001&n=Sommerfeld&vn=Nils&er=0&ak=20&em=n.s@e.de&pw=1234&s=Abwesend&gda=Feierabend&rk=Admin&ab=IT-Sicherheit&ve=000000000000
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("get{params}")    
+    public String getMitarbeiter(@PathParam("params") String query) {
+    	query = query.substring(1);    	
+    	String[] params = query.split("&");
+    	if(params.length != 2)
+    		return JsonHandler.fehler("Falsche Anzahl an Parametern.");
+    	if(params[0].split("=").length != 2 || params[1].split("=").length != 2)
+    		return JsonHandler.fehler("Falsche Formatierung der Parameter.");
+    	String auth = params[0].split("=")[1];
+    	String pn = params[1].split("=")[1];
+    	if(pn.length() != 12)
+    		return JsonHandler.fehler("Ungültige Personalnummer.");
+    	//TODO checkRights
+    	if(!SessionHandler.checkSessionID(auth))
+    		return JsonHandler.fehler("SessionID ist ungültig.");
+    	String sqlStmt = "SELECT * FROM gfos.mitarbeiter WHERE Personalnummer = \"" + pn + "\"";
+    	try {
+			ResultSet rs = QueryHandler.query(sqlStmt);
+			if(rs == null)
+				return JsonHandler.fehler("Keine Rückgabe der Datenbank.");
+			if(!rs.next())
+				return JsonHandler.fehler("Leere Rückgabe der Datenbank.");
+			Mitarbeiter m = createMitarbeiterFromQuery(rs);
+			return JsonHandler.createJsonFromMitarbeiter(m);
+		} catch (SQLException e) {
+			return JsonHandler.fehler(e.toString());
+		}
+    }
     
     private Mitarbeiter createMitarbeiterFromQuery(ResultSet rs) throws SQLException{
         Mitarbeiter m = new Mitarbeiter();
