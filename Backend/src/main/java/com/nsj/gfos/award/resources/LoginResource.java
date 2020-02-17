@@ -41,8 +41,10 @@ public class LoginResource {
 			return JsonHandler.fehler("Falsche Parameter Syntax.");		
 		if(auth[1].length() != 12 || pn[1].length() != 12) 
 			return JsonHandler.fehler("Parameter sind falsch formatiert.");
+		if(checkIfUserIsConnected(pn[1]))
+			return JsonHandler.fehler("Dieser Benutzer ist bereits angemeldet.");
 		if(!checkPassword(pw[1], pn[1])) 
-			return JsonHandler.fehler("Passwort oder Benutzername falsch.");
+			return JsonHandler.fehler("Passwort oder Benutzername falsch oder Benutzer existiert nicht.");
 		return SessionHandler.createSession(new String[]{auth[1], pn[1]});
 	}	
 	
@@ -51,10 +53,26 @@ public class LoginResource {
 		String sqlStmt = "SELECT Passwort FROM gfos.mitarbeiter WHERE Personalnummer = \"" + pn + "\";";
 		try {
 			ResultSet rs = QueryHandler.query(sqlStmt);
+			if(rs == null)
+				return false;
 			if(!rs.next())
 				return false;
 			return rs.getString("Passwort").equals(hashed);
-		} catch (SQLException e) {return false;}
+		} catch (SQLException e) {
+			return false;
+		}
+	}
+	
+	private boolean checkIfUserIsConnected(String pn) {
+		String sqlStmt = "SELECT * FROM gfos.active_sessions WHERE Mitarbeiter = \"" + pn + "\";";	
+		try {
+			ResultSet rs = QueryHandler.query(sqlStmt);
+			if(rs == null)
+				return false;
+			return rs.next();
+		} catch (SQLException e) {
+			return false;
+		}
 	}
 	
 }

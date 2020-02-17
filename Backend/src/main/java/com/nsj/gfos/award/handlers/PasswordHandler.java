@@ -15,9 +15,7 @@ public class PasswordHandler {
             messageDigest.update(inputBytes);
             byte[] digestedBytes = messageDigest.digest();
             hashValue = DatatypeConverter.printHexBinary(digestedBytes).toLowerCase();
-        }catch(Exception ex){
-
-        }
+        }catch(Exception ex){}
         return hashValue;    //falls ein Fehler auftritt, wird ein leerer String zurückgegeben
     }
 	

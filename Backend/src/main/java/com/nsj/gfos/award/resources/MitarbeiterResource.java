@@ -38,12 +38,18 @@ public class MitarbeiterResource {
                 try {
                     Mitarbeiter m  = createMitarbeiterFromQuery(rs);
                     allEmpl.add(m);
-                } catch (Exception e) {res = e.toString();}       
+                } catch (Exception e) {
+                	res = e.toString();
+                }       
             }
             try {
                 res = om.writeValueAsString(allEmpl);
-            } catch (Exception e) {res = e.toString();}          
-        } catch (Exception e) {res = e.toString();}            
+            } catch (Exception e) {
+            	res = e.toString();
+            }          
+        } catch (Exception e) {
+        	res = e.toString();
+        }            
         return res;
     }
     
@@ -80,7 +86,9 @@ public class MitarbeiterResource {
 			if(rs == 0)
 				return JsonHandler.fehler("Fehler!");
 			return JsonHandler.erfolg("Mitarbeiter wurde erfolgreich hinzugefügt.");
-		} catch (SQLException e) {return JsonHandler.fehler(e.toString());}
+		} catch (SQLException e) {
+			return JsonHandler.fehler(e.toString());
+		}
     }
     //http://localhost:8080/award/api/mitarbeiter/add:auth=123456789012&pn=000000000001&n=Sommerfeld&vn=Nils&er=0&ak=20&em=n.s@e.de&pw=1234&s=Abwesend&gda=Feierabend&rk=Admin&ab=IT-Sicherheit&ve=000000000000
     

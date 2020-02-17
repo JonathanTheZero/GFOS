@@ -26,7 +26,9 @@ public class SessionHandler {
 			if(rs == 0) 
 				return JsonHandler.fehler("Fehler bei der Erstellung der Session!");
 			return JsonHandler.erfolg("Session wurde erfolgreich erstellt.");
-		} catch (SQLException e) {return e.toString();}				
+		} catch (SQLException e) {
+			return JsonHandler.fehler(e.toString());
+		}				
 	}
 	
 	public static String closeSession(String sessionID) {
@@ -38,7 +40,9 @@ public class SessionHandler {
 			if(rs == 0) 
 				return JsonHandler.fehler("Fehler beim Löschen der Session!");
 			return JsonHandler.erfolg("Session wurde erfolgreich geschlossen.");
-		} catch (SQLException e) {return e.toString();}
+		} catch (SQLException e) {
+			return JsonHandler.fehler(e.toString());
+		}
 	}
 	
 	public static boolean checkSessionID(String sessionID) {
@@ -47,7 +51,9 @@ public class SessionHandler {
 			ResultSet rs = QueryHandler.query(sqlStmt);
 			if(rs.next())
 				return true;
-		} catch (SQLException e) {return false;}
+		} catch (SQLException e) {
+			return false;
+		}
 		return false;
 	}
 	

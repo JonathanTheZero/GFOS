@@ -20,12 +20,14 @@ public class StatsResource {
 		ResultSet rs;
 		String count = "";
 		try {
-			 rs = QueryHandler.query(stmt);
+			rs = QueryHandler.query(stmt);
+			if(rs == null)
+				return JsonHandler.fehler("Die Suche hat kein Ergebnis geliefert.");
 			if(!rs.next())
-				return JsonHandler.fehler("Es ist ein Fehler in der Datenbank aufgetreten");
+				return JsonHandler.fehler("Es ist ein Fehler in der Datenbank aufgetreten.");
 			count = rs.getString("Anzahl_Mitarbeiter");
 		} catch (SQLException e) {
-			return JsonHandler.fehler("Es ist ein Fehler in der Datenbank aufgetreten");
+			return JsonHandler.fehler("Es ist ein Fehler in der Datenbank aufgetreten.");
 		}
 		return JsonHandler.erfolg("Es wurden " + count + " Mitarbeiter gefunden.");
 	}
