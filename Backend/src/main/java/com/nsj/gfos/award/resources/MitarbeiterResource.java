@@ -84,6 +84,8 @@ public class MitarbeiterResource {
     		int rs = QueryHandler.update(sqlStmt);
 			if(rs == 0)
 				return JsonHandler.fehler("Fehler!");
+			if(!checkIfMitarbeiterExists(pn))
+				return JsonHandler.fehler("Personalnummer wurde bereits verwendet.");
 			return JsonHandler.erfolg("Mitarbeiter wurde erfolgreich hinzugefügt.");
 		} catch (SQLException e) {
 			return JsonHandler.fehler(e.toString());
@@ -119,6 +121,18 @@ public class MitarbeiterResource {
 			return JsonHandler.createJsonFromMitarbeiter(m);
 		} catch (SQLException e) {
 			return JsonHandler.fehler(e.toString());
+		}
+    }
+    
+    private boolean checkIfMitarbeiterExists(String pn) {
+    	String sqlStmt = "SELECT * FROM gfos.mitarbeiter WHERE Personalnummer = \"" + pn + "\"";
+    	try {
+			ResultSet rs = QueryHandler.query(sqlStmt);
+			if(rs == null)
+				return true;
+			return rs.next();
+		} catch (SQLException e) {			
+			return true;
 		}
     }
     
