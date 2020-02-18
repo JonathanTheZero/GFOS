@@ -53,8 +53,6 @@ public class LoginResource {
 		String sqlStmt = "SELECT Passwort FROM gfos.mitarbeiter WHERE Personalnummer = \"" + pn + "\";";
 		try {
 			ResultSet rs = QueryHandler.query(sqlStmt);
-			if(rs == null)
-				return false;
 			if(!rs.next())
 				return false;
 			return rs.getString("Passwort").equals(hashed);
@@ -67,8 +65,6 @@ public class LoginResource {
 		String sqlStmt = "SELECT * FROM gfos.active_sessions WHERE Mitarbeiter = \"" + pn + "\";";	
 		try {
 			ResultSet rs = QueryHandler.query(sqlStmt);
-			if(rs == null)
-				return false;
 			return rs.next();
 		} catch (SQLException e) {
 			return false;

@@ -21,8 +21,6 @@ public class StatsResource {
 		String count = "";
 		try {
 			rs = QueryHandler.query(stmt);
-			if(rs == null)
-				return JsonHandler.fehler("Die Suche hat kein Ergebnis geliefert.");
 			if(!rs.next())
 				return JsonHandler.fehler("Es ist ein Fehler in der Datenbank aufgetreten.");
 			count = rs.getString("Anzahl_Mitarbeiter");

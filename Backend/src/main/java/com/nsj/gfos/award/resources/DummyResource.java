@@ -6,6 +6,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.nsj.gfos.award.handlers.JsonHandler;
+import com.nsj.gfos.award.handlers.PasswordHandler;
 
 @Path("dummy")
 public class DummyResource {
@@ -13,7 +14,7 @@ public class DummyResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public String testPassword() {
-		return JsonHandler.erfolg("test");
+		return JsonHandler.erfolg(PasswordHandler.getHash("root"));
 	}
 	
 }

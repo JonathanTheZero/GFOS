@@ -80,12 +80,12 @@ public class MitarbeiterResource {
     	String abteilung = "\"" + attributes[11].split("=")[1] + "\"";
     	String vertreter = "\"" + attributes[12].split("=")[1] + "\"";
     	String sqlStmt = "INSERT INTO gfos.mitarbeiter VALUES("+pn+","+name+","+vorname+","+erreichbar+","+arbeitskonto+","+email+","+passwort+","+status+","+gda+","+rechteklasse+","+abteilung+","+vertreter+");";
+    	if(checkIfMitarbeiterExists(pn))
+			return JsonHandler.fehler("Personalnummer wurde bereits verwendet.");
     	try {
     		int rs = QueryHandler.update(sqlStmt);
 			if(rs == 0)
-				return JsonHandler.fehler("Fehler!");
-			if(!checkIfMitarbeiterExists(pn))
-				return JsonHandler.fehler("Personalnummer wurde bereits verwendet.");
+				return JsonHandler.fehler("Fehler!");			
 			return JsonHandler.erfolg("Mitarbeiter wurde erfolgreich hinzugefügt.");
 		} catch (SQLException e) {
 			return JsonHandler.fehler(e.toString());
@@ -110,11 +110,9 @@ public class MitarbeiterResource {
     	//TODO checkRights
     	if(!SessionHandler.checkSessionID(auth))
     		return JsonHandler.fehler("SessionID ist ungültig.");
-    	String sqlStmt = "SELECT * FROM gfos.mitarbeiter WHERE Personalnummer = \"" + pn + "\"";
+    	String sqlStmt = "SELECT * FROM gfos.mitarbeiter WHERE Personalnummer = \"" + pn + "\";";
     	try {
 			ResultSet rs = QueryHandler.query(sqlStmt);
-			if(rs == null)
-				return JsonHandler.fehler("Keine Rückgabe der Datenbank.");
 			if(!rs.next())
 				return JsonHandler.fehler("Leere Rückgabe der Datenbank.");
 			Mitarbeiter m = createMitarbeiterFromQuery(rs);
@@ -124,12 +122,42 @@ public class MitarbeiterResource {
 		}
     }
     
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("remove{params}")
+    public String removeMitarbeiter(@PathParam("params") String query) {
+    	query = query.substring(1);
+    	String[] params = query.split("&");
+    	if(params.length != 2)
+    		return JsonHandler.fehler("Falsche Anzahl an Parametern.");
+    	if(params[0].split("=").length != 2 || params[1].split("=").length != 2)
+    		return JsonHandler.fehler("Falsche Formatierung der Parameter.");
+    	String auth = params[0].split("=")[1];
+    	String pn = params[1].split("=")[1];
+    	if(pn.length() != 12)
+    		return JsonHandler.fehler("Ungültige Personalnummer.");    	    	
+    	if(!SessionHandler.checkSessionID(auth))
+    		return JsonHandler.fehler("SessionID ist ungültig.");
+    	//TODO check if pn == sessionID.pn
+    	//TODO checkRights
+    	//TODO CLeanup References in other tables.
+    	String sqlStmt = "DELETE FROM gfos.mitarbeiter WHERE Personalnummer = \"" + pn + "\";";
+    	try {
+			int rs = QueryHandler.update(sqlStmt);
+			if(rs == 0)
+				return JsonHandler.fehler("Personalnummer existiert nicht.");
+			if(checkIfMitarbeiterExists("\"" + pn + "\""))
+				return JsonHandler.fehler("Mitarbeiter konnte aufgrund eines Fehlers nicht gelöscht werden.");
+			return JsonHandler.erfolg("Mitarbeiter wurde erfolgreich gelöscht.");
+		} catch (SQLException e) {
+			return JsonHandler.fehler(e.toString());
+		}
+    }
+    
     private boolean checkIfMitarbeiterExists(String pn) {
-    	String sqlStmt = "SELECT * FROM gfos.mitarbeiter WHERE Personalnummer = \"" + pn + "\"";
+    	String sqlStmt = "SELECT * FROM gfos.mitarbeiter WHERE Personalnummer = " + pn + ";";
     	try {
 			ResultSet rs = QueryHandler.query(sqlStmt);
-			if(rs == null)
-				return true;
 			return rs.next();
 		} catch (SQLException e) {			
 			return true;
@@ -143,7 +171,7 @@ public class MitarbeiterResource {
         m.setVorname(rs.getString("Vorname"));        
         m.setErreichbar((rs.getString("erreichbar").equals("1")) ? true : false);
         m.setArbeitskonto(Integer.parseInt(rs.getString("Arbeitskonto")));
-        m.setEmail(rs.getString("E-Mail"));
+        m.setEmail(rs.getString("EMail"));
         m.setStatus(rs.getString("Status"));
         m.setRechteklasse(rs.getString("Rechteklasse"));
         m.setAbteilung(rs.getString("Abteilung"));
