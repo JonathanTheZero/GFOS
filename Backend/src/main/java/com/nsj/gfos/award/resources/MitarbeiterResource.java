@@ -26,8 +26,15 @@ import java.util.ArrayList;
 public class MitarbeiterResource {
     
     @GET
+    @Path("getAll{param}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getAllMitarbeiter() {
+    public String getAllMitarbeiter(@PathParam("param") String param) {
+    	if(param.split("=").length != 2)    		
+    		return JsonHandler.fehler("Parameter ist falsch formatiert.");
+    	String auth = param.split("=")[1];
+    	if(!SessionHandler.checkSessionID(auth))
+    		return JsonHandler.fehler("SessionID ist ungültig.");
+    	//TODO checkRights
         ResultSet rs = null;
         try {
             rs = QueryHandler.query("SELECT * FROM mitarbeiter;");
