@@ -7,6 +7,7 @@ import javax.ws.rs.core.MediaType;
 
 import com.nsj.gfos.award.handlers.JsonHandler;
 import com.nsj.gfos.award.handlers.PasswordHandler;
+import com.nsj.gfos.award.handlers.RightHandler;
 
 @Path("dummy")
 public class DummyResource {
@@ -14,7 +15,7 @@ public class DummyResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public String testPassword() {
-		return JsonHandler.erfolg(PasswordHandler.getHash("root"));
+		return JsonHandler.erfolg(Boolean.toString(RightHandler.checkPermission("123456789012", "test")));
 	}
 	
 }
