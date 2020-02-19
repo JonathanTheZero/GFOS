@@ -8,7 +8,7 @@ public class RightHandler {
 
 	private static final String[] allRightclasses = { "root", "admin", "personnelDepartment", "headOfDepartment",
 			"user" };
-	private static final String[] allActions = { "DeleteRoot" };
+	private static final String[] allActions = { "DeleteRoot", "test"};
 
 	public static String getRightclassFromSessionID(String si) {
 		String sqlStmt = "SELECT gfos.mitarbeiter.Rechteklasse FROM gfos.mitarbeiter INNER JOIN gfos.active_sessions ON gfos.mitarbeiter.Personalnummer = gfos.active_sessions.Mitarbeiter WHERE gfos.active_sessions.SessionID = \""
