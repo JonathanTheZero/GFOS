@@ -18,6 +18,8 @@ public class Mitarbeiter {
     private String rechteklasse;
     private String abteilung;
     private String vertreter;
+    private String passwort;
+    private String grundDAbw;
     
     public Mitarbeiter() {
         
@@ -102,5 +104,21 @@ public class Mitarbeiter {
     public void setVertreter(String vertreter) {
         this.vertreter = vertreter;
     }
+
+	public String getPasswort() {
+		return passwort;
+	}
+
+	public void setPasswort(String passwort) {
+		this.passwort = passwort;
+	}
+
+	public String getGrundDAbw() {
+		return grundDAbw;
+	}
+
+	public void setGrundDAbw(String grundDAbw) {
+		this.grundDAbw = grundDAbw;
+	}
             
 }
