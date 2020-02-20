@@ -7,7 +7,7 @@ import java.util.Arrays;
 public class RightHandler {
 
 	private static final String[] allRightclasses = { "root", "admin", "personnelDepartment", "headOfDepartment", "user" };
-	private static final String[] allActions = { "DeleteRoot", "test"};
+	private static final String[] allActions = { "DeleteRoot", "test", "getAllMitarbeiter", "addMitarbeiter", "addAdmin"};
 
 	public static String getRightclassFromSessionID(String si) {
 		String sqlStmt = "SELECT gfos.mitarbeiter.Rechteklasse FROM gfos.mitarbeiter INNER JOIN gfos.active_sessions ON gfos.mitarbeiter.Personalnummer = gfos.active_sessions.Mitarbeiter WHERE gfos.active_sessions.SessionID = \""
@@ -38,16 +38,17 @@ public class RightHandler {
 			return checkActionPersonnelDepartment(action);
 		case "headOfDepartment":
 			return checkActionHeadOfDepartment(action);
-		case "user":
+		case "user":			
 			return checkActionUser(action);
 		}
-
 		return false;
 	}
 
 	private static boolean checkActionRoot(String action) {
 		switch (action) {
 		case "DeleteRoot":
+			return false;
+		case "addMitarbeiter":
 			return false;
 		default:
 			return true;
@@ -67,6 +68,8 @@ public class RightHandler {
 		switch (action) {
 		case "DeleteRoot":
 			return false;
+		case "addAdmin":
+			return false;
 		default:
 			return true;
 		}
@@ -76,14 +79,27 @@ public class RightHandler {
 		switch (action) {
 		case "DeleteRoot":
 			return false;
+		case "getAllMitarbeiter":
+			return false;
+		case "addAdmin":
+			return false;
+		case "addMitarbeiter":
+			return false;
 		default:
 			return true;
 		}
+		
 	}
 
 	private static boolean checkActionUser(String action) {
 		switch (action) {
 		case "DeleteRoot":
+			return false;
+		case "getAllMitarbeiter":
+			return false;
+		case "addAdmin":
+			return false;
+		case "addMitarbeiter":
 			return false;
 		default:
 			return true;

@@ -15,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 import com.nsj.gfos.award.handlers.JsonHandler;
 import com.nsj.gfos.award.handlers.PasswordHandler;
 import com.nsj.gfos.award.handlers.QueryHandler;
+import com.nsj.gfos.award.handlers.RightHandler;
 import com.nsj.gfos.award.handlers.SessionHandler;
 import com.nsj.gfos.award.dataWrappers.Mitarbeiter;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -34,7 +35,8 @@ public class MitarbeiterResource {
     	String auth = param.split("=")[1];
     	if(!SessionHandler.checkSessionID(auth))
     		return JsonHandler.fehler("SessionID ist ungültig.");
-    	//TODO checkRights
+    	if(!RightHandler.checkPermission(auth, "getAllMitarbeiter"))
+    		return JsonHandler.fehler("Keine Genehmigung für diese Aktion erhalten.");
         ResultSet rs = null;
         try {
             rs = QueryHandler.query("SELECT * FROM mitarbeiter;");
@@ -72,8 +74,7 @@ public class MitarbeiterResource {
     	}
     	String auth = attributes[0].split("=")[1];
     	if(!SessionHandler.checkSessionID(auth))
-    		return JsonHandler.fehler("SessionID ist ungültig.");
-    	//TODO checkRights
+    		return JsonHandler.fehler("SessionID ist ungültig.");    	
     	String pn = "\"" + attributes[1].split("=")[1] + "\"";
     	String name = "\"" + attributes[2].split("=")[1] + "\"";
     	String vorname = "\"" + attributes[3].split("=")[1] + "\"";
@@ -83,10 +84,14 @@ public class MitarbeiterResource {
     	String passwort = "\"" + PasswordHandler.getHash(attributes[7].split("=")[1]) + "\"";
     	String status = "\"" + attributes[8].split("=")[1] + "\"";
     	String gda = "\"" + attributes[9].split("=")[1] + "\"";
-    	String rechteklasse = "\"" + attributes[10].split("=")[1] + "\"";
+    	String rechteklasse = attributes[10].split("=")[1];
     	String abteilung = "\"" + attributes[11].split("=")[1] + "\"";
     	String vertreter = "\"" + attributes[12].split("=")[1] + "\"";
-    	String sqlStmt = "INSERT INTO gfos.mitarbeiter VALUES("+pn+","+name+","+vorname+","+erreichbar+","+arbeitskonto+","+email+","+passwort+","+status+","+gda+","+rechteklasse+","+abteilung+","+vertreter+");";
+    	if(rechteklasse.equals("root"))
+    		return JsonHandler.fehler("Root Account kann nicht erstellt werden.");
+    	if(!RightHandler.checkPermission(auth, (rechteklasse.equals("admin")) ? "addAdmin" : "addMitarbeiter"))
+    		return JsonHandler.fehler("Keine Genehmigung für diese Aktion erhalten.");
+    	String sqlStmt = "INSERT INTO gfos.mitarbeiter VALUES("+pn+","+name+","+vorname+","+erreichbar+","+arbeitskonto+","+email+","+passwort+","+status+","+gda+",\""+rechteklasse+"\","+abteilung+","+vertreter+");";
     	if(checkIfMitarbeiterExists(pn))
 			return JsonHandler.fehler("Personalnummer wurde bereits verwendet.");
     	try {

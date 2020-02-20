@@ -15,7 +15,7 @@ public class DummyResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public String testPassword() {
-		return JsonHandler.erfolg(Boolean.toString(RightHandler.checkPermission("123456789012", "test")));
+		return JsonHandler.erfolg(RightHandler.getRightclassFromSessionID("121212121212"));
 	}
 	
 }
