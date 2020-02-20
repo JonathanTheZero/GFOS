@@ -6,8 +6,7 @@ import java.util.Arrays;
 
 public class RightHandler {
 
-	private static final String[] allRightclasses = { "root", "admin", "personnelDepartment", "headOfDepartment",
-			"user" };
+	private static final String[] allRightclasses = { "root", "admin", "personnelDepartment", "headOfDepartment", "user" };
 	private static final String[] allActions = { "DeleteRoot", "test"};
 
 	public static String getRightclassFromSessionID(String si) {
