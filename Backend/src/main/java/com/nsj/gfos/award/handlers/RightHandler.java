@@ -5,10 +5,17 @@ import java.sql.SQLException;
 import java.util.Arrays;
 
 public class RightHandler {
-
+	/**
+	*String Arrays, in denen alle möglichen Rechteklassen und auszuführende Aktionen abgespeichert sind.
+	*/
 	private static final String[] allRightclasses = { "root", "admin", "personnelDepartment", "headOfDepartment", "user" };
 	private static final String[] allActions = {"getAllMitarbeiter", "addMitarbeiter", "addAdmin", "removeAdmin", "removeMitarbeiter"};
 
+	
+	/**
+	 * Die Methode gibt die Rechteklasse eines Mitarbeiters zurück, der durch seine Session ID in der Datenbank identifiziert wird.
+	 * In der Datenbank werden dazu die Tabellen "active_sessions" und "mitarbeiter" mit Hilfe der Personalnummer zusammengefügt.
+	 */
 	public static String getRightclassFromSessionID(String auth) {
 		String sqlStmt = "SELECT gfos.mitarbeiter.Rechteklasse FROM gfos.mitarbeiter INNER JOIN gfos.active_sessions ON gfos.mitarbeiter.Personalnummer = gfos.active_sessions.Mitarbeiter WHERE gfos.active_sessions.SessionID = \""
 				+ auth + "\";";
@@ -22,6 +29,11 @@ public class RightHandler {
 		}
 	}
 	
+	
+	/**
+	 *Die Methode gibt die Rechteklasse eines Mitarbeiters zurück, der durch seine Personalnummer in der Datenbank identifiziert wird.
+	 * 
+	 */
 	public static String getRightClassFromPersonalnummer(String pn) {
 		String sqlStmt = "SELECT gfos.mitarbeiter.Rechteklasse FROM gfos.mitarbeiter WHERE gfos.mitarbeiter.Personalnummer = \""
 				+ pn + "\";";
@@ -35,6 +47,10 @@ public class RightHandler {
 		}
 	}
 
+	
+	/**
+	 * Die Methode prüft anhand der Rechteklasse und der auszuführenden Aktion des Mitarbeiters, ob dies für seine Rechteklasse zulässig ist.
+	 */
 	public static boolean checkPermission(String auth, String action) {
 		String rightclass = getRightclassFromSessionID(auth);
 		if (!Arrays.asList(allRightclasses).contains(rightclass))
@@ -56,7 +72,9 @@ public class RightHandler {
 		}
 		return false;
 	}
-
+	/**
+	 * Diese Methoden legen fest, welche Aktionen mit welcher Rechteklasse ausgeführt werden dürfen.
+	 */
 	private static boolean checkActionRoot(String action) {
 		switch (action) {		
 		default:
