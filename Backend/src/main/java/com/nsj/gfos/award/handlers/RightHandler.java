@@ -7,11 +7,11 @@ import java.util.Arrays;
 public class RightHandler {
 
 	private static final String[] allRightclasses = { "root", "admin", "personnelDepartment", "headOfDepartment", "user" };
-	private static final String[] allActions = { "DeleteRoot", "test", "getAllMitarbeiter", "addMitarbeiter", "addAdmin"};
+	private static final String[] allActions = {"getAllMitarbeiter", "addMitarbeiter", "addAdmin", "removeAdmin", "removeMitarbeiter"};
 
-	public static String getRightclassFromSessionID(String si) {
+	public static String getRightclassFromSessionID(String auth) {
 		String sqlStmt = "SELECT gfos.mitarbeiter.Rechteklasse FROM gfos.mitarbeiter INNER JOIN gfos.active_sessions ON gfos.mitarbeiter.Personalnummer = gfos.active_sessions.Mitarbeiter WHERE gfos.active_sessions.SessionID = \""
-				+ si + "\";";
+				+ auth + "\";";
 		try {
 			ResultSet rs = QueryHandler.query(sqlStmt);
 			if (!rs.next())
@@ -21,9 +21,14 @@ public class RightHandler {
 			return "";
 		}
 	}
+	
+	public static String getRightClassFromPersonalnummer(String pn) {
+		//TODO Methode schreiben
+		return "";
+	}
 
-	public static boolean checkPermission(String si, String action) {
-		String rightclass = getRightclassFromSessionID(si);
+	public static boolean checkPermission(String auth, String action) {
+		String rightclass = getRightclassFromSessionID(auth);
 		if (!Arrays.asList(allRightclasses).contains(rightclass))
 			return false;
 		if (!Arrays.asList(allActions).contains(action))
@@ -45,30 +50,24 @@ public class RightHandler {
 	}
 
 	private static boolean checkActionRoot(String action) {
-		switch (action) {
-		case "DeleteRoot":
-			return false;
-		case "addMitarbeiter":
-			return false;
+		switch (action) {		
 		default:
 			return true;
 		}
 	}
 
 	private static boolean checkActionAdmin(String action) {
-		switch (action) {
-		case "DeleteRoot":
-			return false;
+		switch (action) {		
 		default:
 			return true;
 		}
 	}
 
 	private static boolean checkActionPersonnelDepartment(String action) {
-		switch (action) {
-		case "DeleteRoot":
-			return false;
+		switch (action) {		
 		case "addAdmin":
+			return false;
+		case "removeAdmin":
 			return false;
 		default:
 			return true;
@@ -76,14 +75,16 @@ public class RightHandler {
 	}
 
 	private static boolean checkActionHeadOfDepartment(String action) {
-		switch (action) {
-		case "DeleteRoot":
-			return false;
+		switch (action) {		
 		case "getAllMitarbeiter":
 			return false;
 		case "addAdmin":
 			return false;
 		case "addMitarbeiter":
+			return false;
+		case "removeAdmin":
+			return false;
+		case "removeMitarbeiter":
 			return false;
 		default:
 			return true;
@@ -92,14 +93,16 @@ public class RightHandler {
 	}
 
 	private static boolean checkActionUser(String action) {
-		switch (action) {
-		case "DeleteRoot":
-			return false;
+		switch (action) {		
 		case "getAllMitarbeiter":
 			return false;
 		case "addAdmin":
 			return false;
 		case "addMitarbeiter":
+			return false;
+		case "removeAdmin":
+			return false;
+		case "removeMitarbeiter":
 			return false;
 		default:
 			return true;

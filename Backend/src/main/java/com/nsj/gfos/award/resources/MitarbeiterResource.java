@@ -147,11 +147,14 @@ public class MitarbeiterResource {
     	String auth = params[0].split("=")[1];
     	String pn = params[1].split("=")[1];
     	if(pn.length() != 12)
-    		return JsonHandler.fehler("Ungültige Personalnummer.");    	    	
+    		return JsonHandler.fehler("Ungültige Personalnummer."); 
+    	if(RightHandler.getRightClassFromPersonalnummer(pn).equals("root"))
+    		return JsonHandler.fehler("Root Account kann nicht entfernt werden.");
     	if(!SessionHandler.checkSessionID(auth))
     		return JsonHandler.fehler("SessionID ist ungültig.");
     	//TODO check if pn == sessionID.pn
-    	//TODO checkRights
+    	if(!RightHandler.checkPermission(auth, (RightHandler.getRightClassFromPersonalnummer(pn).equals("admin") ? "removeAdmin" : "removeMitarbeiter")))
+    		return JsonHandler.fehler("Keine Genehmigung für diese Aktion erhalten.");
     	//TODO CLeanup References in other tables.
     	String sqlStmt = "DELETE FROM gfos.mitarbeiter WHERE Personalnummer = \"" + pn + "\";";
     	try {
