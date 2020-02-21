@@ -23,8 +23,16 @@ public class RightHandler {
 	}
 	
 	public static String getRightClassFromPersonalnummer(String pn) {
-		//TODO Methode schreiben
-		return "";
+		String sqlStmt = "SELECT gfos.mitarbeiter.Rechteklasse FROM gfos.mitarbeiter WHERE gfos.mitarbeiter.Personalnummer = \""
+				+ pn + "\";";
+		try {
+			ResultSet rs = QueryHandler.query(sqlStmt);
+			if (!rs.next())
+				return "";
+			return rs.getString("Rechteklasse");
+		} catch (SQLException e) {
+			return "";
+		}
 	}
 
 	public static boolean checkPermission(String auth, String action) {
