@@ -8,18 +8,18 @@ package com.nsj.gfos.award.dataWrappers;
 
 public class Mitarbeiter {
     
-    private String personalnummer;
-    private String name;
-    private String vorname;
-    private boolean erreichbar;
-    private int arbeitskonto;
-    private String email;
-    private String status;
-    private String rechteklasse;
-    private String abteilung;
-    private String vertreter;
-    private String passwort;
-    private String grundDAbw;
+    private String personalnummer = null;
+    private String name = null;
+    private String vorname = null;
+    private String erreichbar = null;
+    private int arbeitskonto = -1;
+    private String email = null;
+    private String status = null;
+    private String rechteklasse = null;
+    private String abteilung = null;
+    private String vertreter = null;
+    private String passwort = null;
+    private String grundDAbw = null;
     
     public Mitarbeiter() {
         
@@ -49,11 +49,11 @@ public class Mitarbeiter {
         this.vorname = vorname;
     }
 
-    public boolean isErreichbar() {
+    public String isErreichbar() {
         return erreichbar;
     }
 
-    public void setErreichbar(boolean erreichbar) {
+    public void setErreichbar(String erreichbar) {
         this.erreichbar = erreichbar;
     }
 

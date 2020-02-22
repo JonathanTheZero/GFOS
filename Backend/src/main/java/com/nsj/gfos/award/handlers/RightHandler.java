@@ -9,7 +9,7 @@ public class RightHandler {
 	*String Arrays, in denen alle möglichen Rechteklassen und auszuführende Aktionen abgespeichert sind.
 	*/
 	private static final String[] allRightclasses = { "root", "admin", "personnelDepartment", "headOfDepartment", "user" };
-	private static final String[] allActions = {"getAllMitarbeiter", "addMitarbeiter", "addAdmin", "removeAdmin", "removeMitarbeiter"};
+	private static final String[] allActions = {"getAllMitarbeiter", "addMitarbeiter", "addAdmin", "removeAdmin", "removeMitarbeiter", "test"};
 
 	
 	/**
