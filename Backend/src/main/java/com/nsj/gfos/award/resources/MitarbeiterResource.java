@@ -19,15 +19,15 @@ import com.nsj.gfos.award.handlers.RightHandler;
 import com.nsj.gfos.award.handlers.SessionHandler;
 import com.nsj.gfos.award.dataWrappers.Mitarbeiter;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.glassfish.jersey.server.JSONP;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 @Path("mitarbeiter")
 public class MitarbeiterResource {
-
+	
 	@GET
 	@Path("getAll{param}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -41,7 +41,7 @@ public class MitarbeiterResource {
 			return JsonHandler.fehler("Keine Genehmigung für diese Aktion erhalten.");
 		ResultSet rs = null;
 		try {
-			rs = QueryHandler.query("SELECT * FROM mitarbeiter;");
+			rs = QueryHandler.query("SELECT * FROM gfos.mitarbeiter;");
 			ArrayList<Mitarbeiter> allEmpl = new ArrayList<Mitarbeiter>();
 			ObjectMapper om = new ObjectMapper();
 			while (rs.next()) {
@@ -107,7 +107,6 @@ public class MitarbeiterResource {
 			return JsonHandler.fehler(e.toString());
 		}
 	}
-	// http://localhost:8080/award/api/mitarbeiter/add:auth=123456789012&pn=000000000001&n=Sommerfeld&vn=Nils&er=0&ak=20&em=n.s@e.de&pw=1234&s=Abwesend&gda=Feierabend&rk=Admin&ab=IT-Sicherheit&ve=000000000000
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -153,13 +152,13 @@ public class MitarbeiterResource {
 			return JsonHandler.fehler("Falsche Formatierung der Parameter.");
 		String auth = params[0].split("=")[1];
 		String pn = params[1].split("=")[1];
-		if (pn.length() != 12)
+		if (pn.length() != 12 || !checkIfMitarbeiterExists(pn))
 			return JsonHandler.fehler("Ungültige Personalnummer.");
 		if (RightHandler.getRightClassFromPersonalnummer(pn).equals("root"))
 			return JsonHandler.fehler("Root Account kann nicht entfernt werden.");
 		if (!SessionHandler.checkSessionID(auth))
 			return JsonHandler.fehler("SessionID ist ungültig.");
-		if (checkSelfRemoval(auth, pn))
+		if (checkSelfOperation(auth, pn))
 			return JsonHandler.fehler("Ein Account kann nicht sich selbst löschen.");
 		if (!RightHandler.checkPermission(auth,
 				(RightHandler.getRightClassFromPersonalnummer(pn).equals("admin") ? "removeAdmin"
@@ -184,63 +183,163 @@ public class MitarbeiterResource {
 	public String alterMitarbeiter(@PathParam("params") String query) {
 		query = query.substring(1);
 		String[] params = query.split("&");
+		String[] validParams = {"n", "vn", "er", "em", "ak", "s", "pw", "rk", "gda", "ab", "ve"};
+		if(params.length < 3)
+			return JsonHandler.fehler("Zu wenige Parameter.");
 		if(params[0].split("=").length != 2 || !params[0].split("=")[0].equals("auth"))
 			return JsonHandler.fehler("SessionID benötigt.");
 		if(!SessionHandler.checkSessionID(params[0].split("=")[1]))
 			return JsonHandler.fehler("Ungültige SessionID.");
-		for(String param : params) {
-			if(param.split("=").length != 2)
+		if(params[1].split("=").length != 2 || !params[1].split("=")[0].equals("pn"))
+			return JsonHandler.fehler("Keine Personalnummer angegeben.");
+		String pn = params[1].split("=")[1];
+		if(params[1].split("=")[1].length() != 12 || !checkIfMitarbeiterExists(pn))
+			return JsonHandler.fehler("Ungültige Personalnummer angegeben.");
+		String values = "";
+		for(int i = 2; i < params.length; i++) {
+			if(params[i].split("=").length != 2)
 				return JsonHandler.fehler("Parameter falsch formatiert.");
-			switch(param.split("=")[0]) {
-			case "pn":
-        		
-        		break;
-        	case "n":
-        		
-            	break;
-        	case "vn":
-        	
-        		break;
-        	case "er":
-        	
-                break;
-        	case "ak":
-        	
-                break;
-        	case "em":
-        	
-                break;
-        	case "pw":
-        	
-                break;
-        	case "s":
-        		
-                break;
-        	case "rk":
-        		 
-                break;
-        	case "gda":
-        		
-                break;
-        	case "ab":
-        		
-                break;
-        	case "ve":
-        		
-                break;
-			}
+			if(!Arrays.asList(validParams).contains(params[i].split("=")[0]))
+				return JsonHandler.fehler("Kein valider Parameter.");
+			//TODO Rechte
+			values += getColumnName(params[i].split("=")[0]) + " = " + getFormattedValue(params[i].split("=")) + ", ";
+		}	
+		String sqlStmt = "UPDATE gfos.mitarbeiter SET " + values.substring(0, values.length() - 2) + "WHERE Personalnummer = " + pn + ";";
+		try {
+			int rs = QueryHandler.update(sqlStmt);
+			if(rs == 0)
+				return JsonHandler.fehler("Die Veränderungen konnten nicht durchgeführt werden.");
+			return JsonHandler.erfolg("Werte wurden erfolgreich verändert.");
+		} catch (SQLException e) {
+			return JsonHandler.fehler(e.toString());
+		}
+	}
+
+	private String getColumns(String action) {
+		switch(action) {
+		case "selfGet":
+			return "Personalnummer, Name, Vorname, erreichbar, Arbeitskonto, EMail, Status, Rechteklasse, Abteilung, Passwort, Vertreter, gda";
+		case "unrestrictedGet":
+			return "Personalnummer, Name, Vorname, erreichbar, Arbeitskonto, EMail, Status, Rechteklasse, Abteilung, Vertreter, gda";
+		case "restrictedGet":
+			return "Personalnummer, Name, Vorname, erreichbar, EMail, Status, Rechteklasse, Abteilung, Vertreter";		
 		}
 		return "";
 	}
 
-	private String getColumns(String action) {
-		// TODO Methode schreiben
-		return "Personalnummer, Vorname, Status";
-	}
-
 	private String getGetAction(String auth, String pn) {
-		// TODO Methode schreiben
-		return "test";
+		if(checkSelfOperation(auth, pn))
+			return "selfGet";
+		switch(RightHandler.getRightclassFromSessionID(auth)) {
+		case "root":
+			return "unrestrictedGet";
+		case "admin":
+			return "unrestrictedGet";
+		case "personnelDepartment":
+			return "unrestrictedGet";
+		case "headOfDepartment":
+			return "restrictedGet";
+		case "user":
+			if(!checkAbteilung(auth, pn) && !checkArbeitsgruppe(auth, pn))
+				return "userGet";
+			return "restrictedGet";
+		}
+		return "";
+	}
+	
+	private boolean checkAbteilung(String auth, String pn) {
+		String sessionPn = "";
+		String sqlStmt = "SELECT Mitarbeiter FROM gfos.active_sessions WHERE SessionID = " + auth + ";";
+		try {
+			ResultSet rs = QueryHandler.query(sqlStmt);
+			if(rs.next())
+				sessionPn = rs.getString("Mitarbeiter");
+		} catch (SQLException e) {
+			return false;
+		}
+		sqlStmt = "SELECT Abteilung FROM gfos.mitarbeiter WHERE Personalnummer = \"" + pn + "\" OR Personalnummer = \"" + sessionPn + "\";";
+		try {
+			ResultSet rs = QueryHandler.query(sqlStmt);
+			String abteilung = "";
+			while(rs.next()) {
+				if(abteilung.equals(rs.getString("Abteilung")))
+					return true;
+				abteilung = rs.getString("Abteilung");
+			}
+			return false;
+		} catch (SQLException e) {
+			return false;
+		}
+	}
+	
+	private boolean checkArbeitsgruppe(String auth, String pn) {
+		String sessionPn = "";
+		String sqlStmt = "SELECT Mitarbeiter FROM gfos.active_sessions WHERE SessionID = " + auth + ";";
+		try {
+			ResultSet rs = QueryHandler.query(sqlStmt);
+			if(rs.next())
+				sessionPn = rs.getString("Mitarbeiter");
+		} catch (SQLException e) {
+			return false;
+		}
+		sqlStmt = "SELECT ArbeitsgruppenID FROM gfos.arbeitsgruppenteilnahme WHERE Personalnummer = \"" + pn + "\" OR Personalnummer = \"" + sessionPn + "\";";
+		try {
+			ResultSet rs = QueryHandler.query(sqlStmt);
+			String arbeitsgruppe = "";
+			while(rs.next()) {
+				if(arbeitsgruppe.equals(rs.getString("ArbeitsgruppenID")))
+					return true;
+				arbeitsgruppe = rs.getString("ArbeitsgruppenID");
+			}
+			return false;
+		} catch (SQLException e) {
+			return false;
+		}
+	}
+	
+	private boolean isInArbeitsgruppe(String pn) {
+		String sqlStmt = "SELECT * FROM gfos.arbeitsgruppenteilnahme WHERE Personalnummer = " + pn + ";";
+		try {
+			ResultSet rs = QueryHandler.query(sqlStmt);
+			return rs.next();
+		} catch (SQLException e) {
+			return true;
+		}
+	}
+	
+	private String getFormattedValue(String[] param) {
+		String[] strings = {"n", "vn", "em", "s", "pw", "rk", "gda", "ab", "ve"};
+		if(Arrays.asList(strings).contains(param[0]))
+			return "\"" + param[1] + "\"";
+		return param[1];
+	}
+	
+	private String getColumnName(String param) {
+		switch(param) {
+		case "n":
+			return "Name";
+		case "vn":
+			return "Vorname";
+		case "er":
+			return "erreichbar";
+		case "em":
+			return "EMail";
+		case "ak":
+			return "Arbeitskonto";
+		case "pw":
+			return "Passwort";
+		case "s":
+			return "Status";
+		case "rk":
+			return "Rechteklasse";
+		case "ab":
+			return "Abteilung";
+		case "gda":
+			return "gda";
+		case "ve":
+			return "Vertreter";
+		}
+		return "";
 	}
 
 	private String checkReferencesInDatabase(String pn) {
@@ -249,7 +348,8 @@ public class MitarbeiterResource {
 			error += " Mitarbeiter ist noch angemeldet.";
 		if (isVertreter(pn))
 			error += " Mitarbeiter ist noch als Vertreter eingetragen.";
-		// TODO Arbeitsgruppe prüfen
+		if(isInArbeitsgruppe(pn))
+			error += " Mitarbeiter ist noch Teil einer Arbeitsgruppe.";
 		return error;
 	}
 
@@ -263,7 +363,7 @@ public class MitarbeiterResource {
 		}
 	}
 
-	private boolean checkSelfRemoval(String auth, String pn) {
+	private boolean checkSelfOperation(String auth, String pn) {
 		String sqlStmt = "SELECT * FROM gfos.active_sessions WHERE SessionID = \"" + auth + "\" AND Mitarbeiter = \""
 				+ pn + "\";";
 		try {
@@ -298,7 +398,7 @@ public class MitarbeiterResource {
         		 m.setVorname(rs.getString("Vorname"));     
         		break;
         	case "erreichbar":
-        		m.setErreichbar((rs.getString("erreichbar").equals("1")) ? "true" : "false");
+        		m.setErreichbar(Integer.parseInt(rs.getString("erreichbar")));
                 break;
         	case "Arbeitskonto":
         		m.setArbeitskonto(Integer.parseInt(rs.getString("Arbeitskonto")));

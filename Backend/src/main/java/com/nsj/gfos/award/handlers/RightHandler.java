@@ -9,7 +9,7 @@ public class RightHandler {
 	*String Arrays, in denen alle möglichen Rechteklassen und auszuführende Aktionen abgespeichert sind.
 	*/
 	private static final String[] allRightclasses = { "root", "admin", "personnelDepartment", "headOfDepartment", "user" };
-	private static final String[] allActions = {"getAllMitarbeiter", "addMitarbeiter", "addAdmin", "removeAdmin", "removeMitarbeiter", "test"};
+	private static final String[] allActions = {"getAllMitarbeiter", "addMitarbeiter", "addAdmin", "removeAdmin", "removeMitarbeiter", "test", "selfGet", "unrestrictedGet", "restrictedGet", "userGet"};
 
 	
 	/**
@@ -48,7 +48,7 @@ public class RightHandler {
 	}
 
 	
-	/**
+	/*
 	 * Die Methode prüft anhand der Rechteklasse und der auszuführenden Aktion des Mitarbeiters, ob dies für seine Rechteklasse zulässig ist.
 	 */
 	public static boolean checkPermission(String auth, String action) {
@@ -72,6 +72,8 @@ public class RightHandler {
 		}
 		return false;
 	}
+	
+	
 	/**
 	 * Diese Methoden legen fest, welche Aktionen mit welcher Rechteklasse ausgeführt werden dürfen.
 	 */
@@ -112,6 +114,8 @@ public class RightHandler {
 			return false;
 		case "removeMitarbeiter":
 			return false;
+		case "unrestrictedGet":
+			return false;
 		default:
 			return true;
 		}
@@ -129,6 +133,10 @@ public class RightHandler {
 		case "removeAdmin":
 			return false;
 		case "removeMitarbeiter":
+			return false;
+		case "userGet":
+			return false;
+		case "unrestrictedGet":
 			return false;
 		default:
 			return true;
