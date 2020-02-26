@@ -7,21 +7,17 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.nsj.gfos.award.handlers.JsonHandler;
-import com.nsj.gfos.award.handlers.PasswordHandler;
 import com.nsj.gfos.award.handlers.QueryHandler;
-import com.nsj.gfos.award.handlers.RightHandler;
 import com.nsj.gfos.award.handlers.SessionHandler;
 import com.nsj.gfos.award.dataWrappers.Arbeitsgruppe;
-import org.codehaus.jackson.map.ObjectMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 @Path("arbeitsgruppe")
 public class ArbeitsgruppenResource {
 
 	@GET
-	@Path("getArbeitsgruppe{attributes}")
+	@Path("get{attributes}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public static String getArbeitsgruppeFromMitarbeiter(@PathParam("attributes") String query) {
 		query = query.substring(1);
@@ -60,10 +56,10 @@ public class ArbeitsgruppenResource {
 
 	private static Arbeitsgruppe createArbeitsgruppeFromQuery(ResultSet rs) throws SQLException {
 		Arbeitsgruppe a = new Arbeitsgruppe();
-		a.setBezeichnung(rs.getString("Bezeichnung"));
-		a.setLeiter(rs.getString("Leiter"));
+		a.setBezeichnung(rs.getString("gfos.arbeitsgruppe.Bezeichnung"));
+		a.setLeiter(rs.getString("gfos.arbeitsgruppe.Leiter"));
 		do {
-			a.addMitglied(rs.getString("Personalnummer"));
+			a.addMitglied(rs.getString("gfos.arbeitsgruppenteilnahme.Personalnummer"));
 
 		} while (rs.next());
 		return a;
