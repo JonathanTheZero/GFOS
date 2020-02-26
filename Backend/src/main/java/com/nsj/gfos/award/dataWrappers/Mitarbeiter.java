@@ -11,7 +11,7 @@ public class Mitarbeiter {
     private String personalnummer = null;
     private String name = null;
     private String vorname = null;
-    private int erreichbar = -1;
+    private boolean erreichbar = false;
     private int arbeitskonto = -1;
     private String email = null;
     private String status = null;
@@ -49,11 +49,11 @@ public class Mitarbeiter {
         this.vorname = vorname;
     }
 
-    public int isErreichbar() {
+    public boolean isErreichbar() {
         return erreichbar;
     }
 
-    public void setErreichbar(int erreichbar) {
+    public void setErreichbar(boolean erreichbar) {
         this.erreichbar = erreichbar;
     }
 
