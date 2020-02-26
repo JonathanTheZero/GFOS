@@ -10,27 +10,27 @@ import java.util.ArrayList;
 
 public class Arbeitsgruppe {
     
-    private ArrayList<Mitarbeiter> mitglieder;
-    private Mitarbeiter leiter;
+    private ArrayList<String> mitglieder;
+    private String leiter;
     private String bezeichnung;
     
     public Arbeitsgruppe() {
         
     }
 
-    public ArrayList<Mitarbeiter> getMitglieder() {
+    public ArrayList<String> getMitglieder() {
         return mitglieder;
     }
 
-    public void setMitglieder(ArrayList<Mitarbeiter> mitglieder) {
+    public void setMitglieder(ArrayList<String> mitglieder) {
         this.mitglieder = mitglieder;
     }
 
-    public Mitarbeiter getLeiter() {
+    public String getLeiter() {
         return leiter;
     }
 
-    public void setLeiter(Mitarbeiter leiter) {
+    public void setLeiter(String leiter) {
         this.leiter = leiter;
     }
 
@@ -42,7 +42,7 @@ public class Arbeitsgruppe {
         this.bezeichnung = bezeichnung;
     }
     
-    public void addMitglied(Mitarbeiter mitglied) {
+    public void addMitglied(String mitglied) {
         if(mitglied != null)
             mitglieder.add(mitglied);
     }
