@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class Arbeitsgruppe {
     
     private ArrayList<String> mitglieder;
-    private Mitarbeiter leiter;
+    private String leiter;
     private String bezeichnung;
     
     public Arbeitsgruppe() {
@@ -26,11 +26,11 @@ public class Arbeitsgruppe {
         this.mitglieder = mitglieder;
     }
 
-    public Mitarbeiter getLeiter() {
+    public String getLeiter() {
         return leiter;
     }
 
-    public void setLeiter(Mitarbeiter leiter) {
+    public void setLeiter(String leiter) {
         this.leiter = leiter;
     }
 
