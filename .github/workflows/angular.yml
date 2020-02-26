@@ -1,0 +1,24 @@
+name: Angular build
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js 12
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12
+    - name: npm install and build
+      run: |
+        cd Frontend
+        npm ci
+        npm install
+        npm install ng
+        npm run build
+      env:
+        CI: true
