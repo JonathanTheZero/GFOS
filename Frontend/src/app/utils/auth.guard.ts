@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import Swal from 'sweetalert2';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -9,7 +10,9 @@ export class AuthGuard implements CanActivate {
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
         //user is logged in
-        return true;
+        if(!environment.production){
+          return true;
+        }
 
         if (localStorage.getItem('currentUser')) {
             return true;

@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { HttpClientModule }    from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { UiModule } from './ui/ui.module';
@@ -21,7 +22,8 @@ import { AuthGuard } from './utils/auth.guard';
     UiModule,
     PagesModule,
     AppRoutingModule,
-    SweetAlert2Module.forRoot()
+    SweetAlert2Module.forRoot(),
+    HttpClientModule
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent]

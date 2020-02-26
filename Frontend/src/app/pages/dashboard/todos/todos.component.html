@@ -1,0 +1,36 @@
+<div class="clr-row">
+    <div class="clr-col-lg-4 clr-col-sm-6 clr-col-12">
+      <div class="card">
+        <div class="card-header">
+          To-Do Liste
+        </div>
+        <div class="card-block">
+          <div class="progress top">
+            <progress value="0" max="100" id="bar"></progress>
+          </div>
+          Diese Aufträge stehen heute an:
+        </div>
+        <div class="card-block">
+          <ul class="list" *ngFor="let item of samples">
+            <li>
+              {{item.title}}
+              <button type="button" class="btn btn-icon btn-success btn-sm custom-small" aria-label="done" (click)="check($event)">
+                <clr-icon shape="check"></clr-icon>
+              </button>
+              <ul *ngFor="let i of item.subs">
+                <li>
+                  {{i.title}}
+                  <button type="button" class="btn btn-icon btn-success btn-sm custom-small" aria-label="done" (click)="check($event)">
+                    <clr-icon shape="check"></clr-icon>
+                  </button>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div class="card-footer">
+          <a class="btn btn-primary">Action</a>
+        </div>
+      </div>
+    </div>
+  </div>

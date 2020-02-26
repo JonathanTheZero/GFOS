@@ -1,4 +1,4 @@
-export interface Mitarbeiter {
+export default interface Mitarbeiter {
     personalnummer: string;
     name: string;
     vorname: string;
