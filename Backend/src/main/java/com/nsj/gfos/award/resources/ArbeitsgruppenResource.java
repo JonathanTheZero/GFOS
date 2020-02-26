@@ -56,10 +56,10 @@ public class ArbeitsgruppenResource {
 
 	private static Arbeitsgruppe createArbeitsgruppeFromQuery(ResultSet rs) throws SQLException {
 		Arbeitsgruppe a = new Arbeitsgruppe();
-		a.setBezeichnung(rs.getString("gfos.arbeitsgruppe.Bezeichnung"));
-		a.setLeiter(rs.getString("gfos.arbeitsgruppe.Leiter"));
+		a.setBezeichnung(rs.getString("Bezeichnung"));
+		a.setLeiter(rs.getString("Leiter"));
 		do {
-			a.addMitglied(rs.getString("gfos.arbeitsgruppenteilnahme.Personalnummer"));
+			a.addMitglied(rs.getString("Personalnummer"));
 
 		} while (rs.next());
 		return a;
