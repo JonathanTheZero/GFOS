@@ -1,4 +1,4 @@
-export default interface Mitarbeiter {
+export interface Mitarbeiter {
     personalnummer: string;
     name: string;
     vorname: string;
@@ -9,4 +9,12 @@ export default interface Mitarbeiter {
     rechteklasse: string;
     abteilung: string | null;
     vertreter: string | null;
+}
+
+export interface apiSuccess {
+    erfolg: string;
+}
+
+export interface apiError {
+    fehler: string;
 }

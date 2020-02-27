@@ -11,20 +11,20 @@ import { SettingsComponent } from './pages/settings/settings.component';
 const routes: Routes = [
   {
     path: '',
+    canActivate: [AuthGuard],
     children: [
-      { 
-        path: '', 
-        redirectTo: '/login', 
-        pathMatch: 'full' 
+      {
+        path: '',
+        redirectTo: '/login',
+        pathMatch: 'full'
       },
       {
         path: "login",
         component: LoginComponent,
       },
-      { 
-        path: 'dashboard', 
-        component: DashboardComponent,
-        canActivate: [AuthGuard]
+      {
+        path: 'dashboard',
+        component: DashboardComponent
       },
       {
         path: "sing-up",
@@ -33,20 +33,18 @@ const routes: Routes = [
       {
         path: "settings",
         component: SettingsComponent,
-        canActivate: [AuthGuard]
       },
       {
         path: "api",
         redirectTo: "dashboard",
         pathMatch: "full"
-      },
-      {
-        path: "**",
-        component: PageNotFoundComponent
-      },
-      
-    ]
-  }
+      }
+    ],
+  },
+  {
+    path: "**",
+    component: PageNotFoundComponent
+  },
 ];
 
 @NgModule({
