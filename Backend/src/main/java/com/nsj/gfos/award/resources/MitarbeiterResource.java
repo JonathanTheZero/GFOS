@@ -226,7 +226,7 @@ public class MitarbeiterResource {
 		}
 		return "";
 	}
-
+	
 	private String getGetAction(String auth, String pn) {
 		if(checkSelfOperation(auth, pn))
 			return "selfGet";
@@ -240,11 +240,31 @@ public class MitarbeiterResource {
 		case "headOfDepartment":
 			return "restrictedGet";
 		case "user":
-			if(!checkAbteilung(auth, pn) && !checkArbeitsgruppe(auth, pn))
-				return "userGet";
-			return "restrictedGet";
+			if(checkAbteilung(auth, pn) || checkArbeitsgruppe(auth, pn) || checkVertreter(auth, pn))
+				return "restrictedGet";
+			return "userGet";
 		}
 		return "";
+	}
+	
+	private boolean checkVertreter(String auth, String pn) {
+		String sessionPn = "";
+		String sqlStmt = "SELECT Mitarbeiter FROM gfos.active_sessions WHERE SessionID = " + auth + ";";
+		try {
+			ResultSet rs = QueryHandler.query(sqlStmt);
+			if(rs.next())
+				sessionPn = rs.getString("Mitarbeiter");
+		} catch (SQLException e) {
+			return false;
+		}
+		sqlStmt = "SELECT Personalnummer FROM gfos.mitarbeiter WHERE Vertreter = \"" + pn + "\" AND Personalnummer = \"" + sessionPn + "\";";
+		try {
+			ResultSet rs = QueryHandler.query(sqlStmt);
+			if(rs == null) return false;			
+			return rs.next();
+		} catch (SQLException e) {
+			return false;
+		}
 	}
 	
 	private boolean checkAbteilung(String auth, String pn) {
@@ -260,13 +280,10 @@ public class MitarbeiterResource {
 		sqlStmt = "SELECT Abteilung FROM gfos.mitarbeiter WHERE Personalnummer = \"" + pn + "\" OR Personalnummer = \"" + sessionPn + "\";";
 		try {
 			ResultSet rs = QueryHandler.query(sqlStmt);
-			String abteilung = "";
-			while(rs.next()) {
-				if(abteilung.equals(rs.getString("Abteilung")))
-					return true;
-				abteilung = rs.getString("Abteilung");
-			}
-			return false;
+			rs.next();
+			if(rs.getString("Abteilung").equals(""))
+				return false;
+			return true;
 		} catch (SQLException e) {
 			return false;
 		}
@@ -285,13 +302,10 @@ public class MitarbeiterResource {
 		sqlStmt = "SELECT ArbeitsgruppenID FROM gfos.arbeitsgruppenteilnahme WHERE Personalnummer = \"" + pn + "\" OR Personalnummer = \"" + sessionPn + "\";";
 		try {
 			ResultSet rs = QueryHandler.query(sqlStmt);
-			String arbeitsgruppe = "";
-			while(rs.next()) {
-				if(arbeitsgruppe.equals(rs.getString("ArbeitsgruppenID")))
-					return true;
-				arbeitsgruppe = rs.getString("ArbeitsgruppenID");
-			}
-			return false;
+			rs.next();
+			if(rs.getString("ArbeitsgruppenID").equals(""))
+				return false;
+			return true;
 		} catch (SQLException e) {
 			return false;
 		}
@@ -398,7 +412,7 @@ public class MitarbeiterResource {
         		 m.setVorname(rs.getString("Vorname"));     
         		break;
         	case "erreichbar":
-        		m.setErreichbar(Integer.parseInt(rs.getString("erreichbar")));
+        		m.setErreichbar((rs.getString("erreichbar").equals("1") ? true : false));
                 break;
         	case "Arbeitskonto":
         		m.setArbeitskonto(Integer.parseInt(rs.getString("Arbeitskonto")));
@@ -412,6 +426,9 @@ public class MitarbeiterResource {
         	case "Rechteklasse":
         		 m.setRechteklasse(rs.getString("Rechteklasse"));
                 break;
+        	case "Passwort":
+       		 m.setPasswort(rs.getString("Passwort"));
+               break;
         	case "Abteilung":
         		 m.setAbteilung(rs.getString("Abteilung"));
                 break;

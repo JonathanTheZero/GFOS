@@ -16,7 +16,7 @@ public class DummyResource {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public String testPassword() {
-		return JsonHandler.erfolg(JsonHandler.createJsonFromMitarbeiter(new Mitarbeiter()));
+		return JsonHandler.erfolg("");
 	}
 	
 }
