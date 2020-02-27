@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Todo } from 'src/app/utils/interfaces/dashboard.model';
-import { ApiService } from 'src/app/utils/api.service';
+import { ApiService } from 'src/app/utils/services/api.service';
 
 @Component({
   selector: 'dashboard-todos',

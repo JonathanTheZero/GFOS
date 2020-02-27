@@ -19,6 +19,6 @@ jobs:
         npm ci
         npm install
         npm install ng
-        npm run build
+        npm run build --prod
       env:
         CI: true

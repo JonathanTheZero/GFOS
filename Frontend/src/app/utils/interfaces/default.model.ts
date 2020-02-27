@@ -11,10 +11,7 @@ export interface Mitarbeiter {
     vertreter: string | null;
 }
 
-export interface apiSuccess {
-    erfolg: string;
-}
-
-export interface apiError {
-    fehler: string;
+export interface apiAnswer {
+    fehler?: string;
+    erfolg?: string;
 }
