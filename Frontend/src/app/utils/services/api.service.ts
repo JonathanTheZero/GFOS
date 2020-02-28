@@ -14,11 +14,7 @@ export class ApiService {
   private readonly url: string = "http://localhost:8080/award/api";
 
   private httpOptions = {
-    headers: new HttpHeaders(
-      {
-        'Content-Type': 'application/json'
-      }
-    )
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
   todoSamples: Todo[];
@@ -33,27 +29,32 @@ export class ApiService {
 
   public registerNewUser(name: string, vn: string, email: string, pw: string): apiAnswer {
     var answer: apiAnswer;
-    this.http.get<apiAnswer>(`${this.url}/mitarbeiter/add:auth=${this.generateAuthToken()}&n=${name}&vn=${vn}&em=${email}&pw=${pw}`).pipe(
-      null,
-      catchError(this.handleError<apiAnswer>(`Tried login with ${this.url}/mitarbeiter/add:auth=${this.generateAuthToken()}&n=${name}&vn=${vn}&em=${email}&pw=${pw})`))
-    ).subscribe(x => answer = x);
+    const auth: string = this.generateAuthToken();
+    this.http.get<apiAnswer>(`${this.url}/mitarbeiter/add:auth=${auth}&n=${name}&vn=${vn}&em=${email}&pw=${pw}`).subscribe(x => answer = x);
+    sessionStorage.setItem("currentUser", auth);
+    return answer;
+  }
+
+  public login(pn: string, pw: string): apiAnswer {
+    var answer: apiAnswer;
+    const auth: string = this.generateAuthToken();
+    this.http.get<apiAnswer>(`${this.url}/login:auth=${auth}&pn=${pn}&pw=${pw}`).subscribe(x => answer = x);
+    sessionStorage.setItem("currentUser", auth);
+    return answer;
+  }
+
+  public logout(authToken: string): apiAnswer {
+    var answer: apiAnswer;
+    this.http.get<apiAnswer>(`${this.url}/logout:auth=${authToken}`).subscribe(x => answer = x);
+    sessionStorage.removeItem("currentUser");
     return answer;
   }
 
   private generateAuthToken(): string {
     const dec2hex = (dec: number) => ('0' + dec.toString(16)).substr(-2);
-    var arr = new Uint8Array(40);
+    var arr = new Uint8Array(24); //makes a length 12 auth token
     window.crypto.getRandomValues(arr);
     return Array.from(arr, dec2hex).join('');
-  }
-
-  public logout(authToken: string): apiAnswer {
-    var answer: apiAnswer;
-    this.http.get<apiAnswer>(`${this.url}/logout:auth=${authToken}`).pipe(
-      null,
-      catchError(this.handleError<apiAnswer>(`Logout failed`))
-    ).subscribe(x => answer = x);
-    return answer;
   }
 
   private handleError<T>(operation = 'operation', result?: T): (error: any) => Observable<T> {

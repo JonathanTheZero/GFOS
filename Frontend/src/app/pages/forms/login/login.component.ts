@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { loginForm } from "../../utils/interfaces/login.model";
+import { loginForm } from 'src/app/utils/interfaces/login.model';
 
 @Component({
   selector: 'app-login',
@@ -9,16 +9,14 @@ import { loginForm } from "../../utils/interfaces/login.model";
 
 export class LoginComponent {
  form : loginForm = {
-   type: "",
    username: "",
-   password: "",
-   rememberMe: false
+   password: ""
  };
 
   constructor() {
   }
 
   public submit(){
-    alert(this.form.rememberMe);
+
   }
 }

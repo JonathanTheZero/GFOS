@@ -25,8 +25,12 @@ import { AuthGuard } from './utils/auth.guard';
     SweetAlert2Module.forRoot(),
     HttpClientModule
   ],
-  providers: [AuthGuard],
-  bootstrap: [AppComponent]
+  providers: [
+    AuthGuard
+  ],
+  bootstrap: [
+    AppComponent
+  ]
 })
 
 export class AppModule { 

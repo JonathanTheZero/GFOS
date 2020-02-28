@@ -5,17 +5,14 @@ import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
-import { LoginComponent } from "./login/login.component";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
-import { RegisterComponent } from "./register/register.component";
 import { SettingsComponent } from './settings/settings.component';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { CustomFormsModule } from './forms/custom-forms.module';
 
 
 const components = [
-  LoginComponent,
   PageNotFoundComponent,
-  RegisterComponent,
   SettingsComponent
 ];
 
@@ -27,7 +24,8 @@ const components = [
     ClarityModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    DashboardModule
+    DashboardModule,
+    CustomFormsModule
   ],
   declarations: [
     ...components,

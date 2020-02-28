@@ -2,11 +2,11 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { LoginComponent } from './pages/login/login.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
-import { RegisterComponent } from './pages/register/register.component';
 import { AuthGuard } from './utils/auth.guard';
 import { SettingsComponent } from './pages/settings/settings.component';
+import { RegisterComponent } from './pages/forms/register/register.component';
+import { LoginComponent } from './pages/forms/login/login.component';
 
 const routes: Routes = [
   {
@@ -27,10 +27,6 @@ const routes: Routes = [
         component: DashboardComponent
       },
       {
-        path: "sing-up",
-        component: RegisterComponent,
-      },
-      {
         path: "settings",
         component: SettingsComponent,
       },
@@ -42,9 +38,13 @@ const routes: Routes = [
     ],
   },
   {
+    path: "register",
+    component: RegisterComponent
+  },
+  {
     path: "**",
     component: PageNotFoundComponent
-  },
+  }
 ];
 
 @NgModule({
