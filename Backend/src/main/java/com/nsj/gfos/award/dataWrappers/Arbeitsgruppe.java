@@ -13,11 +13,13 @@ public class Arbeitsgruppe {
     private ArrayList<String> mitglieder;
     private String leiter;
     private String bezeichnung;
+    private String arbeitsgruppenID;
     
     public Arbeitsgruppe() {
     	mitglieder = new ArrayList<String>();
     	leiter = "";
     	bezeichnung = "";
+    	arbeitsgruppenID = "";
     }
 
     public ArrayList<String> getMitglieder() {
@@ -48,6 +50,15 @@ public class Arbeitsgruppe {
         if(mitglied != null)
             mitglieder.add(mitglied);
     }
+
+	public String getArbeitsgruppenID() {
+		return arbeitsgruppenID;
+	}
+
+	public void setArbeitsgruppenID(String arbeitsgruppenID) {
+		this.arbeitsgruppenID = arbeitsgruppenID;
+	}
+
     
     
 }
