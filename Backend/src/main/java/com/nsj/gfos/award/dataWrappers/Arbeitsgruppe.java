@@ -15,7 +15,9 @@ public class Arbeitsgruppe {
     private String bezeichnung;
     
     public Arbeitsgruppe() {
-        
+    	mitglieder = new ArrayList<String>();
+    	leiter = "";
+    	bezeichnung = "";
     }
 
     public ArrayList<String> getMitglieder() {
