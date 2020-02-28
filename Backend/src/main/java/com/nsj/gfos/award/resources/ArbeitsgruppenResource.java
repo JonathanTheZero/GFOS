@@ -109,7 +109,7 @@ public class ArbeitsgruppenResource {
 		Arbeitsgruppe a = new Arbeitsgruppe();
 		a.setBezeichnung(rs.getString("Bezeichnung"));
 		a.setLeiter(rs.getString("Leiter"));
-		a.setArbeitsgruppenID("ArbeitsgruppenID");
+		a.setArbeitsgruppenID(rs.getString("ArbeitsgruppenID"));
 		do {
 			a.addMitglied(rs.getString("Personalnummer"));
 
