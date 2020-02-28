@@ -3,8 +3,8 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Todo } from '../interfaces/dashboard.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { todoSamples } from '../mock.data';
-import { apiAnswer } from '../interfaces/default.model';
+import { todoSamples, employeeSamples } from '../mock.data';
+import { apiAnswer, Mitarbeiter } from '../interfaces/default.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,14 +17,15 @@ export class ApiService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
-  todoSamples: Todo[];
-
   constructor(private http: HttpClient) {
-    this.todoSamples = todoSamples;
   }
 
   getTodoSamples(): Observable<Todo[]> {
-    return of(this.todoSamples);
+    return of(todoSamples);
+  }
+
+  getEmployeeSamples(): Observable<Array<Mitarbeiter>> {
+    return of(employeeSamples);
   }
 
   public registerNewUser(name: string, vn: string, email: string, pw: string): apiAnswer {

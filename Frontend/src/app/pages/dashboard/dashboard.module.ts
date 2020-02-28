@@ -7,12 +7,14 @@ import { RouterModule } from '@angular/router';
 import { ClarityModule } from '@clr/angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PanelComponent } from './panel/panel.component';
+import { EmployeesComponent } from './employees/employees.component';
 
 @NgModule({
   declarations: [
     DashboardComponent, 
     TodosComponent,
-    PanelComponent
+    PanelComponent,
+    EmployeesComponent
   ],
   imports: [
     CommonModule,

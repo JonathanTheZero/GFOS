@@ -1,4 +1,5 @@
 import { Todo } from './interfaces/dashboard.model';
+import { Mitarbeiter } from './interfaces/default.model';
 
 export const todoSamples: Todo[] = [
     {
@@ -19,3 +20,18 @@ export const todoSamples: Todo[] = [
         ]
     }
 ]
+
+export const employeeSamples: Mitarbeiter[] = [
+    {
+        personalnummer: "01",
+        name: "Test",
+        vorname: "Auch",
+        erreichbar: true,
+        arbeitskonto: 0,
+        email: "x@example.org",
+        status: "string",
+        rechteklasse: "string",
+        abteilung: "string",
+        vertreter: "string"
+    }
+];

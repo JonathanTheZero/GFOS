@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
@@ -26,7 +26,8 @@ import { AuthGuard } from './utils/auth.guard';
     HttpClientModule
   ],
   providers: [
-    AuthGuard
+    AuthGuard,
+    Title
   ],
   bootstrap: [
     AppComponent

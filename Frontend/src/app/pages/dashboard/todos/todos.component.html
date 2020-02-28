@@ -11,8 +11,8 @@
           Diese Aufträge stehen heute an:
         </div>
         <div class="card-block">
-          <ul class="list" *ngFor="let item of samples">
-            <li>
+          <ul class="list">
+            <li *ngFor="let item of samples">
               {{item.title}}
               <button type="button" class="btn btn-icon btn-success btn-sm custom-small" aria-label="done" (click)="check($event)">
                 <clr-icon shape="check"></clr-icon>
