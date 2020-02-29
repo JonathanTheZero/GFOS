@@ -8,9 +8,6 @@ import { Mitarbeiter } from 'src/app/utils/interfaces/default.model';
 })
 export class EmployeesComponent implements OnInit {
   @Input() employees: Mitarbeiter[];
-  a: any;
-  b: any; c: any;
-  d: any;
   constructor() { }
 
   ngOnInit(): void {

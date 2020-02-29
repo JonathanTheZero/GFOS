@@ -1,8 +1,24 @@
-<clr-tabs>
-    <clr-tab>
-        <button clrTabLink id="link1">Tab1</button>
-        <clr-tab-content id="content1" *clrIfActive="true">
-            ...
-        </clr-tab-content>
-    </clr-tab>
-</clr-tabs>
+<ng-container *ngIf="employees?.length">
+    <h2>Anwesende Mitarbeiter</h2>
+    <clr-datagrid>
+        <clr-dg-column>Personalnummer</clr-dg-column>
+        <clr-dg-column>Name</clr-dg-column>
+        <clr-dg-column>Status</clr-dg-column>
+        <clr-dg-column>Rechteklasse</clr-dg-column>
+    
+        <clr-dg-row *clrDgItems="let employee of employees">
+            <clr-dg-cell>{{employee.personalnummer}}</clr-dg-cell>
+            <clr-dg-cell>{{employee.vorname + " " + employee.name}}</clr-dg-cell>
+            <clr-dg-cell>{{employee.status}}</clr-dg-cell>
+            <clr-dg-cell>{{employee.rechteklasse}}</clr-dg-cell>
+        </clr-dg-row>
+    
+        <clr-dg-footer>
+            <clr-dg-pagination #pagination [clrDgPageSize]="10">
+                <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Benutzer pro Seite</clr-dg-page-size>
+                {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
+                von {{pagination.totalItems}} Angestellten insgesamt
+            </clr-dg-pagination>
+        </clr-dg-footer>
+    </clr-datagrid>
+</ng-container>

@@ -17,8 +17,8 @@
               <button type="button" class="btn btn-icon btn-success btn-sm custom-small" aria-label="done" (click)="check($event)">
                 <clr-icon shape="check"></clr-icon>
               </button>
-              <ul *ngFor="let i of item.subs">
-                <li>
+              <ul *ngIf="item.subs">
+                <li *ngFor="let i of item.subs">
                   {{i.title}}
                   <button type="button" class="btn btn-icon btn-success btn-sm custom-small" aria-label="done" (click)="check($event)">
                     <clr-icon shape="check"></clr-icon>
