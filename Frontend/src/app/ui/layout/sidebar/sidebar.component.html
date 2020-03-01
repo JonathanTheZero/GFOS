@@ -1,21 +1,25 @@
-<nav id="sidebar">
-  <section class="sidenav-content">
-    <a class="nav-link active">Overview</a>
-    <section class="nav-group collapsible">
-      <input id="tabexample1" type="checkbox">
-      <label for="tabexample1">Content</label>
-      <ul class="nav-list">
-        <li><a class="nav-link">Projects</a></li>
-        <li><a class="nav-link">Reports</a></li>
-      </ul>
-    </section>
-    <section class="nav-group collapsible">
-      <input id="tabexample2" type="checkbox">
-      <label for="tabexample2">System</label>
-      <ul class="nav-list">
-        <li><a class="nav-link">Users</a></li>
-        <li><a class="nav-link" href="/settings">Einstellungen</a></li>
-      </ul>
-    </section>
-  </section>
-</nav>
+<clr-vertical-nav [clrVerticalNavCollapsible]="true">
+
+  <ng-container *ngFor="let current of sidebarLinks">
+    <clr-vertical-nav-group routerLinkActive="active">
+      <a hidden aria-hidden="true"></a>
+      <clr-icon [attr.shape]="current.icon" clrVerticalNavIcon></clr-icon>
+      {{current.title}}
+      <clr-vertical-nav-group-children *clrIfExpanded="current === sidebarLinks[0]">
+        <ng-container *ngFor="let sub of current.links">
+          <a clrVerticalNavLink routerLink="{{sub.link}}" routerLinkActive="active">
+            {{sub.title}}
+          </a>
+        </ng-container>
+      </clr-vertical-nav-group-children>
+
+    </clr-vertical-nav-group>
+
+  </ng-container>
+
+  <a clrVerticalNavLink routerLinkActive="active" routerLink="./credit">
+    <clr-icon shape="certificate" clrVerticalNavIcon></clr-icon>
+    Credit
+  </a>
+
+</clr-vertical-nav>

@@ -30,7 +30,7 @@ export const employeeSamples: Mitarbeiter[] = [
         arbeitskonto: 0,
         email: "x@example.org",
         status: "string",
-        rechteklasse: "string",
+        rechteklasse: "root",
         abteilung: "string",
         vertreter: "string"
     },

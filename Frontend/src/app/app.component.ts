@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from './utils/services/api.service';
 import { apiAnswer } from './utils/interfaces/default.model';
-import Swal from 'sweetalert2';
+import { UserIdleService } from 'angular-user-idle';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +12,8 @@ import Swal from 'sweetalert2';
 export class AppComponent implements OnInit {
   title = 'Dashboard';
 
-  constructor(private api: ApiService){
+  constructor(private api: ApiService,
+    private userIdle: UserIdleService){
 
   }
 
@@ -29,5 +30,8 @@ export class AppComponent implements OnInit {
         }
       }                           
     });
+    this.userIdle.startWatching();
+    this.userIdle.onTimerStart().subscribe(count => console.log(count));
+    this.userIdle.onTimeout().subscribe(() => console.log('Time is up!'));
   }
 }

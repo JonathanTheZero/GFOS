@@ -5,6 +5,7 @@ import { Todo } from '../interfaces/dashboard.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { todoSamples, employeeSamples } from '../mock.data';
 import { apiAnswer, Mitarbeiter } from '../interfaces/default.model';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,13 @@ export class ApiService {
 
   getEmployeeSamples(): Observable<Array<Mitarbeiter>> {
     return of(employeeSamples);
+  }
+
+  public getCurrentUser(): Observable<Mitarbeiter> {
+    if(!environment.production) return of(employeeSamples[0]);
+    return this.http.get<Mitarbeiter>(`${this.url}/`).pipe(
+      null, null
+    );
   }
 
   public registerNewUser(name: string, vn: string, email: string, pw: string): apiAnswer {

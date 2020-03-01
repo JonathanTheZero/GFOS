@@ -6,14 +6,13 @@ import { RouterModule } from "@angular/router";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
-import { SettingsComponent } from './settings/settings.component';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { CustomFormsModule } from './forms/custom-forms.module';
+import { SettingsModule } from './settings/settings.module';
 
 
 const components = [
-  PageNotFoundComponent,
-  SettingsComponent
+  PageNotFoundComponent
 ];
 
 @NgModule({
@@ -25,7 +24,8 @@ const components = [
     ReactiveFormsModule,
     BrowserAnimationsModule,
     DashboardModule,
-    CustomFormsModule
+    CustomFormsModule,
+    SettingsModule
   ],
   declarations: [
     ...components,

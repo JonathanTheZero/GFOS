@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { loginForm } from 'src/app/utils/interfaces/login.model';
+import { Title } from '@angular/platform-browser';
+import { errorObj } from 'src/app/utils/interfaces/register.model';
 
 @Component({
   selector: 'app-login',
@@ -7,16 +9,24 @@ import { loginForm } from 'src/app/utils/interfaces/login.model';
   styleUrls: ['./login.component.scss']
 })
 
-export class LoginComponent {
- form : loginForm = {
-   username: "",
-   password: ""
- };
+export class LoginComponent implements OnInit {
+  form: loginForm = {
+    username: "",
+    password: ""
+  };
 
-  constructor() {
+  public err: errorObj = {
+    reason: ""
   }
 
-  public submit(){
+  constructor(private titleService: Title) {
+  }
+
+  ngOnInit(): void {
+    this.titleService.setTitle("Login");
+  }
+
+  public submit() {
 
   }
 }

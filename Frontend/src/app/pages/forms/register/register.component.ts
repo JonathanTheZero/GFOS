@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { registerForm, errorObj } from 'src/app/utils/interfaces/register.model';
 import { ApiService } from 'src/app/utils/services/api.service';
 import { Title } from '@angular/platform-browser';
+import { apiAnswer } from 'src/app/utils/interfaces/default.model';
+import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -23,7 +26,8 @@ export class RegisterComponent implements OnInit {
   }
 
   constructor(public api: ApiService,
-    private titleService: Title) { 
+    private titleService: Title,
+    private router: Router) {
   }
 
   ngOnInit(): void {
@@ -31,11 +35,39 @@ export class RegisterComponent implements OnInit {
   }
 
   public validate(): void {
-    var re : RegExp = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i; //check if string is E-Mail
-    if(!re.test(this.form.email)){ //E-Mail is invalid
+    if (!this.form.type) {
+      this.err.reason = "Bitte wählen Sie eine zulässige Benutzergruppe!";
+      return;
+    }
+    if (!this.form.name || !this.form.lastName) {
+      this.err.reason = "Bitte geben Sie Ihrern vollständigen Namen an";
+      return;
+    }
+    var re: RegExp = /.{1,}@.{1,}\..{1,}/mi;
+    if (!re.test(this.form.email)) { //invalid E-Mail
       this.err.reason = "Bitte geben Sie eine zulässige E-Mail an!";
       return;
     }
-    if(!this.form.type) this.err.reason = "Bitte wählen Sie eine zulässige Benutzergruppe!";
+    if (!this.form.password || this.form.password.length < 8) {
+      this.err.reason = "Ihr Passwort muss mindestens 8 Zeichen lang sein!";
+      return;
+    }
+    
+    const answer : apiAnswer = this.api.registerNewUser(this.form.lastName, this.form.name, this.form.email, this.form.password);
+    if(answer.fehler){
+      Swal.fire(
+        "Es tut uns leid", 
+        "Bei der Verarbeitung Ihrer Anfrage ist leider etwas schiefgelaufen: Der Server meldete folgenden Grund: " + answer.fehler, 
+        "error"
+      );
+    }
+    else {
+      Swal.fire(
+        "Sie sind nun registriert!",
+        "Sie werden in kürze weitergeleitet.",
+        "success"
+      );
+      setTimeout(() => this.router.navigate(['dashboard']), 5000);
+    }
   }
 }
