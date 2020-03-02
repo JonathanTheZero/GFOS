@@ -94,7 +94,7 @@ public class ArbeitsgruppenResource {
 			int rs = QueryHandler.update(sqlStmt);
 			if(rs == 0)
 				return JsonHandler.fehler("Die Veränderung konnte nicht durchgeführt werden.");
-			return JsonHandler.erfolg("Leiter wurde erfolgreich verändert.");
+			return JsonHandler.erfolg("Arbeitsgruppe wurde erfolgreich eingefügt.");
 		} catch (SQLException e) {
 			return JsonHandler.fehler(e.toString());
 		}
