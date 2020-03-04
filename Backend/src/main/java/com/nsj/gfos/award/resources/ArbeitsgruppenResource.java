@@ -140,6 +140,100 @@ public class ArbeitsgruppenResource {
 	}
 	
 	/**
+	 * Als Parameter werden die SessionID und die ArbeitsgruppenID übergeben.
+	 * Wenn die SessionID gültig ist und der Mitarbeiter die Berechtigung hat, werden erst die Mitarbeiter aus der Arbeitsgruppe, dann die Arbeitsgruppe selber gelöscht.
+	 */
+	@GET
+	@Path("remove{attributes}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public static String removeArbeitsgruppe(@PathParam("attributes") String query) {
+		query = query.substring(1);
+		String[] attributes = query.split("&");
+		if (attributes.length != 2)
+			return JsonHandler.fehler("Falsche Anzahl an Parametern.");
+		for (String attribute : attributes) {
+			if (attribute.split("=").length != 2)
+				return JsonHandler.fehler("Parameter sind falsch formatiert.");
+		}
+		String auth = attributes[0].split("=")[1];
+		String id = attributes[1].split("=")[1];
+		if (id.length() != 12)
+			return JsonHandler.fehler("ID ist ungültig");
+		if (!SessionHandler.checkSessionID(auth))
+			return JsonHandler.fehler("SessionID ist ungültig.");
+		// TODO checkRights
+		String sqlStmt = "DELETE FROM gfos.arbeitsgruppenteilnahme WHERE gfos.arbeitsgruppenteilnahme.ArbeitsgruppenID = \"" + id + "\";";
+		try {
+			int rs = QueryHandler.update(sqlStmt);
+			if(rs == 0)
+				return JsonHandler.fehler("Das Löschen konnte nicht durchgeführt werden.");
+		} catch (SQLException e) {
+			return JsonHandler.fehler(e.toString());
+		}
+		sqlStmt = "DELETE FROM gfos.arbeitsgruppe WHERE gfos.arbeitsgruppe.ArbeitsgruppenID = \"" + id + "\";";
+		try {
+			int rs = QueryHandler.update(sqlStmt);
+			if(rs == 0)
+				return JsonHandler.fehler("Das Löschen konnte nicht durchgeführt werden.");
+			return JsonHandler.erfolg("Arbeitsgruppe wurde erfolgreich gelöscht.");
+		} catch (SQLException e) {
+			return JsonHandler.fehler(e.toString());
+		}
+	}
+	
+	
+	/**
+	 * Übergeben werden die SessionID, die Personalnummer des zu löschenden Mitarbeiters und die Arbeitsgruppe, aus der der Mitarbeiter gelöscht werden soll.
+	 * Die Parameter werden auf ihre Richtigkeit geprüft.
+	 * Es wird geprüft, ob der Mitarbeiter, der gelöscht werden soll, der Leiter der Arbeitsgruppe ist.
+	 * Wenn ja, wird das Löschen abgebrochen.
+	 * Wenn nein, wird der Mitarbeiter aus der Arbeitsgruppe gelöscht.
+	 */
+	@GET
+	@Path("removeMitarbeiter{attributes}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public static String removeMitarbeiter(@PathParam("attributes") String query) {
+		query = query.substring(1);
+		String[] attributes = query.split("&");
+		if (attributes.length != 3)
+			return JsonHandler.fehler("Falsche Anzahl an Parametern.");
+		for (String attribute : attributes) {
+			if (attribute.split("=").length != 2)
+				return JsonHandler.fehler("Parameter sind falsch formatiert.");
+		}
+		String auth = attributes[0].split("=")[1];
+		String pn = attributes[1].split("=")[1];
+		String id = attributes[2].split("=")[1];
+		if (pn.length() != 12)
+			return JsonHandler.fehler("Ungültige Personalnummer.");
+		if(id.length() != 12)
+			return JsonHandler.fehler("Ungültige ArbeitsgruppenID.");
+		// TODO checkRights
+		if (!SessionHandler.checkSessionID(auth))
+			return JsonHandler.fehler("SessionID ist ungültig.");
+		String sqlStmt = "SELECT gfos.arbeitsgruppe.Leiter FROM gfos.Arbeitsgruppe WHERE gfos.arbeitsgruppe.ArbeitsgruppenID = \"" + id + "\";";
+		try {
+			ResultSet rs = QueryHandler.query(sqlStmt);
+			if(rs == null)
+				return JsonHandler.fehler("Der Leiter der Arbeitsgruppe konnte nicht gefunden werden.");			
+			rs.next();
+			if(id.equals(rs.getString("Leiter")))
+				return JsonHandler.fehler("Der Leiter einer Arbeitsgruppe kann nicht gelöscht werden.");	
+		} catch (SQLException e) {
+			return JsonHandler.fehler(e.toString());
+		}
+		sqlStmt = "DELETE FROM gfos.arbeitsgruppenteilnahme WHERE gfos.arbeitsgruppenteilnahme.ArbeitsgruppenID = \"" + id + "\" AND gfos.arbeitsgruppenteilnahme.Personalnummer = \"" + pn + "\";";
+		try {
+			int rs = QueryHandler.update(sqlStmt);
+			if(rs == 0)
+				return JsonHandler.fehler("Das Löschen konnte nicht durchgeführt werden.");
+			return JsonHandler.erfolg("Mitarbeiter ausArbeitsgruppe wurde erfolgreich gelöscht.");
+		} catch (SQLException e) {
+			return JsonHandler.fehler(e.toString());
+		}
+	}
+	
+	/**
 	 * Aus dem ResultSet wird eine Arbeitsgruppe erstellt, die zurückgegeben wird.
 	 * 
 	 */
