@@ -17,7 +17,7 @@ import com.nsj.gfos.award.dataWrappers.Arbeitsgruppe;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-@Path("arbeitsgruppe")
+@Path("arbeitsgruppen")
 public class ArbeitsgruppenResource {
 
 	/**
@@ -45,14 +45,11 @@ public class ArbeitsgruppenResource {
 		// TODO checkRights
 		if (!SessionHandler.checkSessionID(auth))
 			return JsonHandler.fehler("SessionID ist ungültig.");
-		String sqlStmt = "SELECT gfos.arbeitsgruppe.ArbeitsgruppenID, \r\n"
-				+ "       gfos.arbeitsgruppe.Bezeichnung, \r\n" + "       gfos.arbeitsgruppe.Leiter, \r\n"
-				+ "       gfos.arbeitsgruppenteilnahme.Personalnummer \r\n" + "FROM   gfos.arbeitsgruppenteilnahme \r\n"
-				+ "       JOIN gfos.arbeitsgruppe \r\n"
-				+ "         ON gfos.arbeitsgruppenteilnahme.ArbeitsgruppenID = \r\n"
-				+ "            gfos.arbeitsgruppe.ArbeitsgruppenID \r\n" + "WHERE \r\n"
-				+ "(SELECT gfos.arbeitsgruppenteilnahme.ArbeitsgruppenID FROM gfos.arbeitsgruppenteilnahme WHERE gfos.arbeitsgruppenteilnahme.Personalnummer = \""
-				+ pn + "\")\r\n" + "= gfos.arbeitsgruppe.ArbeitsgruppenID;";
+		String sqlStmt = "SELECT gfos.arbeitsgruppe.ArbeitsgruppenID, gfos.arbeitsgruppe.Bezeichnung, gfos.arbeitsgruppe.Leiter, gfos.arbeitsgruppenteilnahme.Mitarbeiter "
+				+ "FROM gfos.arbeitsgruppenteilnahme JOIN gfos.arbeitsgruppe"
+				+ "         ON gfos.arbeitsgruppenteilnahme.ArbeitsgruppenID = gfos.arbeitsgruppe.ArbeitsgruppenID "
+				+ "WHERE (SELECT gfos.arbeitsgruppenteilnahme.ArbeitsgruppenID FROM gfos.arbeitsgruppenteilnahme WHERE gfos.arbeitsgruppenteilnahme.Mitarbeiter = \"" + pn + "\")"
+						+ "= gfos.arbeitsgruppe.ArbeitsgruppenID;";
 		try {
 			ResultSet rs = QueryHandler.query(sqlStmt);
 			if (!rs.next())
@@ -137,7 +134,7 @@ public class ArbeitsgruppenResource {
 			int rs = QueryHandler.update(sqlStmt);
 			if(rs == 0)
 				return JsonHandler.fehler("Das Einfügen konnte nicht durchgeführt werden.");
-			return JsonHandler.erfolg("Arbeitsgruppe wurde erfolgreich verändert.");
+			return JsonHandler.erfolg("Arbeitsgruppe wurde erfolgreich erstellt.");
 		} catch (SQLException e) {
 			return JsonHandler.fehler(e.toString());
 		}
@@ -178,7 +175,7 @@ public class ArbeitsgruppenResource {
 		try {
 			int rs = QueryHandler.update(sqlStmt);
 			if(rs == 0)
-				return JsonHandler.fehler("Das Löschen konnte nicht durchgeführt werden.");
+				return JsonHandler.fehler("Die Gruppe konnte nicht gelöscht werden.");
 			return JsonHandler.erfolg("Arbeitsgruppe wurde erfolgreich gelöscht.");
 		} catch (SQLException e) {
 			return JsonHandler.fehler(e.toString());
@@ -226,12 +223,12 @@ public class ArbeitsgruppenResource {
 		} catch (SQLException e) {
 			return JsonHandler.fehler(e.toString());
 		}
-		sqlStmt = "DELETE FROM gfos.arbeitsgruppenteilnahme WHERE gfos.arbeitsgruppenteilnahme.ArbeitsgruppenID = \"" + id + "\" AND gfos.arbeitsgruppenteilnahme.Personalnummer = \"" + pn + "\";";
+		sqlStmt = "DELETE FROM gfos.arbeitsgruppenteilnahme WHERE gfos.arbeitsgruppenteilnahme.ArbeitsgruppenID = \"" + id + "\" AND gfos.arbeitsgruppenteilnahme.Mitarbeiter = \"" + pn + "\";";
 		try {
 			int rs = QueryHandler.update(sqlStmt);
 			if(rs == 0)
 				return JsonHandler.fehler("Das Löschen konnte nicht durchgeführt werden.");
-			return JsonHandler.erfolg("Mitarbeiter ausArbeitsgruppe wurde erfolgreich gelöscht.");
+			return JsonHandler.erfolg("Mitarbeiter wurde erfolgreich aus der Arbeitsgruppe gelöscht.");
 		} catch (SQLException e) {
 			return JsonHandler.fehler(e.toString());
 		}

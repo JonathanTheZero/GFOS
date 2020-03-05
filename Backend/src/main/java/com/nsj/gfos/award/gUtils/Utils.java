@@ -22,8 +22,7 @@ public class Utils {
 		a.setLeiter(rs.getString("Leiter"));
 		a.setArbeitsgruppenID(rs.getString("ArbeitsgruppenID"));
 		do {
-			a.addMitglied(rs.getString("Personalnummer"));
-
+			a.addMitglied(rs.getString("Mitarbeiter"));
 		} while (rs.next());
 		return a;
 	}
