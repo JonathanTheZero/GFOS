@@ -1,0 +1,12 @@
+<form clrForm [formGroup]="form" (ngSubmit)="submit()">
+
+  <clr-input-container *ngFor="let i of input">
+    <label>{{i.label}}</label>
+    <input clrInput formControlName="email" type="{{i.type}}" />
+    <ng-container *ngIf="i.error.type === 'required'">
+        <clr-control-error *clrIfError="'required'">{{i.error.message}}</clr-control-error>
+    </ng-container>
+  </clr-input-container>
+
+  <button class="btn">Ändern</button>
+</form>

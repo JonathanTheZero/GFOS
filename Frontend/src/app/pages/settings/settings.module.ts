@@ -6,12 +6,14 @@ import { SelectComponent } from './select/select.component';
 import { SettingsComponent } from './settings.component';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AccountComponent } from './account/account.component';
 
 
 @NgModule({
   declarations: [
     SettingsComponent,
-    SelectComponent
+    SelectComponent,
+    AccountComponent
   ],
   imports: [
     CommonModule,
@@ -25,4 +27,5 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     SettingsComponent
   ]
 })
+
 export class SettingsModule { }

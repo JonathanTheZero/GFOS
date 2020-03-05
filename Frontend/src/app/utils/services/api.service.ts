@@ -31,9 +31,7 @@ export class ApiService {
 
   public getCurrentUser(): Observable<Mitarbeiter> {
     if(!environment.production) return of(employeeSamples[0]);
-    return this.http.get<Mitarbeiter>(`${this.url}/`).pipe(
-      null, null
-    );
+    return this.http.get<Mitarbeiter>(`${this.url}/`);
   }
 
   public registerNewUser(name: string, vn: string, email: string, pw: string): apiAnswer {
@@ -60,7 +58,7 @@ export class ApiService {
   }
 
   private generateAuthToken(): string {
-    const dec2hex = (dec: number) => ('0' + dec.toString(16)).substr(-2);
+    const dec2hex = (dec: number) => ('0' + dec.toString(16)).substr(-2); //convert decimal to hexadecimal
     var arr = new Uint8Array(24); //makes a length 12 auth token
     window.crypto.getRandomValues(arr);
     return Array.from(arr, dec2hex).join('');
