@@ -222,7 +222,7 @@ public class ArbeitsgruppenResource {
 			return JsonHandler.fehler("Ungültige Personalnummer.");
 		if(id.length() != 12)
 			return JsonHandler.fehler("Ungültige ArbeitsgruppenID.");
-		if(!Utils.checkIfMitarbeitserIsInArbeitsgruppe(id, pn))
+		if(!Utils.isInArbeitsgruppe(id, pn))
 			return JsonHandler.fehler("Der Mitarbeiter befindet sich nicht in der Arbeitsgruppe.");
 		// TODO checkRights
 		if (!SessionHandler.checkSessionID(auth))
