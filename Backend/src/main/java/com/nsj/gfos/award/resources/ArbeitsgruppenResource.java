@@ -9,11 +9,15 @@ import javax.ws.rs.core.MediaType;
 import com.nsj.gfos.award.handlers.JsonHandler;
 import com.nsj.gfos.award.handlers.QueryHandler;
 import com.nsj.gfos.award.handlers.SessionHandler;
+import com.nsj.gfos.award.gUtils.Utils;
+
+
+
 import com.nsj.gfos.award.dataWrappers.Arbeitsgruppe;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-@Path("arbeitsgruppe")
+@Path("arbeitsgruppen")
 public class ArbeitsgruppenResource {
 
 	/**
@@ -41,19 +45,16 @@ public class ArbeitsgruppenResource {
 		// TODO checkRights
 		if (!SessionHandler.checkSessionID(auth))
 			return JsonHandler.fehler("SessionID ist ungültig.");
-		String sqlStmt = "SELECT gfos.arbeitsgruppe.ArbeitsgruppenID, \r\n"
-				+ "       gfos.arbeitsgruppe.Bezeichnung, \r\n" + "       gfos.arbeitsgruppe.Leiter, \r\n"
-				+ "       gfos.arbeitsgruppenteilnahme.Personalnummer \r\n" + "FROM   gfos.arbeitsgruppenteilnahme \r\n"
-				+ "       JOIN gfos.arbeitsgruppe \r\n"
-				+ "         ON gfos.arbeitsgruppenteilnahme.ArbeitsgruppenID = \r\n"
-				+ "            gfos.arbeitsgruppe.ArbeitsgruppenID \r\n" + "WHERE \r\n"
-				+ "(SELECT gfos.arbeitsgruppenteilnahme.ArbeitsgruppenID FROM gfos.arbeitsgruppenteilnahme WHERE gfos.arbeitsgruppenteilnahme.Personalnummer = \""
-				+ pn + "\")\r\n" + "= gfos.arbeitsgruppe.ArbeitsgruppenID;";
+		String sqlStmt = "SELECT gfos.arbeitsgruppe.ArbeitsgruppenID, gfos.arbeitsgruppe.Bezeichnung, gfos.arbeitsgruppe.Leiter, gfos.arbeitsgruppenteilnahme.Mitarbeiter "
+				+ "FROM gfos.arbeitsgruppenteilnahme JOIN gfos.arbeitsgruppe"
+				+ "         ON gfos.arbeitsgruppenteilnahme.ArbeitsgruppenID = gfos.arbeitsgruppe.ArbeitsgruppenID "
+				+ "WHERE (SELECT gfos.arbeitsgruppenteilnahme.ArbeitsgruppenID FROM gfos.arbeitsgruppenteilnahme WHERE gfos.arbeitsgruppenteilnahme.Mitarbeiter = \"" + pn + "\")"
+						+ "= gfos.arbeitsgruppe.ArbeitsgruppenID;";
 		try {
 			ResultSet rs = QueryHandler.query(sqlStmt);
 			if (!rs.next())
 				return JsonHandler.fehler("Leere Rückgabe der Datenbank.");
-			Arbeitsgruppe a = createArbeitsgruppeFromQuery(rs);
+			Arbeitsgruppe a = Utils.createArbeitsgruppeFromQuery(rs);
 			return JsonHandler.createJsonFromArbeitsgruppe(a);
 		} catch (SQLException e) {
 			return JsonHandler.fehler(e.toString());
@@ -123,17 +124,28 @@ public class ArbeitsgruppenResource {
 		String leiter = attributes[2].split("=")[1];
 		if (bezeichnung == "")
 			return JsonHandler.fehler("Die Bezeichnung der Arbeitsgruppe ist leer.");
-		if(!checkIfMitarbeiterExists(leiter))
+		if (Utils.checkIfArbeitsgruppeExistsFromBezeichnung(bezeichnung))
+			return JsonHandler.fehler("Die Bezeichnung der Arbeitsgruppe ist bereits vergeben.");
+		if(!Utils.checkIfMitarbeiterExists(leiter))
 			return JsonHandler.fehler("Der Mitarbeiter, der Leiter werden soll, existiert nicht.");
 		if (!SessionHandler.checkSessionID(auth))
 			return JsonHandler.fehler("SessionID ist ungültig.");
 		// TODO checkRights + die des Leiters
-		String sqlStmt = "INSERT INTO gfos.arbeitsgruppe (ArbeitsgruppenID, Bezeichnung, Leiter) Values ('"+ createArbeitsgruppenID() +"', '" + bezeichnung + "', '" + leiter + "');";
+		String arbeitsgruppenID = Utils.createArbeitsgruppenID();
+		String sqlStmt = "INSERT INTO gfos.arbeitsgruppe (ArbeitsgruppenID, Bezeichnung, Leiter) Values ('"+ arbeitsgruppenID +"', '" + bezeichnung + "', '" + leiter + "');";
 		try {
 			int rs = QueryHandler.update(sqlStmt);
 			if(rs == 0)
-				return JsonHandler.fehler("Das Einfügen konnte nicht durchgeführt werden.");
-			return JsonHandler.erfolg("Arbeitsgruppe wurde erfolgreich verändert.");
+				return JsonHandler.fehler("Das Einfügen der Arbeitsgruppe konnte nicht durchgeführt werden.");
+		} catch (SQLException e) {
+			return JsonHandler.fehler(e.toString());
+		}
+		sqlStmt = "INSERT INTO gfos.arbeitsgruppenteilnahme (ArbeitsgruppenID, Mitarbeiter) Values ('"+ arbeitsgruppenID +"', '" + leiter + "');";
+		try {
+			int rs = QueryHandler.update(sqlStmt);
+			if(rs == 0)
+				return JsonHandler.fehler("Das Einfügen des Leiters konnte nicht durchgeführt werden.");
+			return JsonHandler.erfolg("Arbeitsgruppe wurde erfolgreich erstellt.");
 		} catch (SQLException e) {
 			return JsonHandler.fehler(e.toString());
 		}
@@ -161,6 +173,8 @@ public class ArbeitsgruppenResource {
 			return JsonHandler.fehler("ID ist ungültig");
 		if (!SessionHandler.checkSessionID(auth))
 			return JsonHandler.fehler("SessionID ist ungültig.");
+		if(!Utils.checkIfArbeitsgruppeExistsFromID(id))
+			return JsonHandler.fehler("Arbeitsgruppe existiert nicht.");
 		// TODO checkRights
 		String sqlStmt = "DELETE FROM gfos.arbeitsgruppenteilnahme WHERE gfos.arbeitsgruppenteilnahme.ArbeitsgruppenID = \"" + id + "\";";
 		try {
@@ -174,7 +188,7 @@ public class ArbeitsgruppenResource {
 		try {
 			int rs = QueryHandler.update(sqlStmt);
 			if(rs == 0)
-				return JsonHandler.fehler("Das Löschen konnte nicht durchgeführt werden.");
+				return JsonHandler.fehler("Die Gruppe konnte nicht gelöscht werden.");
 			return JsonHandler.erfolg("Arbeitsgruppe wurde erfolgreich gelöscht.");
 		} catch (SQLException e) {
 			return JsonHandler.fehler(e.toString());
@@ -208,6 +222,8 @@ public class ArbeitsgruppenResource {
 			return JsonHandler.fehler("Ungültige Personalnummer.");
 		if(id.length() != 12)
 			return JsonHandler.fehler("Ungültige ArbeitsgruppenID.");
+		if(!Utils.isInArbeitsgruppe(id, pn))
+			return JsonHandler.fehler("Der Mitarbeiter befindet sich nicht in der Arbeitsgruppe.");
 		// TODO checkRights
 		if (!SessionHandler.checkSessionID(auth))
 			return JsonHandler.fehler("SessionID ist ungültig.");
@@ -222,61 +238,52 @@ public class ArbeitsgruppenResource {
 		} catch (SQLException e) {
 			return JsonHandler.fehler(e.toString());
 		}
-		sqlStmt = "DELETE FROM gfos.arbeitsgruppenteilnahme WHERE gfos.arbeitsgruppenteilnahme.ArbeitsgruppenID = \"" + id + "\" AND gfos.arbeitsgruppenteilnahme.Personalnummer = \"" + pn + "\";";
+		sqlStmt = "DELETE FROM gfos.arbeitsgruppenteilnahme WHERE gfos.arbeitsgruppenteilnahme.ArbeitsgruppenID = \"" + id + "\" AND gfos.arbeitsgruppenteilnahme.Mitarbeiter = \"" + pn + "\";";
 		try {
 			int rs = QueryHandler.update(sqlStmt);
 			if(rs == 0)
 				return JsonHandler.fehler("Das Löschen konnte nicht durchgeführt werden.");
-			return JsonHandler.erfolg("Mitarbeiter ausArbeitsgruppe wurde erfolgreich gelöscht.");
+			return JsonHandler.erfolg("Mitarbeiter wurde erfolgreich aus der Arbeitsgruppe gelöscht.");
 		} catch (SQLException e) {
 			return JsonHandler.fehler(e.toString());
 		}
 	}
 	
-	/**
-	 * Aus dem ResultSet wird eine Arbeitsgruppe erstellt, die zurückgegeben wird.
-	 * 
-	 */
-	private static Arbeitsgruppe createArbeitsgruppeFromQuery(ResultSet rs) throws SQLException {
-		Arbeitsgruppe a = new Arbeitsgruppe();
-		a.setBezeichnung(rs.getString("Bezeichnung"));
-		a.setLeiter(rs.getString("Leiter"));
-		a.setArbeitsgruppenID(rs.getString("ArbeitsgruppenID"));
-		do {
-			a.addMitglied(rs.getString("Personalnummer"));
-
-		} while (rs.next());
-		return a;
-	}
-	
-	/**
-	 * Es wird von der niedrigsten ArbeitsnummerID ausgegangen geguckt, ob diese belegt ist.
-	 * Falls ja, wird die ID um 1 erhöht, wenn nein, wird die ID zurückgegeben.
-	 */
-	private static String createArbeitsgruppenID() {
-		boolean available = false;
-		int id = 1;
-		String idInString;
-		do {
-			idInString = "";
-			for(int i = 0; i < 12 - Integer.toString(id).length(); i++) {
-				idInString += "0";		
-			}
-			idInString += Integer.toString(id);
-			String sqlStmt = "SELECT * From gfos.arbeitsgruppe WHERE \""+ idInString + "\" = gfos.arbeitsgruppe.ArbeitsgruppenID;";
-			try {
-				ResultSet rs = QueryHandler.query(sqlStmt);
-				if (!rs.next()) {
-					available = true;
-					return idInString;
-				}else {
-					id++;
-				}
-			} catch (SQLException e) {
-				return "";
-			}
-		}while(!available);
-		return "";
+	@GET
+	@Path("addMitarbeiter{attributes}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public static String addMitarbeiter(@PathParam("attributes") String query) {
+		query = query.substring(1);
+		String[] attributes = query.split("&");
+		if (attributes.length != 3)
+			return JsonHandler.fehler("Falsche Anzahl an Parametern.");
+		for (String attribute : attributes) {
+			if (attribute.split("=").length != 2)
+				return JsonHandler.fehler("Parameter sind falsch formatiert.");
+		}
+		String auth = attributes[0].split("=")[1];
+		String pn = attributes[1].split("=")[1];
+		String arbeitsgruppenID = attributes[2].split("=")[1];
+		if (pn.length() != 12)
+			return JsonHandler.fehler("Ungültige Personalnummer.");
+		if (!Utils.checkIfArbeitsgruppeExistsFromID(arbeitsgruppenID))
+			return JsonHandler.fehler("Arbeitsgruppe existiert nicht.");
+		if(!Utils.checkIfMitarbeiterExists(pn))
+			return JsonHandler.fehler("Der Mitarbeiter existiert nicht.");
+		if(Utils.isInArbeitsgruppe(arbeitsgruppenID, pn))
+			return JsonHandler.fehler("Der Mitarbeiter ist bereits in der Arbeitsgruppe vorhanden.");
+		if (!SessionHandler.checkSessionID(auth))
+			return JsonHandler.fehler("SessionID ist ungültig.");
+		// TODO checkRights
+		String sqlStmt = "INSERT INTO gfos.arbeitsgruppenteilnahme (ArbeitsgruppenID, Mitarbeiter) Values ('"+ arbeitsgruppenID +"', '" + pn + "');";
+		try {
+			int rs = QueryHandler.update(sqlStmt);
+			if(rs == 0)
+				return JsonHandler.fehler("Das Einfügen des Mitarbeitsers konnte nicht durchgeführt werden.");
+			return JsonHandler.erfolg("Der Mitarbeiter wurde in die Arbeitsgruppe eingefügt.");
+		} catch (SQLException e) {
+			return JsonHandler.fehler(e.toString());
+		}
 	}
 
 }

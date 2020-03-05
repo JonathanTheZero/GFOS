@@ -2,8 +2,8 @@ package com.nsj.gfos.award.handlers;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import com.nsj.gfos.award.dataWrappers.Mitarbeiter;
 import com.nsj.gfos.award.dataWrappers.Arbeitsgruppe;
+import com.nsj.gfos.award.dataWrappers.Mitarbeiter;
 
 public class JsonHandler {
 
