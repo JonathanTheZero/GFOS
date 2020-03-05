@@ -9,6 +9,10 @@ import javax.ws.rs.core.MediaType;
 import com.nsj.gfos.award.handlers.JsonHandler;
 import com.nsj.gfos.award.handlers.QueryHandler;
 import com.nsj.gfos.award.handlers.SessionHandler;
+import com.nsj.gfos.award.gUtils.Utils;
+
+
+
 import com.nsj.gfos.award.dataWrappers.Arbeitsgruppe;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -53,7 +57,7 @@ public class ArbeitsgruppenResource {
 			ResultSet rs = QueryHandler.query(sqlStmt);
 			if (!rs.next())
 				return JsonHandler.fehler("Leere Rückgabe der Datenbank.");
-			Arbeitsgruppe a = createArbeitsgruppeFromQuery(rs);
+			Arbeitsgruppe a = Utils.createArbeitsgruppeFromQuery(rs);
 			return JsonHandler.createJsonFromArbeitsgruppe(a);
 		} catch (SQLException e) {
 			return JsonHandler.fehler(e.toString());
@@ -123,12 +127,12 @@ public class ArbeitsgruppenResource {
 		String leiter = attributes[2].split("=")[1];
 		if (bezeichnung == "")
 			return JsonHandler.fehler("Die Bezeichnung der Arbeitsgruppe ist leer.");
-		if(!checkIfMitarbeiterExists(leiter))
+		if(!Utils.checkIfMitarbeiterExists(leiter))
 			return JsonHandler.fehler("Der Mitarbeiter, der Leiter werden soll, existiert nicht.");
 		if (!SessionHandler.checkSessionID(auth))
 			return JsonHandler.fehler("SessionID ist ungültig.");
 		// TODO checkRights + die des Leiters
-		String sqlStmt = "INSERT INTO gfos.arbeitsgruppe (ArbeitsgruppenID, Bezeichnung, Leiter) Values ('"+ createArbeitsgruppenID() +"', '" + bezeichnung + "', '" + leiter + "');";
+		String sqlStmt = "INSERT INTO gfos.arbeitsgruppe (ArbeitsgruppenID, Bezeichnung, Leiter) Values ('"+ Utils.createArbeitsgruppenID() +"', '" + bezeichnung + "', '" + leiter + "');";
 		try {
 			int rs = QueryHandler.update(sqlStmt);
 			if(rs == 0)
@@ -233,50 +237,6 @@ public class ArbeitsgruppenResource {
 		}
 	}
 	
-	/**
-	 * Aus dem ResultSet wird eine Arbeitsgruppe erstellt, die zurückgegeben wird.
-	 * 
-	 */
-	private static Arbeitsgruppe createArbeitsgruppeFromQuery(ResultSet rs) throws SQLException {
-		Arbeitsgruppe a = new Arbeitsgruppe();
-		a.setBezeichnung(rs.getString("Bezeichnung"));
-		a.setLeiter(rs.getString("Leiter"));
-		a.setArbeitsgruppenID(rs.getString("ArbeitsgruppenID"));
-		do {
-			a.addMitglied(rs.getString("Personalnummer"));
-
-		} while (rs.next());
-		return a;
-	}
 	
-	/**
-	 * Es wird von der niedrigsten ArbeitsnummerID ausgegangen geguckt, ob diese belegt ist.
-	 * Falls ja, wird die ID um 1 erhöht, wenn nein, wird die ID zurückgegeben.
-	 */
-	private static String createArbeitsgruppenID() {
-		boolean available = false;
-		int id = 1;
-		String idInString;
-		do {
-			idInString = "";
-			for(int i = 0; i < 12 - Integer.toString(id).length(); i++) {
-				idInString += "0";		
-			}
-			idInString += Integer.toString(id);
-			String sqlStmt = "SELECT * From gfos.arbeitsgruppe WHERE \""+ idInString + "\" = gfos.arbeitsgruppe.ArbeitsgruppenID;";
-			try {
-				ResultSet rs = QueryHandler.query(sqlStmt);
-				if (!rs.next()) {
-					available = true;
-					return idInString;
-				}else {
-					id++;
-				}
-			} catch (SQLException e) {
-				return "";
-			}
-		}while(!available);
-		return "";
-	}
 
 }
