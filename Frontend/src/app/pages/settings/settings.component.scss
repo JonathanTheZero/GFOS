@@ -1,0 +1,14 @@
+#wrapper {
+    overflow: hidden; 
+
+    #left {
+        float:left;
+    }
+
+    #second {
+        overflow: hidden;
+        margin-left: 50%;
+        float: right
+    }
+}
+

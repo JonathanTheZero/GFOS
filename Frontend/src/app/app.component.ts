@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from './utils/services/api.service';
 import { apiAnswer } from './utils/interfaces/default.model';
 import { UserIdleService } from 'angular-user-idle';
+import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +15,8 @@ export class AppComponent implements OnInit {
   title = 'Dashboard';
 
   constructor(private api: ApiService,
-    private userIdle: UserIdleService){
+    private userIdle: UserIdleService,
+    private router: Router){
 
   }
 
@@ -32,6 +35,13 @@ export class AppComponent implements OnInit {
     });
     this.userIdle.startWatching();
     this.userIdle.onTimerStart().subscribe(count => console.log(count));
-    this.userIdle.onTimeout().subscribe(() => console.log('Time is up!'));
+    this.userIdle.onTimeout().subscribe(() => {
+      Swal.fire(
+        "Inaktivität",
+        "Aufgrund von Inaktivität wurden Sie automatisch ausgeloggt. Sie werden nun zur Login-Seite weitergeleitet",
+        "info"
+      ).then(() => this.router.navigate(['login']));
+      this.api.logout(sessionStorage.getItem("currentUser"));
+    });
   }
 }

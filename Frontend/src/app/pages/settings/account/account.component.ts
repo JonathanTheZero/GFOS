@@ -9,6 +9,7 @@ import { accountSettingsForm } from 'src/app/utils/interfaces/settings.model';
 })
 export class AccountComponent implements OnInit {
   @Input() input : Array<accountSettingsForm>;
+  @Input() onSubmit: () => void;
   form: FormGroup;
 
   constructor(private formBuilder: FormBuilder) {
@@ -24,7 +25,7 @@ export class AccountComponent implements OnInit {
 
   submit() {
     if (this.form.valid) {
-      console.log(this.form.value);
+      this.onSubmit();
     }
   }
 

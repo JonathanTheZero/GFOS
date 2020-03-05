@@ -17,6 +17,41 @@ export class SettingsComponent implements OnInit {
         message: "Bitte geben Sie eine gültige E-Mail Adresse an",
         type: "required"
       }
+    },
+    {
+      label: "Passwort",
+      type: "password",
+      error: {
+        message: "Bitte geben Sie Ihr Passwort zur Bestätigung ein",
+        type: "required"
+      }
+    }
+  ]
+
+  public readonly changePassword: accountSettingsForm[] = [
+    {
+      label: "Passwort",
+      type: "password",
+      error: {
+        message: "Bitte geben Sie Ihr Passwort zur Bestätigung ein",
+        type: "required"
+      }
+    },
+    {
+      label: "Passwort",
+      type: "password",
+      error: {
+        message: "Bitte geben Sie Ihr Passwort zur Bestätigung ein",
+        type: "required"
+      }
+    },
+    {
+      label: "Passwort",
+      type: "password",
+      error: {
+        message: "Bitte geben Sie Ihr Passwort zur Bestätigung ein",
+        type: "required"
+      }
     }
   ]
 
