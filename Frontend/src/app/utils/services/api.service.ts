@@ -34,10 +34,10 @@ export class ApiService {
     return this.http.get<Mitarbeiter>(`${this.url}/`);
   }
 
-  public registerNewUser(name: string, vn: string, email: string, pw: string): apiAnswer {
+  public registerNewUser(name: string, vn: string, email: string, pw: string, rk : string, abt: string, ve: string): apiAnswer {
     var answer: apiAnswer;
     const auth: string = this.generateAuthToken();
-    this.http.get<apiAnswer>(`${this.url}/mitarbeiter/add:auth=${auth}&n=${name}&vn=${vn}&em=${email}&pw=${pw}`).subscribe(x => answer = x);
+    this.http.get<apiAnswer>(`${this.url}/mitarbeiter/add:auth=${auth}&n=${name}&vn=${vn}&em=${email}&pw=${pw}&rk=${rk}&ab=${abt}&ve=${ve}`).subscribe(x => answer = x);
     sessionStorage.setItem("currentUser", auth);
     return answer;
   }

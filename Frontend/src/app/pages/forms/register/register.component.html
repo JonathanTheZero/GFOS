@@ -6,13 +6,6 @@
             <h5 class="hint">Use your Company ID to sign in or create one now</h5>
         </section>
         <div class="login-group">
-            <clr-select-container>
-                <label class="clr-sr-only">Rolle</label>
-                <select clrSelect name="type" [(ngModel)]="form.type">
-                    <option value="local">Local Users</option>
-                    <option value="admin">Administrator</option>
-                </select>
-            </clr-select-container>
             <clr-input-container>
                 <label class="clr-sr-only">Vorname</label>
                 <input type="text" name="username" clrInput placeholder="Vorname" [(ngModel)]="form.lastName"/>
@@ -29,6 +22,23 @@
                 <label class="clr-sr-only">Passwort</label>
                 <input type="password" name="password" clrPassword placeholder="Passwort" [(ngModel)]="form.password"/>
             </clr-password-container>
+            <clr-input-container>
+                <label class="clr-sr-only">Abteilung</label>
+                <input type="text" name="username" clrInput placeholder="Abteilung" [(ngModel)]="form.district"/>
+            </clr-input-container>
+            <clr-select-container>
+                <label class="clr-sr-only">Rechteklasse</label>
+                <select clrSelect name="type" [(ngModel)]="form.type" placeholder="Rechteklasse">
+                    <option value="user">Benutzer</option>
+                    <option value="admin">Administrator</option>
+                    <option value="personalabteilung">Personalabteilung</option>
+                    <option value="gruppenleiter">Gruppenleiter</option>
+                </select>
+            </clr-select-container>
+            <clr-input-container>
+                <label class="clr-sr-only">Vertreter</label>
+                <input type="text" name="username" clrInput placeholder="Vertreter" [(ngModel)]="form.agent"/>
+            </clr-input-container>
             <form-error [error]="err"></form-error>
             <button type="submit" class="btn btn-primary">Registrieren</button>
             <a routerLink="/login" class="signup">Login</a>

@@ -9,11 +9,11 @@ export class AuthGuard implements CanActivate {
     constructor(private router: Router) { }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-        //user is logged in
         if(!environment.production){
           return true;
         }
 
+        //user is logged in
         if (sessionStorage.getItem('currentUser')) {
             return true;
         }
@@ -27,7 +27,7 @@ export class AuthGuard implements CanActivate {
 
         Swal.fire(
           "Fehler!", 
-          "Du bist nicht eingeloggt!", 
+          "Sie sind nicht eingeloggt!", 
           "error"
         );
         return false;

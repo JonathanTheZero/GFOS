@@ -25,7 +25,11 @@ import { AuthGuard } from './utils/auth.guard';
     AppRoutingModule,
     SweetAlert2Module.forRoot(),
     HttpClientModule,
-    UserIdleModule.forRoot({idle: 600, timeout: 300, ping: 120})
+    UserIdleModule.forRoot({
+      idle: 600, 
+      timeout: 120, 
+      ping: 120
+    }),
   ],
   providers: [
     AuthGuard,
