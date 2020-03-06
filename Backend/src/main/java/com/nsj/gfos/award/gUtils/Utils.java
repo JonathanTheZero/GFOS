@@ -130,33 +130,33 @@ public class Utils {
 	}
 	
 	/**
-	 * Es wird von der niedrigsten ArbeitsnummerID ausgegangen geguckt, ob diese belegt ist.
-	 * Falls ja, wird die ID um 1 erhöht, wenn nein, wird die ID zurückgegeben.
-	 */
+	 * Die Methode <i>createArbeitsgruppenID</i> gibt die niedrigste Arbeitsgruppennummer als 12-stelligen String aus, wobei
+	 * die nicht benutzten Stellen vorne mit Nullen aufgefüllt werden: 1234 --> "000000001234".
+	 * @return String - Die niedrigste, nicht benutzte ArbeitsgruppenID. 
+	 */,
 	public static String createArbeitsgruppenID() {
-		boolean available = false;
-		int id = 1;
-		String idInString;
+		long id = 1;
+		String idAsString = "";
 		do {
-			idInString = "";
-			for(int i = 0; i < 12 - Integer.toString(id).length(); i++) {
-				idInString += "0";		
+			idAsString = "";
+			for(int i = 0; i < 12 - Long.toString(id).length(); i++) {
+				idAsString += "0";		
 			}
-			idInString += Integer.toString(id);
-			String sqlStmt = "SELECT * From gfos.arbeitsgruppe WHERE \""+ idInString + "\" = gfos.arbeitsgruppe.ArbeitsgruppenID;";
+			idAsString += Long.toString(id);
+			String sqlStmt = "SELECT * From gfos.arbeitsgruppe WHERE \""+ idAsString + "\" = gfos.arbeitsgruppe.ArbeitsgruppenID;";
 			try {
 				ResultSet rs = QueryHandler.query(sqlStmt);
 				if (!rs.next()) {
-					available = true;
-					return idInString;
+					return idAsString;
 				}else {
 					id++;
 				}
 			} catch (SQLException e) {
 				return "";
 			}
-		}while(!available);
+		}while(id <= 999999999999l);
 		return "";
+
 	}
 		
 	public static boolean checkIfArbeitsgruppeExistsFromID(String id) {
