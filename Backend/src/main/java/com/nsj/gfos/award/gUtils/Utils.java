@@ -71,11 +71,31 @@ public class Utils {
     }
 	
 	/**
-	 * TODO
-	 * @return
+	 * Die Methode <i>createMitarbeiterID</i> gibt die niedrigste Personalnummer als 12-stelligen String aus, wobei
+	 * die nicht benutzten Stellen vorne mit Nullen aufgefüllt werden: 1234 --> "000000001234".
+	 * @return String - Die niedrigste, nicht benutzte Personalnummer. 
 	 */
 	public String createMitarbeiterID() {
-		//TODO Write Method
+		long id = 1;
+		String idAsString = "";
+		do {
+			idAsString = "";
+			for(int i = 0; i < 12 - Long.toString(id).length(); i++) {
+				idAsString += "0";		
+			}
+			idAsString += Long.toString(id);
+			String sqlStmt = "SELECT * FROM gfos.mitarbeiter WHERE \""+ idAsString + "\" = gfos.mitarbeiter.Personalnummer;";
+			try {
+				ResultSet rs = QueryHandler.query(sqlStmt);
+				if (!rs.next()) {
+					return idAsString;
+				}else {
+					id++;
+				}
+			} catch (SQLException e) {
+				return "";
+			}
+		}while(id <= 999999999999l);
 		return "";
 	}
 	
