@@ -1,5 +1,6 @@
 package com.nsj.gfos.award.resources;
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -94,13 +95,27 @@ public class ArbeitsgruppenResource {
 		// TODO checkRights + die des Leiters
 		if (!SessionHandler.checkSessionID(auth))
 			return JsonHandler.fehler("SessionID ist ungültig.");
-		String sqlStmt = "UPDATE gfos.arbeitsgruppe SET gfos.arbeitsgruppe.Leiter = \"" + pn
+		if (!Utils.isInArbeitsgruppe(id, pn))
+			return JsonHandler.fehler("Der Leiter muss bereits in der Arbeitsgruppe sein.");
+		String sqlStmt = "SELECT gfos.arbeitsgruppe.Leiter FROM gfos.Arbeitsgruppe WHERE gfos.arbeitsgruppe.ArbeitsgruppenID = \""
+				+ id + "\";";
+		try {
+			ResultSet rs = QueryHandler.query(sqlStmt);
+			if (rs == null)
+				return JsonHandler.fehler("Der Leiter der Arbeitsgruppe konnte nicht gefunden werden.");
+			rs.next();
+			if (id.equals(rs.getString("Leiter")))
+				return JsonHandler.fehler("Der Mitarbeiter ist bereits der Leiter der Arbeitsgruppe.");
+		} catch (SQLException e) {
+			return JsonHandler.fehler(e.toString());
+		}
+		sqlStmt = "UPDATE gfos.arbeitsgruppe SET gfos.arbeitsgruppe.Leiter = \"" + pn
 				+ "\" WHERE gfos.arbeitsgruppe.ArbeitsgruppenID = \"" + id + "\";";
 		try {
 			int rs = QueryHandler.update(sqlStmt);
 			if (rs == 0)
 				return JsonHandler.fehler("Die Veränderung konnte nicht durchgeführt werden.");
-			return JsonHandler.erfolg("Arbeitsgruppe wurde erfolgreich eingefügt.");
+			return JsonHandler.erfolg("Der Leiter wurde erfolgreich geändert.");
 		} catch (SQLException e) {
 			return JsonHandler.fehler(e.toString());
 		}
