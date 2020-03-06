@@ -71,7 +71,7 @@ public class MitarbeiterResource {
 	public String addMitarbeiter(@PathParam("attributes") String query) {
 		query = query.substring(1);
 		String[] attributes = query.split("&");
-		if (attributes.length != 13)
+		if (attributes.length != 8)
 			return JsonHandler.fehler("Falsche Anzahl an Parametern.");
 		for (String attribute : attributes) {
 			if (attribute.split("=").length != 2)
@@ -80,24 +80,20 @@ public class MitarbeiterResource {
 		String auth = attributes[0].split("=")[1];
 		if (!SessionHandler.checkSessionID(auth))
 			return JsonHandler.fehler("SessionID ist ungültig.");
-		String pn = "\"" + attributes[1].split("=")[1] + "\"";
-		String name = "\"" + attributes[2].split("=")[1] + "\"";
-		String vorname = "\"" + attributes[3].split("=")[1] + "\"";
-		String erreichbar = attributes[4].split("=")[1];
-		String arbeitskonto = attributes[5].split("=")[1];
-		String email = "\"" + attributes[6].split("=")[1] + "\"";
-		String passwort = "\"" + PasswordHandler.getHash(attributes[7].split("=")[1]) + "\"";
-		String status = "\"" + attributes[8].split("=")[1] + "\"";
-		String gda = "\"" + attributes[9].split("=")[1] + "\"";
-		String rechteklasse = attributes[10].split("=")[1];
-		String abteilung = "\"" + attributes[11].split("=")[1] + "\"";
-		String vertreter = "\"" + attributes[12].split("=")[1] + "\"";
+		String name = "\"" + attributes[1].split("=")[1] + "\"";
+		String vorname = "\"" + attributes[2].split("=")[1] + "\"";
+		String email = "\"" + attributes[3].split("=")[1] + "\"";
+		String passwort = "\"" + PasswordHandler.getHash(attributes[4].split("=")[1]) + "\"";
+		String rechteklasse = attributes[5].split("=")[1];
+		String abteilung = "\"" + attributes[6].split("=")[1] + "\"";
+		String vertreter = "\"" + attributes[7].split("=")[1] + "\"";
+		String pn = Utils.createMitarbeiterID();
 		if (rechteklasse.equals("root"))
 			return JsonHandler.fehler("Root Account kann nicht erstellt werden.");
 		if (!RightHandler.checkPermission(auth, (rechteklasse.equals("admin")) ? "addAdmin" : "addMitarbeiter"))
 			return JsonHandler.fehler("Keine Genehmigung für diese Aktion erhalten.");
-		String sqlStmt = "INSERT INTO gfos.mitarbeiter VALUES(" + pn + "," + name + "," + vorname + "," + erreichbar
-				+ "," + arbeitskonto + "," + email + "," + passwort + "," + status + "," + gda + ",\"" + rechteklasse
+		String sqlStmt = "INSERT INTO gfos.mitarbeiter VALUES(\"" + pn + "\"," + name + "," + vorname + ", false, 0," 
+			+ email + "," + passwort + ", Abwesend, - ,\"" + rechteklasse
 				+ "\"," + abteilung + "," + vertreter + ");";
 		if (Utils.checkIfMitarbeiterExists(pn))
 			return JsonHandler.fehler("Personalnummer wurde bereits verwendet.");
@@ -204,7 +200,9 @@ public class MitarbeiterResource {
 				return JsonHandler.fehler("Parameter falsch formatiert.");
 			if(!Arrays.asList(validParams).contains(params[i].split("=")[0]))
 				return JsonHandler.fehler("Kein valider Parameter.");
-			//TODO Rechte
+			String action = Utils.getAlterAction(params[0].split("=")[1], pn);
+			if (!RightHandler.checkPermission(params[0].split("=")[1], action) || !RightHandler.permittedAttribute(action, params[i].split("=")[0]))
+				return JsonHandler.fehler("Keine Genehmigung für diese Aktion erhalten.");
 			values += Utils.getColumnName(params[i].split("=")[0]) + " = " + Utils.getFormattedValue(params[i].split("=")) + ", ";
 		}	
 		String sqlStmt = "UPDATE gfos.mitarbeiter SET " + values.substring(0, values.length() - 2) + "WHERE Personalnummer = " + pn + ";";

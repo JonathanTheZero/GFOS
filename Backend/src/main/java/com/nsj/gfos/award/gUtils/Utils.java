@@ -75,7 +75,7 @@ public class Utils {
 	 * die nicht benutzten Stellen vorne mit Nullen aufgefüllt werden: 1234 --> "000000001234".
 	 * @return String - Die niedrigste, nicht benutzte Personalnummer. 
 	 */
-	public String createMitarbeiterID() {
+	public static String createMitarbeiterID() {
 		long id = 1;
 		String idAsString = "";
 		do {
@@ -133,7 +133,7 @@ public class Utils {
 	 * Die Methode <i>createArbeitsgruppenID</i> gibt die niedrigste Arbeitsgruppennummer als 12-stelligen String aus, wobei
 	 * die nicht benutzten Stellen vorne mit Nullen aufgefüllt werden: 1234 --> "000000001234".
 	 * @return String - Die niedrigste, nicht benutzte ArbeitsgruppenID. 
-	 */,
+	 */
 	public static String createArbeitsgruppenID() {
 		long id = 1;
 		String idAsString = "";
@@ -308,6 +308,30 @@ public class Utils {
 		}
 	}
 	
+	/**
+	 * TODO
+	 * @param auth
+	 * @param attribute
+	 * @return
+	 */
+	public static String getAlterAction(String auth, String pn) {
+		if(checkSelfOperation(auth, pn))
+			return "selfAlter";
+		switch(RightHandler.getRightclassFromSessionID(auth)) {
+		case "root":
+			return "unrestrictedAlter";
+		case "admin":
+			return "unrestrictedAlter";
+		case "personnelDepartment":
+			return "unrestrictedAlter";
+		case "headOfDepartment":
+			return "restrictedAlter";
+		case "user":
+			return "restrictedAlter";
+		}
+		return "";
+	}
+		
 	/**
 	 * Die Methode <i>checkReferencesInDatabase</i> wird aufgerufen, wenn bei einer Anfrage an die /mitarbeiter/remove Resource der Mitarbeiter trotz einwandfreiem Verlauf
 	 * der Anfrage an die Datenbank der Mitarbeiter nicht gelöscht wurde, und gibt dem Client die Gründe für das Fehlschlagen zurück.

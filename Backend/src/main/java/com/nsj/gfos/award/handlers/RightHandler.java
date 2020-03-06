@@ -9,7 +9,9 @@ public class RightHandler {
 	*String Arrays, in denen alle möglichen Rechteklassen und auszuführende Aktionen abgespeichert sind.
 	*/
 	private static final String[] allRightclasses = { "root", "admin", "personnelDepartment", "headOfDepartment", "user" };
-	private static final String[] allActions = {"getAllMitarbeiter", "addMitarbeiter", "addAdmin", "removeAdmin", "removeMitarbeiter", "test", "selfGet", "unrestrictedGet", "restrictedGet", "userGet"};
+	private static final String[] allActions = {"getAllMitarbeiter", "addMitarbeiter", "addAdmin", "removeAdmin",
+			"removeMitarbeiter", "test", "selfGet", "unrestrictedGet", "restrictedGet", "userGet",
+			"selfAlter", "unrestrictedAlter", "restrictedAlter"};
 
 	
 	/**
@@ -47,6 +49,17 @@ public class RightHandler {
 		}
 	}
 
+	/**
+	 * TODO
+	 * @param action
+	 * @param attribute
+	 * @return
+	 */
+	public static boolean permittedAttribute(String action, String attribute) {
+		if(!action.equals("selfAlter") && attribute.equals("pw"))
+			return false;
+		return true;
+	}
 	
 	/*
 	 * Die Methode prüft anhand der Rechteklasse und der auszuführenden Aktion des Mitarbeiters, ob dies für seine Rechteklasse zulässig ist.
@@ -116,6 +129,8 @@ public class RightHandler {
 			return false;
 		case "unrestrictedGet":
 			return false;
+		case "restrictedAlter":
+			return false;
 		default:
 			return true;
 		}
@@ -137,6 +152,8 @@ public class RightHandler {
 		case "userGet":
 			return false;
 		case "unrestrictedGet":
+			return false;
+		case "restrictedAlter":
 			return false;
 		default:
 			return true;
