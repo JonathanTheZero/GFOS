@@ -115,8 +115,11 @@ public class Utils {
 	}
 		
 	/**
-	 * Aus dem ResultSet wird eine Arbeitsgruppe erstellt, die zurückgegeben wird.
-	 * 
+	 * Die Methode <i>createArbeitsgruppeFromQuer</i> bekommt ein ResultSet übergeben und speichert die Werte aus den angegebenen Spalten
+	 * der Datenbank in einem Arbeitsgruppen Objekt, welches schlussendlich zurückgegeben wird.
+	 * @param rs - ResultSet aus einer Abfrage auf der Arbeitsgruppen und Arbeitsgruppenteilnahme Tabelle der Datenbank
+	 * @return Arbeitsgruppe - Objekt vom Typ Arbeitsgruppe != null.
+	 * @throws SQLException - falls das ResultSet eine Spalte nicht finden kann.
 	 */
 	public static Arbeitsgruppe createArbeitsgruppeFromQuery(ResultSet rs) throws SQLException {
 		Arbeitsgruppe a = new Arbeitsgruppe();
@@ -158,7 +161,12 @@ public class Utils {
 		return "";
 
 	}
-		
+	
+	/**
+	 * Die Methode <i>checkIfArbeitsgruppeExistsFromID</i> prüft, ob eine Arbeitsgruppe mit der ArbeitsgruppenID schon existiert.
+	 * @param id - ArbeitsgruppenID
+	 * @return boolean - Ob schon eine Arbeitsgruppe mit der ArbeitsgruppenID existiert.
+	 */
 	public static boolean checkIfArbeitsgruppeExistsFromID(String id) {
 		String sqlStmt = "SELECT * FROM gfos.arbeitsgruppe WHERE ArbeitsgruppenID = \"" + id + "\";";
 		try {
@@ -169,6 +177,11 @@ public class Utils {
 		}
 	}
 	
+	/**
+	 * Die Methode <i>checkIfArbeitsgruppeExistsFromBezeichnung</i> prüft, ob eine Arbeitsgruppe mit der Bezeichnung schon existiert.
+	 * @param bezeichnung - Bezeichnung der Arbeitsgruppe
+	 * @return boolean - Ob schon eine Arbeitsgruppe mit der Bezeichnung existiert.
+	 */
 	public static boolean checkIfArbeitsgruppeExistsFromBezeichnung(String bezeichnung) {
 		String sqlStmt = "SELECT * FROM gfos.arbeitsgruppe WHERE Bezeichnung = \"" + bezeichnung + "\";";
 		try {
