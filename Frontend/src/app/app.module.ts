@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { HttpClientModule }    from '@angular/common/http';
-import { UserIdleModule } from 'angular-user-idle';
+import { NgIdleModule } from '@ng-idle/core';
 
 import { AppComponent } from './app.component';
 import { UiModule } from './ui/ui.module';
@@ -25,11 +25,7 @@ import { AuthGuard } from './utils/auth.guard';
     AppRoutingModule,
     SweetAlert2Module.forRoot(),
     HttpClientModule,
-    UserIdleModule.forRoot({
-      idle: 600, 
-      timeout: 120, 
-      ping: 120
-    }),
+    NgIdleModule.forRoot(),
   ],
   providers: [
     AuthGuard,

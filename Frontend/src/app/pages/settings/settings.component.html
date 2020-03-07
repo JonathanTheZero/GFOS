@@ -3,7 +3,7 @@
 <hr />
 <h2>Account Daten ändern</h2>
 <div id="wrapper">
-    <change-account-settings id="left" [input]="changeEmail"></change-account-settings>
-    <change-account-settings id="right" [input]="changePassword"></change-account-settings>
+    <change-account-settings id="left" [input]="changeEmail" [onSubmit]="validateEmail"></change-account-settings>
+    <change-account-settings id="right" [input]="changePassword" [onSubmit]="validatePassword"></change-account-settings>
 </div>
 <hr />

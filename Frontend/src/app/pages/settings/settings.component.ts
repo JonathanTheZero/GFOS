@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { accountSettingsForm } from 'src/app/utils/interfaces/settings.model';
+import { ApiService } from 'src/app/utils/services/api.service';
 
 @Component({
   selector: 'app-settings',
@@ -30,7 +31,7 @@ export class SettingsComponent implements OnInit {
 
   public readonly changePassword: accountSettingsForm[] = [
     {
-      label: "Passwort",
+      label: "Altes Passwort",
       type: "password",
       error: {
         message: "Bitte geben Sie Ihr Passwort zur Bestätigung ein",
@@ -38,27 +39,36 @@ export class SettingsComponent implements OnInit {
       }
     },
     {
-      label: "Passwort",
+      label: "Neues Passwort",
       type: "password",
       error: {
-        message: "Bitte geben Sie Ihr Passwort zur Bestätigung ein",
+        message: "Bitte geben Sie ein neues Passwort ein",
         type: "required"
       }
     },
     {
-      label: "Passwort",
+      label: "Neues Passwort bestätigen",
       type: "password",
       error: {
-        message: "Bitte geben Sie Ihr Passwort zur Bestätigung ein",
+        message: "Ihre Eingaben sind nicht identisch",
         type: "required"
       }
     }
   ]
 
-  constructor(private titleService: Title) { }
+  constructor(private titleService: Title,
+    public api: ApiService) { }
 
   ngOnInit(): void {
     this.titleService.setTitle("Einstellungen");
+  }
+
+  public validateEmail(): void{
+    
+  }
+
+  public validatePassword() : void {
+
   }
 
 }
