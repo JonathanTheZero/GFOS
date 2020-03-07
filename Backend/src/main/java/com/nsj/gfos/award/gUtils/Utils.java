@@ -554,5 +554,39 @@ public class Utils {
 			return true;
 		}
 	}
+	
+	/**
+	 * Die Methode <i>getPnFromSessionID</i> gibt die Personalnummer des Mitarbeiter mit Hilfe der SessionID zurück.
+	 * @param auth - SessionID des Clients
+	 * @return String - Personalnummer des Mitarbeiters
+	 */
+	public static String getPnFromSessionID(String auth) {
+		String sqlStmt = "SELECT Mitarbeiter FROM gfos.active_sessions WHERE SessionID = " + auth + ";";
+		try {
+			ResultSet rs = QueryHandler.query(sqlStmt);
+			if (rs.next())
+				return rs.getString("Mitarbeiter");
+			return "";
+		} catch (SQLException e) {
+			return "";
+		}
+	}
+	
+	/**
+	 * Die Methode <i>getLeiter</i> gibt den Leiter der Arbeitsgruppe mit Hilde der ArbeitsgruppenID zurück.
+	 * @param id - ArbeitsgruppenID
+	 * @return String - Personalnummer des Leiter der Arbeitsgruppe
+	 */
+	public static String getLeiter(String id) {
+		String sqlStmt = "SELECT Leiter FROM gfos.arbeitsgruppe WHERE ArbeitsgruppenID = " + id + ";";
+		try {
+			ResultSet rs = QueryHandler.query(sqlStmt);
+			if (rs.next())
+				return rs.getString("Leiter");
+			return "";
+		} catch (SQLException e) {
+			return "";
+		}
+	}
 
 }
