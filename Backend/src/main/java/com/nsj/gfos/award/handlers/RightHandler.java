@@ -20,8 +20,8 @@ public class RightHandler {
 			"user" };
 	private static final String[] allActions = { "getAllMitarbeiter", "addMitarbeiter", "addAdmin", "removeAdmin",
 			"removeMitarbeiter", "test", "selfGet", "unrestrictedGet", "restrictedGet", "userGet", "selfAlter",
-			"unrestrictedAlter", "restrictedAlter", "getArbeitsgruppe", "alterLeiter", "addArbeitsgruppe",
-			"removeArbeitsgruppe", "removeMitarbeiterFromArbeitsgruppe", "addMitarbeiterToArbeitsgruppe", "becomeLeiter"};
+			"unrestrictedAlter", "restrictedAlter", "getArbeitsgruppen", "alterLeiter", "addArbeitsgruppe",
+			"removeArbeitsgruppe", "removeMitarbeiterFromArbeitsgruppe", "addMitarbeiterToArbeitsgruppe", "becomeLeiter", "getArbeitsgruppe"};
 
 	/**
 	 * Die Methode <i>getRightclassFromSessionID</i> liefert die Rechteklasse zum
@@ -213,7 +213,7 @@ public class RightHandler {
 			return false;
 		case "restrictedAlter":
 			return false;
-		case "getArbeitsgruppe":
+		case "getArbeitsgruppen":
 			return false;
 		case "alterLeiter":
 			return false;
@@ -226,6 +226,8 @@ public class RightHandler {
 		case "addMitarbeiterToArbeitsgruppe":
 			return false;
 		case "becomeLeiter":
+			return false;
+		case "getArbeitsgruppe":
 			return false;
 		default:
 			return true;
