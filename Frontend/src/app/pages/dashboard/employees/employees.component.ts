@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Mitarbeiter } from 'src/app/utils/interfaces/default.model';
 import { ApiService } from 'src/app/utils/services/api.service';
+import { DataService } from 'src/app/utils/services/data.service';
 
 @Component({
   selector: 'dashboard-employees',
@@ -12,13 +13,12 @@ export class EmployeesComponent implements OnInit {
   user: Mitarbeiter;
   public valid: boolean;
 
-  constructor(public api: ApiService) { }
+  constructor(public api: ApiService,
+    public dataService: DataService) { }
 
   ngOnInit(): void {
-    this.api.getCurrentUser().subscribe(answer => this.user = answer);
-    if(this.user.rechteklasse == "root"){
-      this.valid = true;
-    }
+    this.user = this.dataService.getUser();
+    this.valid = this.user.rechteklasse === "admin";
   }
 
 }

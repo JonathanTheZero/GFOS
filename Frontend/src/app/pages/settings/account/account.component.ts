@@ -1,18 +1,21 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { accountSettingsForm } from 'src/app/utils/interfaces/settings.model';
+import { ApiService } from 'src/app/utils/services/api.service';
 
 @Component({
   selector: 'change-account-settings',
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.scss']
 })
+
 export class AccountComponent implements OnInit {
   @Input() input : Array<accountSettingsForm>;
-  @Input() onSubmit: () => void;
+  @Input() onSubmit: "password" | "email";
   form: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder,
+    public api: ApiService) {
     this.form = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
@@ -25,7 +28,20 @@ export class AccountComponent implements OnInit {
 
   submit() {
     if (this.form.valid) {
-      this.onSubmit();
+      this.validate()();
+    }
+  }
+
+  private validate(): () => void {
+    if(this.onSubmit === "password"){
+      return () => {
+        //TODO
+      };
+    }
+    else if(this.onSubmit === "email") {
+      return () => {
+        //TODO
+      };
     }
   }
 

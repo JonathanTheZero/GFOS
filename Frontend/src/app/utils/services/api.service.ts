@@ -21,6 +21,9 @@ export class ApiService {
   constructor(private http: HttpClient) {
   }
 
+  /**
+   * Samples for local testing only
+   */
   getTodoSamples(): Observable<Todo[]> {
     return of(todoSamples);
   }
@@ -29,11 +32,11 @@ export class ApiService {
     return of(employeeSamples);
   }
 
-  public getCurrentUser(): Observable<Mitarbeiter> {
-    if(!environment.production) return of(employeeSamples[0]);
-    return this.http.get<Mitarbeiter>(`${this.url}/`);
-  }
-
+  /**
+   * All methods are using API requests (using Angulars HttpModule)
+   * the answer has a specified JSON format (apiAnswer from ../interfaces/default.model.ts)
+   * the current auth token is together with the user data (as string) saved in the session storage of the browser
+   */
   public registerNewUser(name: string, vn: string, email: string, pw: string, rk : string, abt: string, ve: string): apiAnswer {
     var answer: apiAnswer;
     const auth: string = this.generateAuthToken();
@@ -47,6 +50,7 @@ export class ApiService {
     const auth: string = this.generateAuthToken();
     this.http.get<apiAnswer>(`${this.url}/login:auth=${auth}&pn=${pn}&pw=${pw}`).subscribe(x => answer = x);
     sessionStorage.setItem("currentUser", auth);
+    sessionStorage.setItem("currentUserData", JSON.stringify(answer.data));
     return answer;
   }
 
@@ -57,6 +61,9 @@ export class ApiService {
     return answer;
   }
 
+  /**
+   * private methods, names are self explaining
+   */
   private generateAuthToken(): string {
     const dec2hex = (dec: number) => ('0' + dec.toString(16)).substr(-2); //convert decimal to hexadecimal
     var arr = new Uint8Array(24); //makes a length 12 auth token

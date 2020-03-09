@@ -42,7 +42,7 @@ export const employeeSamples: Mitarbeiter[] = [
         arbeitskonto: 0,
         email: "x@example.org",
         status: "string",
-        rechteklasse: "string",
+        rechteklasse: "user",
         abteilung: "string",
         vertreter: "string"
     },
@@ -54,7 +54,7 @@ export const employeeSamples: Mitarbeiter[] = [
         arbeitskonto: 0,
         email: "x@example.org",
         status: "string",
-        rechteklasse: "string",
+        rechteklasse: "user",
         abteilung: "string",
         vertreter: "string"
     },
@@ -66,7 +66,7 @@ export const employeeSamples: Mitarbeiter[] = [
         arbeitskonto: 0,
         email: "x@example.org",
         status: "string",
-        rechteklasse: "string",
+        rechteklasse: "user",
         abteilung: "string",
         vertreter: "string"
     },
@@ -78,7 +78,7 @@ export const employeeSamples: Mitarbeiter[] = [
         arbeitskonto: 0,
         email: "x@example.org",
         status: "string",
-        rechteklasse: "string",
+        rechteklasse: "user",
         abteilung: "string",
         vertreter: "string"
     }

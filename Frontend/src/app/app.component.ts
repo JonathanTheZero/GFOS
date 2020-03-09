@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     window.addEventListener("beforeunload", e => {
-      //user wird ausgeloggt beim schließen des Fensters
+      //user will get logged out if the window is closed
       if (sessionStorage.getItem("currentUser")) {
         const logout: apiAnswer = this.api.logout(sessionStorage.getItem("currentUser"));
         if (logout.erfolg) {
@@ -36,11 +36,11 @@ export class AppComponent implements OnInit {
       }
     });
 
-    // Nach 10 Minuten Inaktivität wird der Countdown gestartet
+    // After 10 minutes of inactivity the countdown is started
     this.idle.setIdle(600);
-    // Der Benutzer erhält eine Benachrichtigung, nach weiteren 2 Minuten wird er automatisch ausgeloggt
+    // the user gets a warning, after 2 additional minutes, the user is logged out
     this.idle.setTimeout(120);
-    // Wird unterbrochen/neu gestartet durch Mausbewegungen, Tastatur etc.
+    // countdown will be interrupted through mousehover, keyboard etc
     this.idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
 
     this.idle.onIdleEnd.subscribe(() => {
@@ -67,7 +67,7 @@ export class AppComponent implements OnInit {
         "Inaktivität",
         "Aufgrund von Inaktivität werden Sie in kürze automatisch ausgeloggt",
         "info"
-      ).then(() => this.reset()) //falls der Benutzer doch wieder online kommen sollte
+      ).then(() => this.reset()) //if the user is online again
     });
 
     this.idle.onTimeoutWarning.subscribe(countdown => {

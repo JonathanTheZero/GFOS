@@ -17,9 +17,16 @@
 
   </ng-container>
 
+  <ng-container *ngIf="data.rechteklasse === 'admin' || data.rechteklasse === 'root'">
+    <a clrVerticalNavLink routerLinkActive="active" routerLink="./register">
+      <clr-icon shape="users" clrVerticalNavIcon></clr-icon>
+      Benutzer hinzufügen
+    </a>
+  </ng-container>
+
   <a clrVerticalNavLink routerLinkActive="active" routerLink="./credit">
     <clr-icon shape="certificate" clrVerticalNavIcon></clr-icon>
     Credit
   </a>
-
+  
 </clr-vertical-nav>

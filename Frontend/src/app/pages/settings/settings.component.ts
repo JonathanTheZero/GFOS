@@ -10,6 +10,7 @@ import { ApiService } from 'src/app/utils/services/api.service';
 })
 export class SettingsComponent implements OnInit {
 
+  //data to fill the account option -> dynamically adding components
   public readonly changeEmail: accountSettingsForm[] = [
     {
       label: "E-Mail",

@@ -6,7 +6,7 @@ export interface Mitarbeiter {
     arbeitskonto: number;
     email: string | null;
     status: string | null;
-    rechteklasse: string;
+    rechteklasse: "admin" | "personalabteilung" | "gruppenleiter" | "user" | "root";
     abteilung: string | null;
     vertreter: string | null;
 }
@@ -14,4 +14,5 @@ export interface Mitarbeiter {
 export interface apiAnswer {
     fehler?: string;
     erfolg?: string;
+    data?: Mitarbeiter;
 }

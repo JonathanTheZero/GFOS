@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { routerLinks } from 'src/app/utils/interfaces/sidebar.model';
+import { DataService } from 'src/app/utils/services/data.service';
+import { Mitarbeiter } from 'src/app/utils/interfaces/default.model';
 
 @Component({
   selector: 'app-sidebar',
@@ -8,7 +10,7 @@ import { routerLinks } from 'src/app/utils/interfaces/sidebar.model';
 })
 export class SidebarComponent implements OnInit {
 
-  constructor() { }
+  data: Mitarbeiter;
 
   public readonly sidebarLinks : Array<routerLinks> = [
     {
@@ -27,7 +29,11 @@ export class SidebarComponent implements OnInit {
     },
   ];
 
+  constructor(public dataService: DataService){
+
+  }
 
   ngOnInit() {
+    this.data = this.dataService.getUser();
   }
 }
