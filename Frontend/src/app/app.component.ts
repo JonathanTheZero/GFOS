@@ -36,10 +36,10 @@ export class AppComponent implements OnInit {
       }
     });
 
-    // After 10 minutes of inactivity the countdown is started
-    this.idle.setIdle(600);
-    // the user gets a warning, after 2 additional minutes, the user is logged out
-    this.idle.setTimeout(120);
+    // the user gets a warning after either 10 minutes or a custom value (can be changed in the settings)
+    this.idle.setIdle(parseInt(localStorage.getItem("idle"))  * 60 || 600);
+    // the user is logged out after either 2 minutes or a custom value (can be changed in the settings)
+    this.idle.setTimeout(parseInt(localStorage.getItem("logOut")) * 60 || 120);
     // countdown will be interrupted through mousehover, keyboard etc
     this.idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
 

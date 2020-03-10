@@ -6,3 +6,10 @@ export interface accountSettingsForm {
         type: "required" | null;
     }
 }
+
+interface selectData {
+    value: string | number;
+    text: string;
+}
+
+export type options = selectData[];

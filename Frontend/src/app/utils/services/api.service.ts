@@ -72,7 +72,7 @@ export class ApiService {
     this.http.get<apiAnswer>(``).pipe(
       
     ).subscribe(x => answer = x);
-    throw new TypeError("Not implemented");
+    throw new Error("Not implemented");
     return answer;
   }
 

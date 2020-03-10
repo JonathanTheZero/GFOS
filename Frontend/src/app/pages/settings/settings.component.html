@@ -3,20 +3,25 @@
   <br />
   <hr />
   <h2>Account Daten ändern</h2>
-  <div id="wrapper">
-    <change-account-settings id="left" [input]="changeEmail" [onSubmit]="'email'"></change-account-settings>
-    <change-account-settings id="right" [input]="changePassword" [onSubmit]="'password'"></change-account-settings>
+  <div class="wrapper">
+    <change-account-settings class="left" [input]="changeEmail" [onSubmit]="'email'"></change-account-settings>
+    <change-account-settings class="right" [input]="changePassword" [onSubmit]="'password'"></change-account-settings>
   </div>
   <hr />
+
   <h2>Automatisches Logout</h2>
-  <div id="wrapper">
-    <div id="left">
-      Warnung zeigen bei <settings-select></settings-select> Minuten 
+  <div class="wrapper">
+    <div class="left">
+      Erste Warnung erhalten nach:
+      <settings-select [options]="warningOptions" [type]="'idle'"></settings-select>
       <br />
+      Aktuell: {{currentSettings.idle || 10}} Minuten
     </div>
-    <div id="right">
-      Ausloggen bei <settings-select></settings-select> Minuten 
+    <div class="right">
+      Ausloggen nach:
+      <settings-select [options]="logoutOptions" [type]="'logOut'"></settings-select>
       <br />
+      Aktuell: {{currentSettings.logOut || 2}} Minuten
     </div>
   </div>
 </div>

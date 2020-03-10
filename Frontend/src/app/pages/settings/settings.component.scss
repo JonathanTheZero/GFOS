@@ -1,12 +1,12 @@
-#wrapper {
+.wrapper {
     overflow: hidden; 
 
-    #left {
+    .left {
         float:left;
         width: 30%;
     }
 
-    #right {
+    .right {
         float: left;
         width: 50%;
     }
