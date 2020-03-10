@@ -17,7 +17,6 @@ export class RegisterComponent implements OnInit {
     name: "",
     lastName: "",
     password: "",
-    type: "",
     email: "",
     accessLevel: null,
     district: "",
@@ -26,7 +25,7 @@ export class RegisterComponent implements OnInit {
 
   public err: errorObj = {
     reason: ""
-  }
+  };
 
   constructor(public api: ApiService,
     private titleService: Title,
@@ -38,11 +37,6 @@ export class RegisterComponent implements OnInit {
   }
 
   public validate(): void {
-    if (!this.form.type) {
-      this.err.reason = "Bitte wählen Sie eine zulässige Benutzergruppe!";
-      return;
-    }
-
     if (!this.form.name || !this.form.lastName) {
       this.err.reason = "Bitte geben Sie Ihrern vollständigen Namen an";
       return;

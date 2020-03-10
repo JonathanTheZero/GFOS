@@ -1,5 +1,4 @@
 export interface registerForm {
-    type: string;
     name: string;
     lastName: string;
     password: string;

@@ -35,12 +35,11 @@ export class AccountComponent implements OnInit {
   private validate(): () => void {
     if(this.onSubmit === "password"){
       return () => {
-        //TODO
       };
     }
     else if(this.onSubmit === "email") {
       return () => {
-        //TODO
+        this.api.changeEmail("", "");
       };
     }
   }

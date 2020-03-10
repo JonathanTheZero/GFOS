@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment';
 })
 
 export class ApiService {
-  private readonly url: string = "http://localhost:8080/award/api";
+  private readonly url: string = "http://localhost:8080/Backend/api";
 
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -58,6 +58,21 @@ export class ApiService {
     var answer: apiAnswer;
     this.http.get<apiAnswer>(`${this.url}/logout:auth=${authToken}`).subscribe(x => answer = x);
     sessionStorage.removeItem("currentUser");
+    return answer;
+  }
+
+  public changeEmail(pw: string, email: string): apiAnswer{
+    const auth : string = sessionStorage.getItem("currentUser");
+    if(!auth){
+      return {
+        fehler: "Konnte keine Verbindung herstellen"
+      }
+    }
+    var answer: apiAnswer;
+    this.http.get<apiAnswer>(``).pipe(
+      
+    ).subscribe(x => answer = x);
+    throw new TypeError("Not implemented");
     return answer;
   }
 
