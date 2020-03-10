@@ -36,6 +36,10 @@ export class RegisterComponent implements OnInit {
     this.titleService.setTitle("Registrierung");
   }
 
+  /**
+   * validate the input and then send the data to the API
+   * using the apiService
+   */
   public validate(): void {
     if (!this.form.name || !this.form.lastName) {
       this.err.reason = "Bitte geben Sie Ihrern vollständigen Namen an";
