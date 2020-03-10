@@ -7,11 +7,8 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.nsj.gfos.award.dataWrappers.Mitarbeiter;
 import com.nsj.gfos.award.handlers.JsonHandler;
-import com.nsj.gfos.award.handlers.PasswordHandler;
 import com.nsj.gfos.award.handlers.QueryHandler;
-import com.nsj.gfos.award.handlers.RightHandler;
 
 @Path("dummy")
 public class DummyResource {

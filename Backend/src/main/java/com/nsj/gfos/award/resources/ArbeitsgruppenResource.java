@@ -15,7 +15,6 @@ import com.nsj.gfos.award.handlers.SessionHandler;
 import com.nsj.gfos.award.gUtils.Utils;
 
 import com.nsj.gfos.award.dataWrappers.Arbeitsgruppe;
-import com.nsj.gfos.award.dataWrappers.Mitarbeiter;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

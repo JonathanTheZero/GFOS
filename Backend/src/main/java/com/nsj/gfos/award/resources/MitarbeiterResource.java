@@ -30,7 +30,7 @@ import java.util.Arrays;
 
 @Path("mitarbeiter")
 public class MitarbeiterResource {
-	
+
 	@GET
 	@Path("getAll{param}")
 	@Produces(MediaType.APPLICATION_JSON)
