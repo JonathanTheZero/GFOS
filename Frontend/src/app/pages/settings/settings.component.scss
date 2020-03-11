@@ -3,7 +3,7 @@
 
     .left {
         float:left;
-        width: 30%;
+        width: 40%;
     }
 
     .right {
@@ -12,3 +12,15 @@
     }
 }
 
+@media only screen and (max-width: 600px) {
+    .wrapper {
+        .left, .right {
+            display: block;
+            width: 100%;
+        }
+    }
+
+    #settings {
+        text-align: center;
+    }
+}

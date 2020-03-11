@@ -1,45 +1,45 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { NgModule } from "@angular/core";
+import { Routes, RouterModule } from "@angular/router";
 
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
-import { AuthGuard } from './utils/auth.guard';
-import { SettingsComponent } from './pages/settings/settings.component';
-import { RegisterComponent } from './pages/forms/register/register.component';
-import { LoginComponent } from './pages/forms/login/login.component';
+import { DashboardComponent } from "./pages/dashboard/dashboard.component";
+import { PageNotFoundComponent } from "./pages/page-not-found/page-not-found.component";
+import { AuthGuard } from "./utils/auth.guard";
+import { SettingsComponent } from "./pages/settings/settings.component";
+import { RegisterComponent } from "./pages/forms/register/register.component";
+import { LoginComponent } from "./pages/forms/login/login.component";
 
 const routes: Routes = [
   {
-    path: '',
+    path: "login",
+    component: LoginComponent
+  },
+  {
+    path: "",
     canActivate: [AuthGuard],
     children: [
       {
-        path: '',
-        redirectTo: '/login',
-        pathMatch: 'full'
+        path: "",
+        redirectTo: "/dashboard",
+        pathMatch: "full"
       },
       {
-        path: "login",
-        component: LoginComponent,
-      },
-      {
-        path: 'dashboard',
+        path: "dashboard",
         component: DashboardComponent
       },
       {
         path: "settings",
-        component: SettingsComponent,
+        component: SettingsComponent
+      },
+      {
+        path: "register",
+        component: RegisterComponent
       },
       {
         path: "api",
         redirectTo: "dashboard",
         pathMatch: "full"
       }
-    ],
-  },
-  {
-    path: "register",
-    component: RegisterComponent
+    ]
   },
   {
     path: "**",
@@ -48,14 +48,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes),
-  ],
-  exports: [
-    RouterModule,
-  ],
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
 })
-
-export class AppRoutingModule {
-
-}
+export class AppRoutingModule {}

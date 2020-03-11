@@ -1,4 +1,4 @@
-<form clrForm [formGroup]="form" (ngSubmit)="submit()">
+<form clrForm [formGroup]="form">
 
   <clr-input-container *ngFor="let i of input">
     <label>{{i.label}}</label>
@@ -8,5 +8,10 @@
 
   <br />
   
-  <button class="btn">Ändern</button>
+  <button class="btn" (click)="submit()">
+    Ändern
+  </button>
+  <button class="btn" (click)="reset()">
+    Abrrechen
+  </button>
 </form>

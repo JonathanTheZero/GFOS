@@ -81,6 +81,7 @@ export class RegisterComponent implements OnInit {
       this.form.district,
       this.form.agent
     );
+    
     if (answer.fehler) {
       Swal.fire(
         "Es tut uns leid",

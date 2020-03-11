@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, } from '@angular/forms';
 import { accountSettingsForm } from 'src/app/utils/interfaces/settings.model';
 import { ApiService } from 'src/app/utils/services/api.service';
 
@@ -12,6 +12,7 @@ import { ApiService } from 'src/app/utils/services/api.service';
 export class AccountComponent implements OnInit {
   @Input() input : Array<accountSettingsForm>;
   @Input() onSubmit: "password" | "email";
+  
   form: FormGroup;
 
   constructor(private formBuilder: FormBuilder,
@@ -30,6 +31,10 @@ export class AccountComponent implements OnInit {
     if (this.form.valid) {
       this.validate()();
     }
+  }
+
+  reset(){
+    this.form.reset();
   }
 
   private validate(): () => void {
