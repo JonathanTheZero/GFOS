@@ -15,6 +15,13 @@ public class JsonHandler {
 		return "{\"erfolg\": \"" + msg + "\"}";
 	}
 
+	public static String embedMitarbeiterInErfolg(Mitarbeiter obj, String msg) {
+		String erfolg = erfolg(msg);
+		erfolg = erfolg.substring(0, erfolg.length() - 1);
+		String objJson = createJsonFromMitarbeiter(obj);
+		return erfolg + ", \"data\": " + objJson + "}"; 
+	}
+
 	public static String createJsonFromMitarbeiter(Mitarbeiter m) {
 		ObjectMapper om = new ObjectMapper();
 		try {

@@ -9,6 +9,9 @@ package com.nsj.gfos.award.handlers;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.nsj.gfos.award.dataWrappers.Mitarbeiter;
+import com.nsj.gfos.award.gUtils.Utils;
+
 /**
  *
  * @author LoL
@@ -25,7 +28,18 @@ public class SessionHandler {
 			int rs = QueryHandler.update(sqlStmt);
 			if(rs == 0) 
 				return JsonHandler.fehler("Fehler bei der Erstellung der Session!");
-			return JsonHandler.erfolg("Session wurde erfolgreich erstellt.");
+			sqlStmt = "SELECT * FROM gfos.mitarbeiter WHERE Personalnummer = \"" + personalnummer + "\";";
+			try {
+				ResultSet rSet = QueryHandler.query(sqlStmt);
+				if(rSet == null)
+					return JsonHandler.fehler("Fehler bei Zugriff auf die Datenbank");
+				if(!rSet.next())
+					return JsonHandler.fehler("Fehler bei Zugriff auf die Datenbank");
+				Mitarbeiter obj = Utils.createMitarbeiterFromQuery(rSet, new String[] {"Personalnummer", "Name", "Vorname", "erreichbar", "Arbeitskonto", "EMail", "Passwort", "Status", "Rechteklasse", "Abteilung", "Vertreter", "gda"});
+				return JsonHandler.embedMitarbeiterInErfolg(obj, "Session wurde erfolgreich erstellt.");
+				} catch (Exception e) {
+				return JsonHandler.fehler(e.toString());
+			}
 		} catch (SQLException e) {
 			return JsonHandler.fehler(e.toString());
 		}				
