@@ -6,6 +6,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { todoSamples, employeeSamples } from '../mock.data';
 import { apiAnswer, Mitarbeiter } from '../interfaces/default.model';
 import { environment } from 'src/environments/environment';
+import { DataService } from './data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,8 @@ export class ApiService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,
+    private dataService: DataService) {
   }
 
   /**
@@ -35,13 +37,13 @@ export class ApiService {
   /**
    * All methods are using API requests (using Angulars HttpModule)
    * the answer has a specified JSON format (apiAnswer from ../interfaces/default.model.ts)
-   * the current auth token is together with the user data (as string) saved in the session storage of the browser
+   * the data service handels saving the auth token and the user data
    */
   public registerNewUser(name: string, vn: string, email: string, pw: string, rk : string, abt: string, ve: string): apiAnswer {
     var answer: apiAnswer;
     const auth: string = this.generateAuthToken();
     this.http.get<apiAnswer>(`${this.url}/mitarbeiter/add:auth=${auth}&n=${name}&vn=${vn}&em=${email}&pw=${pw}&rk=${rk}&ab=${abt}&ve=${ve}`).subscribe(x => answer = x);
-    sessionStorage.setItem("currentUser", auth);
+    this.dataService.setAuth(auth);
     return answer;
   }
 
@@ -49,20 +51,20 @@ export class ApiService {
     var answer: apiAnswer;
     const auth: string = this.generateAuthToken();
     this.http.get<apiAnswer>(`${this.url}/login:auth=${auth}&pn=${pn}&pw=${pw}`).subscribe(x => answer = x);
-    sessionStorage.setItem("currentUser", auth);
-    sessionStorage.setItem("currentUserData", JSON.stringify(answer.data));
+    this.dataService.setAuth(auth);
+    this.dataService.setUser(answer.data);
     return answer;
   }
 
-  public logout(authToken: string): apiAnswer {
+  public logout(): apiAnswer {
     var answer: apiAnswer;
-    this.http.get<apiAnswer>(`${this.url}/logout:auth=${authToken}`).subscribe(x => answer = x);
-    sessionStorage.removeItem("currentUser");
+    this.http.get<apiAnswer>(`${this.url}/logout:auth=${this.dataService.getAuth()}`).subscribe(x => answer = x);
+    this.dataService.setAuth(undefined);
     return answer;
   }
 
   public changeEmail(pw: string, email: string): apiAnswer{
-    const auth : string = sessionStorage.getItem("currentUser");
+    const auth : string = this.dataService.getAuth();
     if(!auth){
       return {
         fehler: "Konnte keine Verbindung herstellen"

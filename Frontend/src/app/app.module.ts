@@ -11,6 +11,7 @@ import { UiModule } from './ui/ui.module';
 import { AppRoutingModule } from './app-routing.module';
 import { PagesModule } from './pages/pages.module';
 import { AuthGuard } from './utils/auth.guard';
+import { DataService } from './utils/services/data.service';
 
 @NgModule({
   declarations: [

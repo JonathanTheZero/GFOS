@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { options } from 'src/app/utils/interfaces/settings.model';
 import Swal from 'sweetalert2';
+import { DataService } from 'src/app/utils/services/data.service';
 
 @Component({
   selector: 'settings-select',
@@ -11,9 +12,9 @@ export class SelectComponent implements OnInit {
 
   @Input() options: options;
   @Input() type: "idle" | "logOut";
-  public select;
+  public select: number;
 
-  constructor() { }
+  constructor(public dataService: DataService) { }
 
   ngOnInit(): void {
   }
@@ -27,7 +28,12 @@ export class SelectComponent implements OnInit {
       );
       return;
     }
-    localStorage.setItem(this.type, this.select);
+    if(this.type === "idle"){
+      this.dataService.setIdle(this.select.toString());
+    }
+    else if (this.type === "logOut"){
+      this.dataService.setTimeout(this.select.toString());
+    }
     Swal.fire(
       "",
       "Ihre Einstellungen wurden übernommen",

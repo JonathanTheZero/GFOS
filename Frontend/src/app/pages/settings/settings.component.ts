@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { accountSettingsForm, options } from 'src/app/utils/interfaces/settings.model';
 import { ApiService } from 'src/app/utils/services/api.service';
+import { DataService } from 'src/app/utils/services/data.service';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-settings',
@@ -60,7 +62,7 @@ export class SettingsComponent implements OnInit {
   //data to fill the select, again making advantage of Angulars dynamic component features
   public readonly warningOptions: options = [
     {
-      value: 5,
+      value: 2,
       text: "5 Mintuen"
     },
     {
@@ -91,21 +93,24 @@ export class SettingsComponent implements OnInit {
   public currentSettings;
 
   constructor(private titleService: Title,
-    public api: ApiService) { }
+    public api: ApiService,
+    public dataService: DataService) { }
 
   ngOnInit(): void {
-    this.titleService.setTitle("Einstellungen");
     this.currentSettings = {
-      idle: localStorage.getItem("idle"),
-      logOut: localStorage.getItem("logOut"),
+      idle: this.dataService.getIdle(),
+      logOut: this.dataService.getTimeout()
     };
+    this.titleService.setTitle("Einstellungen");
+    this.dataService.idleCounter.subscribe(x => this.currentSettings.idle = x);
+    this.dataService.timeoutCounter.subscribe(x => this.currentSettings.logOut = x);
   }
 
-  public validateEmail(): void{
-    
+  public validateEmail(): void {
+
   }
 
-  public validatePassword() : void {
+  public validatePassword(): void {
 
   }
 
