@@ -1,32 +1,30 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
-import { Todo } from '../interfaces/dashboard.model';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { todoSamples, employeeSamples } from '../mock.data';
-import { apiAnswer, Mitarbeiter } from '../interfaces/default.model';
-import { environment } from 'src/environments/environment';
-import { DataService } from './data.service';
+import { Injectable } from "@angular/core";
+import { Observable, of } from "rxjs";
+import { catchError, map, tap } from "rxjs/operators";
+import { Todo } from "../interfaces/dashboard.model";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { todoSamples, employeeSamples } from "../mock.data";
+import { apiAnswer, Mitarbeiter, apiStats } from "../interfaces/default.model";
+import { environment } from "src/environments/environment";
+import { DataService } from "./data.service";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 
 export class ApiService {
   private readonly url: string = "http://localhost:8080/Backend/api";
 
   private httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    headers: new HttpHeaders({ "Content-Type": "application/json" })
   };
 
-  constructor(private http: HttpClient,
-    private dataService: DataService) {
-  }
+  constructor(private http: HttpClient, private dataService: DataService) {}
 
   /**
    * Samples for local testing only
    */
-  getTodoSamples(): Observable<Todo[]> {
+  getTodoSamples(): Observable<Array<Todo>> {
     return of(todoSamples);
   }
 
@@ -39,10 +37,21 @@ export class ApiService {
    * the answer has a specified JSON format (apiAnswer from ../interfaces/default.model.ts)
    * the data service handels saving the auth token and the user data
    */
-  public registerNewUser(name: string, vn: string, email: string, pw: string, rk : string, abt: string, ve: string): apiAnswer {
+  public registerNewUser(
+    name: string,
+    vn: string,
+    email: string,
+    pw: string,
+    rk: string,
+    abt: string,
+    ve: string
+  ): apiAnswer {
     var answer: apiAnswer;
     const auth: string = this.generateAuthToken();
-    this.http.get<apiAnswer>(`${this.url}/mitarbeiter/add:auth=${auth}&n=${name}&vn=${vn}&em=${email}&pw=${pw}&rk=${rk}&ab=${abt}&ve=${ve}`).subscribe(x => answer = x);
+    this.http
+      .get<apiAnswer>(`${this.url}/mitarbeiter/add:auth=${auth}&n=${name}&vn=${vn}&em=${email}&pw=${pw}&rk=${rk}&ab=${abt}&ve=${ve}`)
+      .subscribe(x => (answer = x))
+      .unsubscribe();
     this.dataService.setAuth(auth);
     return answer;
   }
@@ -50,7 +59,10 @@ export class ApiService {
   public login(pn: string, pw: string): apiAnswer {
     var answer: apiAnswer;
     const auth: string = this.generateAuthToken();
-    this.http.get<apiAnswer>(`${this.url}/login:auth=${auth}&pn=${pn}&pw=${pw}`).subscribe(x => answer = x);
+    this.http
+      .get<apiAnswer>(`${this.url}/login:auth=${auth}&pn=${pn}&pw=${pw}`)
+      .subscribe(x => (answer = x))
+      .unsubscribe();
     this.dataService.setAuth(auth);
     this.dataService.setUser(answer.data);
     return answer;
@@ -58,23 +70,53 @@ export class ApiService {
 
   public logout(): apiAnswer {
     var answer: apiAnswer;
-    this.http.get<apiAnswer>(`${this.url}/logout:auth=${this.dataService.getAuth()}`).subscribe(x => answer = x);
+    this.http
+      .get<apiAnswer>(`${this.url}/logout:auth=${this.dataService.getAuth()}`)
+      .subscribe(x => (answer = x))
+      .unsubscribe();
     this.dataService.setAuth(undefined);
     return answer;
   }
 
-  public changeEmail(pw: string, email: string): apiAnswer{
-    const auth : string = this.dataService.getAuth();
-    if(!auth){
+  public changeEmail(pw: string, email: string): apiAnswer {
+    alert("not implemented yet");
+    throw new Error("Not implemented yet!");
+    const auth: string = this.dataService.getAuth();
+    if (!auth) {
       return {
         fehler: "Konnte keine Verbindung herstellen"
-      }
+      };
     }
     var answer: apiAnswer;
-    this.http.get<apiAnswer>(``).pipe(
-      
-    ).subscribe(x => answer = x);
-    throw new Error("Not implemented");
+    this.http
+      .get<apiAnswer>(``)
+      .pipe()
+      .subscribe(x => (answer = x));
+    return answer;
+  }
+
+  public changePassword(pw: string, newPw: string): apiAnswer {
+    alert("not implemented yet");
+    throw new Error("Not implemented yet!");
+    var answer: apiStats;
+    this.http
+      .get<apiAnswer>(``)
+      .subscribe(x => answer = x)
+      .unsubscribe();
+    return answer;
+  }
+
+  public getStats(asObservable: boolean): Observable<apiStats>;
+  public getStats(): apiStats;
+  public getStats(asObservable?: boolean): Observable<apiStats> | apiStats {
+    if (asObservable) {
+      return this.http.get<apiStats>(`${this.url}/stats`);
+    }
+    var answer: apiStats;
+    this.http
+      .get<apiStats>(`${this.url}/stats`)
+      .subscribe(x => (answer = x))
+      .unsubscribe();
     return answer;
   }
 
@@ -82,18 +124,9 @@ export class ApiService {
    * private methods, names are self explaining
    */
   private generateAuthToken(): string {
-    const dec2hex = (dec: number) => ('0' + dec.toString(16)).substr(-2); //convert decimal to hexadecimal
+    const dec2hex = (dec: number) => ("0" + dec.toString(16)).substr(-2); //convert decimal to hexadecimal
     var arr = new Uint8Array(24); //makes a length 12 auth token
     window.crypto.getRandomValues(arr);
-    return Array.from(arr, dec2hex).join('');
-  }
-
-  private handleError<T>(operation = 'operation', result?: T): (error: any) => Observable<T> {
-    return (error: any): Observable<T> => {
-      console.error(error);
-      return of(result as T);
-    };
+    return Array.from(arr, dec2hex).join("");
   }
 }
-
-

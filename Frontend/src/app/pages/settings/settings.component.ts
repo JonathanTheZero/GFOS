@@ -106,12 +106,4 @@ export class SettingsComponent implements OnInit {
     this.dataService.timeoutCounter.subscribe(x => this.currentSettings.logOut = x);
   }
 
-  public validateEmail(): void {
-
-  }
-
-  public validatePassword(): void {
-
-  }
-
 }

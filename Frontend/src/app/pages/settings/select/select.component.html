@@ -1,7 +1,8 @@
-<select clrSelect name="options" class="select" [(ngModel)]="select">
-    <option *ngFor="let o of options" [value]="o.value">{{o.text}}</option>
-</select>
-
+<div id="select-box">
+    <select clrSelect name="options" class="center" [(ngModel)]="select">
+        <option *ngFor="let o of options" [value]="o.value">{{o.text}}</option>
+    </select>
+</div>
 <br />
 
 <button (click)="changeSettings()" class="btn">Ändern</button>

@@ -18,7 +18,7 @@ export class EmployeesComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.dataService.getUser();
-    this.valid = this.user.rechteklasse === "admin";
+    this.valid = this.user.rechteklasse === "admin" || this.user.rechteklasse === "root";
   }
 
 }

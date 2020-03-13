@@ -1,5 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, } from '@angular/forms';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { FormGroup, FormBuilder, Validators, NgForm, } from '@angular/forms';
 import { accountSettingsForm } from 'src/app/utils/interfaces/settings.model';
 import { ApiService } from 'src/app/utils/services/api.service';
 
@@ -12,7 +12,8 @@ import { ApiService } from 'src/app/utils/services/api.service';
 export class AccountComponent implements OnInit {
   @Input() input : Array<accountSettingsForm>;
   @Input() onSubmit: "password" | "email";
-  
+  @ViewChild('formVC', {static: false}) myForm: NgForm;
+
   form: FormGroup;
 
   constructor(private formBuilder: FormBuilder,
@@ -29,24 +30,18 @@ export class AccountComponent implements OnInit {
 
   submit() {
     if (this.form.valid) {
-      this.validate()();
+      if(this.onSubmit === "password"){
+
+      }
+      else if(this.onSubmit === "email"){
+        this.api.changeEmail("", "");
+      }
     }
   }
 
   reset(){
     this.form.reset();
-  }
-
-  private validate(): () => void {
-    if(this.onSubmit === "password"){
-      return () => {
-      };
-    }
-    else if(this.onSubmit === "email") {
-      return () => {
-        this.api.changeEmail("", "");
-      };
-    }
+    this.myForm.resetForm();
   }
 
 }

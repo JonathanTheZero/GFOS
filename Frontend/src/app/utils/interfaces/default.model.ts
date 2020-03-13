@@ -16,3 +16,7 @@ export interface apiAnswer {
     erfolg?: string;
     data?: Mitarbeiter;
 }
+
+export interface apiStats {
+    
+}

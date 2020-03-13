@@ -1,9 +1,11 @@
-<form clrForm [formGroup]="form">
+<form clrForm [formGroup]="form" #formVC="ngForm">
 
   <clr-input-container *ngFor="let i of input">
     <label>{{i.label}}</label>
     <input clrInput formControlName="{{i.type}}" type="{{i.type}}" />
-    <clr-control-error *clrIfError="'required'">{{i.error.message}}</clr-control-error>
+    <clr-control-error *clrIfError="'required'">
+      {{i.error.message}}
+    </clr-control-error>
   </clr-input-container>
 
   <br />
