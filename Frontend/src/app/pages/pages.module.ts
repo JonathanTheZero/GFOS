@@ -9,10 +9,13 @@ import { PageNotFoundComponent } from "./page-not-found/page-not-found.component
 import { DashboardModule } from './dashboard/dashboard.module';
 import { CustomFormsModule } from './forms/custom-forms.module';
 import { SettingsModule } from './settings/settings.module';
+import { EmployeeStatsComponent } from './employee-stats/employee-stats.component';
+import { ReachablePipe } from './employee-stats/reachable.pipe';
 
 
 const components = [
-  PageNotFoundComponent
+  PageNotFoundComponent,
+  EmployeeStatsComponent
 ];
 
 @NgModule({
@@ -29,6 +32,7 @@ const components = [
   ],
   declarations: [
     ...components,
+    ReachablePipe,
   ],
   exports: [
     ...components,

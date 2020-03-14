@@ -19,7 +19,7 @@ export class ApiService {
     headers: new HttpHeaders({ "Content-Type": "application/json" })
   };
 
-  constructor(private http: HttpClient, private dataService: DataService) {}
+  constructor(private http: HttpClient, private dataService: DataService) { }
 
   /**
    * Samples for local testing only
@@ -118,6 +118,27 @@ export class ApiService {
       .subscribe(x => (answer = x))
       .unsubscribe();
     return answer;
+  }
+
+  public getUser(pn: string | number, asObservable: boolean): Observable<Mitarbeiter>
+  public getUser(pn: string | number): Mitarbeiter;
+  public getUser(pn: string | number, asObservable?: boolean): Observable<Mitarbeiter> | Mitarbeiter {
+    if (asObservable) {
+      if(!environment.production){
+        if(pn === 1 || pn === "1"){
+          return of(employeeSamples[0]);
+        }
+        return of(employeeSamples[1]);
+      }
+      return this.http
+        .get<Mitarbeiter>(`${this.url}/mitarbeiter/get:auth=${this.dataService.getAuth()}&pn=${pn}`);
+    }
+    var emp: Mitarbeiter;
+    this.http
+      .get<Mitarbeiter>(`${this.url}/mitarbeiter/get:auth=${this.dataService.getAuth()}&pn=${pn}`)
+      .subscribe(x => emp = x)
+      .unsubscribe();
+    return emp;
   }
 
   /**

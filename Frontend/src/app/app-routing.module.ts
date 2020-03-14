@@ -7,6 +7,7 @@ import { AuthGuard } from "./utils/auth.guard";
 import { SettingsComponent } from "./pages/settings/settings.component";
 import { RegisterComponent } from "./pages/forms/register/register.component";
 import { LoginComponent } from "./pages/forms/login/login.component";
+import { EmployeeStatsComponent } from './pages/employee-stats/employee-stats.component';
 
 const routes: Routes = [
   {
@@ -33,6 +34,10 @@ const routes: Routes = [
       {
         path: "register",
         component: RegisterComponent
+      },
+      {
+        path: "employee/:id",
+        component: EmployeeStatsComponent
       },
       {
         path: "api",

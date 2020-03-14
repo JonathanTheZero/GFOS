@@ -1,0 +1,27 @@
+#employee-stats {
+  text-align: left;
+  width: 100%;
+
+  #employee-stats-header {
+    text-align: center;
+  }
+
+  table {
+    border: none;
+    width: 100%;
+    text-align: center;
+
+    tr {
+      text-align: left;
+
+      td {
+        text-align: left;
+        width: 50%;
+      }
+    }
+  }
+
+  #employee-stats-footer {
+      text-align: center;
+  }
+}

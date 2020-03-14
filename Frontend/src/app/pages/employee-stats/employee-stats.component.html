@@ -1,0 +1,51 @@
+<div class="clr-row" id="employee-stats">
+  <div class="clr-col-lg-5 clr-col-md-8 clr-col-12">
+    <div class="card">
+      <div class="card-header" id="employee-stats-header">
+        {{user.vorname + " " + user.name}}
+      </div>
+      <div class="card-block">
+        <div class="card-title">
+          Allgemeines
+        </div>
+        <div class="card-text">
+          <table>
+            <tr>
+              <td>E-Mail:</td>
+              <td>{{user.email}}</td>
+            </tr>
+            <tr>
+              <td>Abteilung:</td>
+              <td>{{user.abteilung}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="card-block">
+        <div class="card-title">
+          Aktuell
+        </div>
+        <div class="card-text">
+          <table>
+            <tr>
+              <td>Erreichbar:</td>
+              <td>{{user.erreichbar | reachable}}</td>
+            </tr>
+            <tr>
+              <td>Status</td>
+              <td>{{user.status}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="card-footer" id="employee-stats-footer">
+        <a href="mailto:{{user.email}}" target="_blank">
+            <button class="btn btn-sm btn-link">
+                E-Mail schreiben
+            </button>
+        </a>
+        <button class="btn btn-sm btn-link">Footer Action 2</button>
+      </div>
+    </div>
+  </div>
+</div>

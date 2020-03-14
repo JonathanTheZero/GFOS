@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    window.addEventListener("beforeunload", e => {
+    window.addEventListener("beforeunload", async e => {
       //user will get logged out if the window is closed
       if (this.dataService.getUser()) {
         const logout: apiAnswer = this.api.logout();
@@ -34,15 +34,20 @@ export class AppComponent implements OnInit {
         else {
           return logout.fehler;
         }
+        return "no";
       }
     });
 
 
     // the user receives a first warning after either 10 minutes or a custom value (can be changed in the settings)
-    this.dataService.idleCounter.subscribe(idle => this.idle.setIdle(parseInt(idle) * 60 || 600));
+    this.dataService.idleCounter.subscribe(
+      idle => this.idle.setIdle(parseInt(idle) * 60 || 600)
+    );
 
     // the user is logged out after either 2 minutes or a custom value (can be changed in the settings)
-    this.dataService.timeoutCounter.subscribe(timeout => this.idle.setTimeout(parseInt(timeout) * 60 || 120));
+    this.dataService.timeoutCounter.subscribe(
+      timeout => this.idle.setTimeout(parseInt(timeout) * 60 || 120)
+    );
 
     // countdown will be interrupted through mousehover, keyboard etc
     this.idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
