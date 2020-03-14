@@ -13,13 +13,13 @@
   <div class="wrapper">
     <div class="left">
       Erste Warnung erhalten nach:
-      <settings-select [options]="warningOptions" [type]="'idle'"></settings-select>
+        <settings-select [options]="warningOptions" [type]="'idle'" class="centered"></settings-select>
       <br />
       Aktuell: {{currentSettings.idle || 10}} Minuten
     </div>
     <div class="right">
       Ausloggen nach:
-      <settings-select [options]="logoutOptions" [type]="'logOut'"></settings-select>
+        <settings-select [options]="logoutOptions" [type]="'logOut'" class="centered"></settings-select>
       <br />
       Aktuell: {{currentSettings.logOut || 2}} Minuten
     </div>

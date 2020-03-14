@@ -12,11 +12,17 @@
     }
 }
 
-@media only screen and (max-width: 780px) {
+@media only screen and (max-width: 768px) {
     .wrapper {
         .left, .right {
             display: block;
             width: 100%;
+
+            .centered {
+                width: 50%;
+                margin: 0 auto;
+                display: block;
+            }
         }
     }
 
