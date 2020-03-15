@@ -3,14 +3,14 @@
   <br />
   <hr />
   <h2>Account Daten ändern</h2>
-  <div class="wrapper">
+  <div class="wrapper" id="change-account-settings">
     <change-account-settings class="left" [input]="changeEmail" [onSubmit]="'email'"></change-account-settings>
     <change-account-settings class="right" [input]="changePassword" [onSubmit]="'password'"></change-account-settings>
   </div>
   <hr />
 
   <h2>Automatisches Logout</h2>
-  <div class="wrapper">
+  <div class="wrapper" id="logout">
     <div class="left">
       Erste Warnung erhalten nach:
         <settings-select [options]="warningOptions" [type]="'idle'" class="centered"></settings-select>

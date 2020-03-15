@@ -11,11 +11,13 @@ import { CustomFormsModule } from './forms/custom-forms.module';
 import { SettingsModule } from './settings/settings.module';
 import { EmployeeStatsComponent } from './employee-stats/employee-stats.component';
 import { ReachablePipe } from './employee-stats/reachable.pipe';
+import { CreditsComponent } from './credits/credits.component';
 
 
 const components = [
   PageNotFoundComponent,
-  EmployeeStatsComponent
+  EmployeeStatsComponent,
+  CreditsComponent
 ];
 
 @NgModule({

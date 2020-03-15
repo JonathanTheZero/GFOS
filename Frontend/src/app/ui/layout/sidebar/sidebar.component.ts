@@ -19,14 +19,16 @@ export class SidebarComponent implements OnInit {
       links: [
         {
           link: "/dashboard",
-          title: "Dashboard"
+          title: "Dashboard",
+          icon: "dashboard"
         },
         {
           link: "/settings",
-          title: "Einstellungen"
+          title: "Einstellungen",
+          icon: "cog"
         }
       ]
-    },
+    }
   ];
 
   constructor(public dataService: DataService){

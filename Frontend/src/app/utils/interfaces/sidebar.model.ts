@@ -4,5 +4,6 @@ export interface routerLinks {
     links: Array<{
         link: string;
         title: string;
+        icon: string;
     }>;
 }

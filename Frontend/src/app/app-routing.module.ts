@@ -8,6 +8,7 @@ import { SettingsComponent } from "./pages/settings/settings.component";
 import { RegisterComponent } from "./pages/forms/register/register.component";
 import { LoginComponent } from "./pages/forms/login/login.component";
 import { EmployeeStatsComponent } from './pages/employee-stats/employee-stats.component';
+import { CreditsComponent } from './pages/credits/credits.component';
 
 const routes: Routes = [
   {
@@ -38,6 +39,10 @@ const routes: Routes = [
       {
         path: "employee/:id",
         component: EmployeeStatsComponent
+      },
+      {
+        path: "credits",
+        component: CreditsComponent
       },
       {
         path: "api",

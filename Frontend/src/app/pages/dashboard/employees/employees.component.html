@@ -9,11 +9,15 @@
     
         <clr-dg-row *clrDgItems="let employee of employees">
             <clr-dg-cell>{{employee.personalnummer}}</clr-dg-cell>
-            <clr-dg-cell>{{employee.vorname + " " + employee.name}}</clr-dg-cell>
+            <clr-dg-cell>
+                <a routerLink="/employee/{{employee.personalnummer}}">
+                    {{employee.vorname + " " + employee.name}}
+                </a>
+            </clr-dg-cell>
             <clr-dg-cell>{{employee.status}}</clr-dg-cell>
             <clr-dg-cell>{{employee.rechteklasse}}</clr-dg-cell>
             <clr-dg-cell>
-                <clr-icon shape="cross"></clr-icon>
+                <clr-icon shape="cross"></clr-icon>TODO
             </clr-dg-cell>
         </clr-dg-row>
     

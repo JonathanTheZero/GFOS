@@ -5,7 +5,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class ReachablePipe implements PipeTransform {
 
-  
   transform(value: boolean): string {
     return (value) ? "Ja" : "Nein";
   }
