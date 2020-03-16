@@ -78,31 +78,20 @@ export class ApiService {
     return answer;
   }
 
-  public changeEmail(pw: string, email: string): apiAnswer {
+  public changeEmail(pw: string, email: string): Promise<apiAnswer> {
     alert("not implemented yet");
     throw new Error("Not implemented yet!");
     const auth: string = this.dataService.getAuth();
-    if (!auth) {
-      return {
-        fehler: "Konnte keine Verbindung herstellen"
-      };
-    }
-    var answer: apiAnswer;
-    this.http
+    var answer: Promise<apiAnswer> = this.http
       .get<apiAnswer>(``)
-      .pipe()
-      .subscribe(x => (answer = x));
+      .toPromise();
     return answer;
   }
 
-  public changePassword(pw: string, newPw: string): apiAnswer {
+  public changePassword(pw: string, newPw: string): Promise<apiAnswer> {
     alert("not implemented yet");
     throw new Error("Not implemented yet!");
-    var answer: apiStats;
-    this.http
-      .get<apiAnswer>(``)
-      .subscribe(x => answer = x)
-      .unsubscribe();
+    var answer: Promise<apiAnswer> = this.http.get<apiAnswer>(``).toPromise();
     return answer;
   }
 

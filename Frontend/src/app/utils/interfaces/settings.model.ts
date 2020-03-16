@@ -5,6 +5,7 @@ export interface accountSettingsForm {
     error: {
         required?: string | null | undefined;
         minLength?: string | null | undefined;
+        email?: string | null | undefined;
     }
 }
 

@@ -3,7 +3,6 @@ import { Title } from '@angular/platform-browser';
 import { accountSettingsForm, options } from 'src/app/utils/interfaces/settings.model';
 import { ApiService } from 'src/app/utils/services/api.service';
 import { DataService } from 'src/app/utils/services/data.service';
-import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-settings',
@@ -19,7 +18,8 @@ export class SettingsComponent implements OnInit {
       type: "email",
       formControlName: "email",
       error: {
-        required: "Bitte geben Sie eine gültige E-Mail Adresse an"
+        email: "Bitte geben Sie eine gültige E-Mail Adresse ein",
+        required: "Bitte geben Sie eine E-Mail Adresse an"
       }
     },
     {
@@ -38,7 +38,7 @@ export class SettingsComponent implements OnInit {
       type: "password",
       formControlName: "password",
       error: {
-        required: "Bitte geben Sie Ihr Passwort zur Bestätigung ein",
+        required: "Bitte geben Sie Ihr aktuelles Passwort ein",
       }
     },
     {
@@ -56,7 +56,7 @@ export class SettingsComponent implements OnInit {
       formControlName: "confirmNewPassword",
       error: {
         required: "Bitte bestätigen Sie Ihre Eingabe",
-        minLength: "Ihr neues Passwort muss mindestens 8 Zeichen lang sein"//Ihre Eingaben sind nicht identisch
+        minLength: "Ihr neues Passwort muss mindestens 8 Zeichen lang sein"
       }
     }
   ]
