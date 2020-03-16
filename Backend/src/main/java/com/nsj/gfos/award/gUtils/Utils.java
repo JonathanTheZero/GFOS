@@ -370,11 +370,15 @@ public class Utils {
 	}
 
 	/**
-	 * TODO
+	 * Die Methode <i>getAlterAction</i> wird aufgerufen, wenn der Client eine Anfrage
+	 * an die /mitarbeiter/alter Resource stellt und bestimmt abhängig von den
+	 * Rechteklassen des Clients und des Mitarbeiters, wessen Attribut verändert werden soll,
+	 * eine im RightHandler registrierte Aktion, welche als String
+	 * zurückgegeben wird.
 	 * 
-	 * @param auth
-	 * @param attribute
-	 * @return
+	 * @param auth - SessionID der Anfrage
+	 * @param attribute - das angefragte Attribut
+	 * @return String - eine Aktion aus: SelfAlter, unrestrictedAlter, restrictedAlter.
 	 */
 	public static String getAlterAction(String auth, String pn) {
 		if (checkSelfOperation(auth, pn))
