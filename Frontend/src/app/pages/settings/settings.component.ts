@@ -17,17 +17,17 @@ export class SettingsComponent implements OnInit {
     {
       label: "E-Mail",
       type: "email",
+      formControlName: "email",
       error: {
-        message: "Bitte geben Sie eine gültige E-Mail Adresse an",
-        type: "required"
+        required: "Bitte geben Sie eine gültige E-Mail Adresse an"
       }
     },
     {
       label: "Passwort",
       type: "password",
+      formControlName: "password",
       error: {
-        message: "Bitte geben Sie Ihr Passwort zur Bestätigung ein",
-        type: "required"
+        required: "Bitte geben Sie Ihr Passwort zur Bestätigung ein"
       }
     }
   ]
@@ -36,25 +36,27 @@ export class SettingsComponent implements OnInit {
     {
       label: "Altes Passwort",
       type: "password",
+      formControlName: "password",
       error: {
-        message: "Bitte geben Sie Ihr Passwort zur Bestätigung ein",
-        type: "required"
+        required: "Bitte geben Sie Ihr Passwort zur Bestätigung ein",
       }
     },
     {
       label: "Neues Passwort",
       type: "password",
+      formControlName: "newPassword",
       error: {
-        message: "Bitte geben Sie ein neues Passwort ein",
-        type: "required"
+        minLength: "Ihr neues Passwort muss mindestens 8 Zeichen lang sein",
+        required: "Bitte geben Sie ein neues Passwort an"
       }
     },
     {
       label: "Neues Passwort bestätigen",
       type: "password",
+      formControlName: "confirmNewPassword",
       error: {
-        message: "Ihre Eingaben sind nicht identisch",
-        type: "required"
+        required: "Bitte bestätigen Sie Ihre Eingabe",
+        minLength: "Ihr neues Passwort muss mindestens 8 Zeichen lang sein"//Ihre Eingaben sind nicht identisch
       }
     }
   ]

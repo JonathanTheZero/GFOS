@@ -1,9 +1,10 @@
 export interface accountSettingsForm {
     label: string;
     type: "password" | "email";
+    formControlName: "email" | "password" | "newPassword" | "confirmNewPassword"; 
     error: {
-        message: string;
-        type: "required" | null;
+        required?: string | null | undefined;
+        minLength?: string | null | undefined;
     }
 }
 

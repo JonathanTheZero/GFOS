@@ -1,12 +1,14 @@
-<form clrForm [formGroup]="form" #formVC="ngForm">
+<form clrForm [formGroup]="form" class="clr-form">
 
-  <clr-input-container *ngFor="let i of input">
-    <label>{{i.label}}</label>
-    <input clrInput formControlName="{{i.type}}" type="{{i.type}}" />
-    <clr-control-error *clrIfError="'required'">
-      {{i.error.message}}
-    </clr-control-error>
-  </clr-input-container>
+  <ng-container  *ngFor="let i of input">
+    <clr-input-container>
+      <label>{{i.label}}</label>
+      <input clrInput formControlName="{{i.formControlName}}" type="{{i.type}}" />
+      <clr-control-error *clrIfError="'required'">{{i.error.required}}</clr-control-error>
+      <clr-control-error *clrIfError="'minlength'">{{i.error.minLength | json}}</clr-control-error>
+      <clr-control-error *clrIfError="'passwordsNotEqual'">dfasdfiasdfgkl</clr-control-error>
+    </clr-input-container>
+  </ng-container>
 
   <br />
   
@@ -17,3 +19,6 @@
     Abrrechen
   </button>
 </form>
+
+<h2>{{form.errors | json}}</h2>
+<p>{{form.status}}</p>
