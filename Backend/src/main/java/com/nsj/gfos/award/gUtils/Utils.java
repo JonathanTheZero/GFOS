@@ -565,7 +565,7 @@ public class Utils {
 	 * @return String - Personalnummer des Mitarbeiters
 	 */
 	public static String getPnFromSessionID(String auth) {
-		String sqlStmt = "SELECT Mitarbeiter FROM gfos.active_sessions WHERE SessionID = " + auth + ";";
+		String sqlStmt = "SELECT Mitarbeiter FROM gfos.active_sessions WHERE SessionID = \"" + auth + "\";";
 		try {
 			ResultSet rs = QueryHandler.query(sqlStmt);
 			if (rs.next())
@@ -582,7 +582,7 @@ public class Utils {
 	 * @return
 	 */
 	public static String getPersonalnummerFromEmail(String email) {
-		String sqlStmt = "SELECT Personalnummer FROM gfos.mitarbeiter WHERE EMail = " + email + ";";
+		String sqlStmt = "SELECT Personalnummer FROM gfos.mitarbeiter WHERE EMail = \"" + email + "\";";
 		try {
 			ResultSet rs = QueryHandler.query(sqlStmt);
 			if (rs.next())

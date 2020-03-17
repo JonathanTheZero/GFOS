@@ -52,7 +52,7 @@ public class ArbeitsgruppenResource {
 			return JsonHandler.fehler("Der Mitarbeiter hat keine Berechtigung.");
 		if (!SessionHandler.checkSessionID(auth))
 			return JsonHandler.fehler("SessionID ist ungültig.");
-		String sqlStmt = "SELECT gfos.arbeitsgruppe.ArbeitsgruppenID, gfos.arbeitsgruppe.Bezeichnung, gfos.arbeitsgruppe.Leiter FROM gfos.arbeitsgruppe WHERE gfos.arbeitsgruppe.ArbeitsgruppenID IN (SELECT gfos.arbeitsgruppenteilnahme.ArbeitsgruppenID FROM gfos.arbeitsgruppenteilnahme WHERE gfos.arbeitsgruppenteilnahme.Mitarbeiter = \"" + pn + "\" ORDER BY gfos.arbeitsgruppe.ArbeitsgruppenID ASC;";
+		String sqlStmt = "SELECT gfos.arbeitsgruppe.ArbeitsgruppenID, gfos.arbeitsgruppe.Bezeichnung, gfos.arbeitsgruppe.Leiter FROM gfos.arbeitsgruppe WHERE gfos.arbeitsgruppe.ArbeitsgruppenID IN (SELECT gfos.arbeitsgruppenteilnahme.ArbeitsgruppenID FROM gfos.arbeitsgruppenteilnahme WHERE gfos.arbeitsgruppenteilnahme.Mitarbeiter = \"" + pn + "\") ORDER BY gfos.arbeitsgruppe.ArbeitsgruppenID ASC;";
 		try {
 			ResultSet rs = QueryHandler.query(sqlStmt);
 			if (!rs.next())
@@ -64,17 +64,17 @@ public class ArbeitsgruppenResource {
 				a.setBezeichnung(rs.getString("Bezeichnung"));
 				a.setLeiter(rs.getString("Leiter"));
 				a.setArbeitsgruppenID(rs.getString("ArbeitsgruppenID"));
-				String sql = "SELECT gfos.arbeitsgruppenteilnahme.Mitarbeiter, FROM gfos.arbeitsgruppenteilnahme WHERE \"" + a.getArbeitsgruppenID() + "\" = gfos.arbeitsgruppenteilnahme;";
+				String sql = "SELECT gfos.arbeitsgruppenteilnahme.Mitarbeiter FROM gfos.arbeitsgruppenteilnahme WHERE \"" + a.getArbeitsgruppenID() + "\" = gfos.arbeitsgruppenteilnahme.ArbeitsgruppenID;";
 				try {
 					ResultSet mitarbeiter = QueryHandler.query(sql);
-					while(!mitarbeiter.next()) {
+					while(mitarbeiter.next()) {
 						a.addMitglied(mitarbeiter.getString("Mitarbeiter"));
 					}
 				}catch (SQLException e) {
 					return JsonHandler.fehler(e.toString());
 				}
 				arbeitsgruppen.add(a);
-			}while(!rs.next());
+			}while(rs.next());
 			try {
 				return om.writeValueAsString(arbeitsgruppen);
 			} catch (Exception e) {
@@ -162,7 +162,7 @@ public class ArbeitsgruppenResource {
 		if (Utils.getLeiter(id).equals(pn))
 			return JsonHandler.fehler("Der Mitarbeiter ist bereits der Leiter der Arbeitsgruppe.");
 		if (!RightHandler.checkPermissionFromPn(pn, "becomeLeiter"))
-			return JsonHandler.fehler("Der angegebene Leiter hat keine Berechtigung Leiter zu werden.");
+			return JsonHandler.fehler("Der angegebene Mitarbeiter hat keine Berechtigung Leiter zu werden.");
 		if (!RightHandler.checkPermission(auth, "alterLeiter"))
 			return JsonHandler.fehler("Der Mitarbeiter hat keine Berechtigung.");
 		String sqlStmt = "UPDATE gfos.arbeitsgruppe SET gfos.arbeitsgruppe.Leiter = \"" + pn
@@ -323,7 +323,7 @@ public class ArbeitsgruppenResource {
 		if (!Utils.isInArbeitsgruppe(id, pn))
 			return JsonHandler.fehler("Der Mitarbeiter befindet sich nicht in der Arbeitsgruppe.");
 		if (Utils.getLeiter(id).equals(pn))
-			return JsonHandler.fehler("Der Leiter der Arbeitsgruppe kann nicht gelöscht werden.");
+			return JsonHandler.fehler("Der Leiter der Arbeitsgruppe kann nicht entfernt werden.");
 		if (!((Utils.isInArbeitsgruppe(id, Utils.getPnFromSessionID(auth))
 				&& Utils.getLeiter(id).equals(Utils.getPnFromSessionID(auth)))
 				|| RightHandler.checkPermission(auth, "removeMitarbeiterFromArbeitsgruppe")))
