@@ -575,6 +575,23 @@ public class Utils {
 			return "";
 		}
 	}
+
+	/**
+	 * 
+	 * @param email
+	 * @return
+	 */
+	public static String getPersonalnummerFromEmail(String email) {
+		String sqlStmt = "SELECT Personalnummer FROM gfos.mitarbeiter WHERE EMail = " + email + ";";
+		try {
+			ResultSet rs = QueryHandler.query(sqlStmt);
+			if (rs.next())
+				return rs.getString("Personalnummer");
+			return "";
+		} catch (SQLException e) {
+			return "";
+		}
+	}
 	
 	/**
 	 * Die Methode <i>getLeiter</i> gibt den Leiter der Arbeitsgruppe mit Hilde der ArbeitsgruppenID zurück.
