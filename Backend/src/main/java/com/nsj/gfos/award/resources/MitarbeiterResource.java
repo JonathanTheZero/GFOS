@@ -179,10 +179,10 @@ public class MitarbeiterResource {
 	@GET
 	@Path("alter{params}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String alterMitarbeiter(@PathParam("params") String query) {
+	public String alterAttribute(@PathParam("params") String query) {
 		query = query.substring(1);
 		String[] params = query.split("&");
-		String[] validParams = {"n", "vn", "er", "em", "ak", "s", "pw", "rk", "gda", "ab", "ve"};
+		String[] validParams = {"n", "vn", "er", "em", "ak", "s", "rk", "gda", "ab", "ve"};
 		if(params.length < 3)
 			return JsonHandler.fehler("Zu wenige Parameter.");
 		if(params[0].split("=").length != 2 || !params[0].split("=")[0].equals("auth"))
@@ -216,4 +216,38 @@ public class MitarbeiterResource {
 		}
 	}
 	
+	@GET
+	@Path("alterPassword{params}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String alterPassword(@PathParam("params") String query) {
+		query = query.substring(1);
+		String[] params = query.split("&");
+		if(params.length != 3)
+			return JsonHandler.fehler("Falsche Anzahl an Parametern.");
+		for (String att : params) {
+			if(att.split("=").length != 2)
+				return JsonHandler.fehler("Parameter sind falsch formatiert.");
+		}
+		String auth = params[0].split("=")[1];
+		String oldPassword = params[1].split("=")[1];
+		String newPassword = params[2].split("=")[1];
+		if(!SessionHandler.checkSessionID(auth))
+			return JsonHandler.fehler("Ungültige SessionID angegeben.");		
+		String personalnummer = Utils.getPersonalnummerFromSessionID(auth);
+		String sqlStmt = "SELECT Passwort FROM gfos.mitarbeiter WHERE Personalnummer = \""  + personalnummer + "\";";
+		try {
+			ResultSet rs = QueryHandler.query(sqlStmt);
+			if(!rs.next())
+				return JsonHandler.fehler("Leere Rückgabe der Datenbank.");
+			if(!PasswordHandler.getHash(oldPassword).equals(rs.getString("Passwort")))
+				return JsonHandler.fehler("Falsches altes Passwort eingegeben.");
+			sqlStmt = "UPDATE gfos.mitarbeiter SET Passwort = \"" + PasswordHandler.getHash(newPassword) + "\" WHERE Personalnummer = \"" + personalnummer + "\";";
+			int result = QueryHandler.update(sqlStmt);
+			if(result == 0)
+				return JsonHandler.fehler("Die Veränderung konnte aufgrund eines Fehlers nicht ausgeführt werden.");
+			return JsonHandler.erfolg("Passwort wurde erfolgreich verändert.");
+		} catch (SQLException e) {
+			return JsonHandler.fehler(e.toString());
+		}
+	}
 }

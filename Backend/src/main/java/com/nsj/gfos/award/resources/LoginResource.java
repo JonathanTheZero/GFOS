@@ -46,7 +46,7 @@ public class LoginResource {
 		if(checkIfUserIsConnected(pn))
 			return JsonHandler.fehler("Dieser Benutzer ist bereits angemeldet.");
 		if(!checkPassword(pw[1], pn)) 
-			return JsonHandler.fehler("Passwort oder Benutzername falsch oder Benutzer existiert nicht.");
+			return JsonHandler.fehler("Passwort oder Email falsch oder Benutzer existiert nicht.");
 		return SessionHandler.createSession(new String[]{auth[1], pn});
 	}	
 	
