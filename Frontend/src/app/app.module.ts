@@ -11,6 +11,7 @@ import { UiModule } from './ui/ui.module';
 import { AppRoutingModule } from './app-routing.module';
 import { PagesModule } from './pages/pages.module';
 import { AuthGuard } from './utils/auth.guard';
+import { PipesModule } from "./utils/pipes.module";
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { AuthGuard } from './utils/auth.guard';
     SweetAlert2Module.forRoot(),
     HttpClientModule,
     NgIdleModule.forRoot(),
+    PipesModule
   ],
   providers: [
     AuthGuard,

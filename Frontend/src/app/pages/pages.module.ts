@@ -10,8 +10,8 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { CustomFormsModule } from './forms/custom-forms.module';
 import { SettingsModule } from './settings/settings.module';
 import { EmployeeStatsComponent } from './employee-stats/employee-stats.component';
-import { ReachablePipe } from './employee-stats/reachable.pipe';
 import { CreditsComponent } from './credits/credits.component';
+import { PipesModule } from '../utils/pipes.module';
 
 
 const components = [
@@ -30,11 +30,11 @@ const components = [
     BrowserAnimationsModule,
     DashboardModule,
     CustomFormsModule,
-    SettingsModule
+    SettingsModule,
+    PipesModule
   ],
   declarations: [
     ...components,
-    ReachablePipe,
   ],
   exports: [
     ...components,

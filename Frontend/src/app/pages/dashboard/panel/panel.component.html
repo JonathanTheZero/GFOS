@@ -5,12 +5,24 @@
         {{e.vorname + " " + e.name}}
       </clr-accordion-title>
       <clr-accordion-content>
-        Personalnummer: 
-        <a routerLink="/employee/{{e.personalnummer}}">
-          {{e.personalnummer}}
-        </a>
+        <table>
+          <tr>
+            <td>Personalnummer:</td>
+            <td><a routerLink="/employee/{{e.personalnummer}}">{{e.personalnummer}}</a></td>
+          </tr>
+          <tr>
+            <td>Stauts:</td>
+            <td>{{e.status}}</td>
+          </tr>
+          <tr>
+            <td>Anwesend:</td>
+            <td>
+              <clr-icon shape="check" *ngIf="e.erreichbar"></clr-icon>
+              <clr-icon shape="times" *ngIf="!e.erreichbar"></clr-icon>
+            </td>
+          </tr>
+        </table>
         <br />
-        Status: {{e.status}}
       </clr-accordion-content>
     </clr-accordion-panel>
   </clr-accordion>
