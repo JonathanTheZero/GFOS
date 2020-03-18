@@ -27,14 +27,7 @@ export class AppComponent implements OnInit {
     window.addEventListener("beforeunload", async e => {
       //user will get logged out if the window is closed
       if (this.dataService.getUser()) {
-        const logout: apiAnswer = this.api.logout();
-        if (logout.erfolg) {
-          this.dataService.setAuth(undefined);
-        }
-        else {
-          return logout.fehler;
-        }
-        return "no";
+        this.api.logout();
       }
     });
 
@@ -64,7 +57,10 @@ export class AppComponent implements OnInit {
         "Inaktivität",
         "Aufgrund von Inaktivität wurden Sie automatisch ausgeloggt. Sie werden nun zur Login-Seite weitergeleitet",
         "info"
-      ).then(() => this.router.navigate(['login']));
+      ).then(() => {
+        this.api.logout();
+        this.router.navigate(['login']);
+      });
     });
 
     this.idle.onIdleStart.subscribe(() => {

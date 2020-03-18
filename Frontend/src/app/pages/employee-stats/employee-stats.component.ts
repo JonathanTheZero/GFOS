@@ -18,7 +18,7 @@ export class EmployeeStatsComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe(params =>{
       this.pn = params.get("id");
-      this.api.getUser(this.pn, true).subscribe(x => this.user = x);
+      this.api.getUser(this.pn).then(x => this.user = x);
     });
   }
 }

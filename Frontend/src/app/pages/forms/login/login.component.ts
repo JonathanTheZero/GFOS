@@ -39,19 +39,20 @@ export class LoginComponent implements OnInit {
   }
 
   public submit() {
-    const answer: apiAnswer = this.api.login(
+    this.api.login(
       this.form.username,
       this.form.password
-    );
-    if (answer.erfolg) {
-      // if the user successfully logged in redirect him after either 5 seconds or when he closes the pop-up
-      // whatever comes first
-      Swal.fire("", "Sie sind nun eingeloggt", "success").then(() =>
-        this.router.navigate([this.url || "dashboard"])
-      );
-      setTimeout(() => this.router.navigate([this.url || "dashboard"]), 5000);
-    } else {
-      this.err.reason = "Die von Ihnen angegeben Daten sind nicht korrekt";
-    }
+    ).then((answer: apiAnswer) => {
+      if (answer.erfolg) {
+        // if the user successfully logged in redirect him after either 5 seconds or when he closes the pop-up
+        // whatever comes first
+        Swal.fire("", "Sie sind nun eingeloggt", "success").then(() =>
+          this.router.navigate([this.url || "dashboard"])
+        );
+        setTimeout(() => this.router.navigate([this.url || "dashboard"]), 5000);
+      } else {
+        this.err.reason = "Die von Ihnen angegeben Daten sind nicht korrekt";
+      }
+    });
   }
 }

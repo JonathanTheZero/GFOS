@@ -14,6 +14,8 @@ export class EmployeesComponent implements OnInit {
   user: Mitarbeiter;
   public valid: boolean;
   public isMobile: boolean;
+  test;
+  test2;
 
   constructor(public api: ApiService,
     public dataService: DataService,) { 

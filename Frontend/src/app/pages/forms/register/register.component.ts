@@ -72,7 +72,7 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
-    const answer: apiAnswer = this.api.registerNewUser(
+    this.api.registerNewUser(
       this.form.lastName,
       this.form.name,
       this.form.email,
@@ -80,22 +80,22 @@ export class RegisterComponent implements OnInit {
       this.form.accessLevel,
       this.form.district,
       this.form.agent
-    );
-    
-    if (answer.fehler) {
-      Swal.fire(
-        "Es tut uns leid",
-        "Bei der Verarbeitung Ihrer Anfrage ist leider etwas schiefgelaufen: Der Server meldete folgenden Grund: " + answer.fehler,
-        "error"
-      );
-    }
-    else {
-      Swal.fire(
-        "Ein neuer Account wurde registriert!",
-        "Sie werden in kürze weitergeleitet.",
-        "success"
-      );
-      setTimeout(() => this.router.navigate(['dashboard']), 5000);
-    }
+    ).then((answer: apiAnswer) => {
+      if (answer.fehler) {
+        Swal.fire(
+          "Es tut uns leid",
+          "Bei der Verarbeitung Ihrer Anfrage ist leider etwas schiefgelaufen: Der Server meldete folgenden Grund: " + answer.fehler,
+          "error"
+        );
+      }
+      else {
+        Swal.fire(
+          "Ein neuer Account wurde registriert!",
+          "Sie werden in kürze weitergeleitet.",
+          "success"
+        );
+        setTimeout(() => this.router.navigate(['dashboard']), 5000);
+      }
+    });
   }
 }

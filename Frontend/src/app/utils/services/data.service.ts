@@ -23,7 +23,7 @@ export class DataService{
   private _mobile: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.isMobileDevice());
 
   constructor() { 
-    /**
+    /*
      * every second the user agent is checked again, this allows live refreshment
      * when the user adjusts the screen size, toggles mobile/desktop view, etc.
      */
@@ -33,7 +33,7 @@ export class DataService{
     });
   }
 
-  /**
+  /*
    * basic getters and setters for methods
    * 
    * Note: some members will subscribe to the counters
@@ -42,51 +42,85 @@ export class DataService{
    * the methods below could've been implemented using js get/set syntax
    * but this looks cleaner in my opinion
    */
+
+  /**
+   * @param user the current logged in user as object
+   */
+  public setUser(user: Mitarbeiter) {
+    this.currentUser = user;
+  }
+
+   /**
+    * @returns the current logged in user
+    */
   public getUser(): Mitarbeiter {
     if (!environment.production) return employeeSamples[0];
     return this.currentUser;
   }
 
+  /**
+   * @param auth: set the current auth token
+   */
   public setAuth(auth: string): void {
     this.auth = auth;
   }
 
+  /**
+   * @returns the current auth token
+   */
   public getAuth(): string {
     return this.auth;
   }
 
-  public setUser(user: Mitarbeiter) {
-    this.currentUser = user;
-  }
-
+  /**
+   * For further information about how/where this is used, see app.component.ts
+   * @returns the current timeout countdown in minutes
+   */
   public getTimeout(): string {
     if(!localStorage.getItem('timeout')) localStorage.setItem('timeout', "2");
     return localStorage.getItem("timeout");
   }
 
+  /**
+   * @param t the new timeout duration in minutes
+   */
   public setTimeout(t: string) {
     //using to notify subscriber components of the value that something has changed
     this.timeoutCounter.next(t);
     localStorage.setItem("timeout", t);
   }
 
+  /**
+   * For further information about how/where this is used, see app.component.ts
+   * @returns the current idle countdown in minutes
+   */
   public getIdle(): string {
     if(!localStorage.getItem("idle")) localStorage.setItem('idle', "10");
     return localStorage.getItem("idle");
   }
 
+  /**
+   * @param i the new idle duration in minutes
+   */
   public setIdle(i : string){
     //using to notify subscriber components of the value that something has changed
     this.idleCounter.next(i);
     localStorage.setItem("idle", i);
   }
 
+  /**
+   * @returns an Observable that holds whether the current user is on mobile or not
+   */
   public isMobile(): Observable<boolean> {
     return this._mobile.asObservable()
   }
 
-  /**
+  /*
    * private methods
+   */
+
+  /**
+   * @returns whether the user uses a mobile/tablet device or not
    */
   private isMobileDevice(): boolean {
     //big big mobile device RegEx, for explanaiton why see the comments around the constructor

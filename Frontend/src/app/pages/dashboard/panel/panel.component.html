@@ -1,8 +1,15 @@
 <div id="employee-panels">
   <clr-accordion [clrAccordionMultiPanel]="true" class="left">
     <clr-accordion-panel *ngFor="let e of employees">
-      <clr-accordion-title>{{e.vorname + " " + e.name}}</clr-accordion-title>
+      <clr-accordion-title>
+        {{e.vorname + " " + e.name}}
+      </clr-accordion-title>
       <clr-accordion-content>
+        Personalnummer: 
+        <a routerLink="/employee/{{e.personalnummer}}">
+          {{e.personalnummer}}
+        </a>
+        <br />
         Status: {{e.status}}
       </clr-accordion-content>
     </clr-accordion-panel>
