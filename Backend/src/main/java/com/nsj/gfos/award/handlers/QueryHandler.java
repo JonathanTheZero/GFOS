@@ -21,13 +21,12 @@ public class QueryHandler {
         ResultSet myRs = null;
         try {
             
-            myConn = DriverManager.getConnection("jdbc:mysql://192.168.178.45/gfos?useSSL=false", "desktop", "gfos2020");
+            myConn = DriverManager.getConnection("jdbc:mysql://192.168.178.45/gfos?useSSL=false", "desktop", "gfos2020");            
             myStmt = myConn.createStatement();
-            myRs = myStmt.executeQuery(stmt);    
+            myRs = myStmt.executeQuery(stmt);               
         } catch(Exception e) {
             e.printStackTrace();
         } 
-        
         return myRs;
     }
     
@@ -38,7 +37,7 @@ public class QueryHandler {
         int myRs = -1;
         try {
             
-            myConn = DriverManager.getConnection("jdbc:mysql://192.168.178.45/gfos?useSSL=false", "desktop", "gfos2020");
+            myConn = DriverManager.getConnection("jdbc:mysql://192.168.178.45/gfos?useSSL=false", "desktop", "gfos2020");           
             myStmt = myConn.createStatement();
             myRs = myStmt.executeUpdate(stmt); 
             
