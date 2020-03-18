@@ -560,11 +560,11 @@ public class Utils {
 	}
 	
 	/**
-	 * Die Methode <i>getPnFromSessionID</i> gibt die Personalnummer des Mitarbeiter mit Hilfe der SessionID zurück.
+	 * Die Methode <i>getPersonalnummerFromSessionID</i> gibt die Personalnummer des Mitarbeiter mit Hilfe der SessionID zurück.
 	 * @param auth - SessionID des Clients
 	 * @return String - Personalnummer des Mitarbeiters
 	 */
-	public static String getPnFromSessionID(String auth) {
+	public static String getPersonalnummerFromSessionID(String auth) {
 		String sqlStmt = "SELECT Mitarbeiter FROM gfos.active_sessions WHERE SessionID = \"" + auth + "\";";
 		try {
 			ResultSet rs = QueryHandler.query(sqlStmt);

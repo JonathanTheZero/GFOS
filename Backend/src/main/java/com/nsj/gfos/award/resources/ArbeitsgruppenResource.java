@@ -223,8 +223,8 @@ public class ArbeitsgruppenResource {
 			return JsonHandler.fehler("SessionID ist ungültig.");
 		if (!Utils.checkIfArbeitsgruppeExistsFromID(id))
 			return JsonHandler.fehler("Arbeitsgruppe existiert nicht.");
-		if (!((Utils.isInArbeitsgruppe(id, Utils.getPnFromSessionID(auth))
-				&& Utils.getLeiter(id).equals(Utils.getPnFromSessionID(auth)))
+		if (!((Utils.isInArbeitsgruppe(id, Utils.getPersonalnummerFromSessionID(auth))
+				&& Utils.getLeiter(id).equals(Utils.getPersonalnummerFromSessionID(auth)))
 				|| RightHandler.checkPermission(auth, "removeArbeitsgruppe")))
 			return JsonHandler.fehler("Der Mitarbeiter hat keine Berechtigung.");
 		String sqlStmt = "DELETE FROM gfos.arbeitsgruppenteilnahme WHERE gfos.arbeitsgruppenteilnahme.ArbeitsgruppenID = \""
@@ -283,8 +283,8 @@ public class ArbeitsgruppenResource {
 			return JsonHandler.fehler("Der Mitarbeiter befindet sich nicht in der Arbeitsgruppe.");
 		if (Utils.getLeiter(id).equals(pn))
 			return JsonHandler.fehler("Der Leiter der Arbeitsgruppe kann nicht entfernt werden.");
-		if (!((Utils.isInArbeitsgruppe(id, Utils.getPnFromSessionID(auth))
-				&& Utils.getLeiter(id).equals(Utils.getPnFromSessionID(auth)))
+		if (!((Utils.isInArbeitsgruppe(id, Utils.getPersonalnummerFromSessionID(auth))
+				&& Utils.getLeiter(id).equals(Utils.getPersonalnummerFromSessionID(auth)))
 				|| RightHandler.checkPermission(auth, "removeMitarbeiterFromArbeitsgruppe")))
 			return JsonHandler.fehler("Der Mitarbeiter hat keine Berechtigung.");
 		String sqlStmt = "DELETE FROM gfos.arbeitsgruppenteilnahme WHERE gfos.arbeitsgruppenteilnahme.ArbeitsgruppenID = \""
@@ -335,8 +335,8 @@ public class ArbeitsgruppenResource {
 			return JsonHandler.fehler("Der Mitarbeiter existiert nicht.");
 		if (Utils.isInArbeitsgruppe(id, pn))
 			return JsonHandler.fehler("Der Mitarbeiter ist bereits in der Arbeitsgruppe vorhanden.");
-		if (!((Utils.isInArbeitsgruppe(id, Utils.getPnFromSessionID(auth))
-				&& Utils.getLeiter(id).equals(Utils.getPnFromSessionID(auth)))
+		if (!((Utils.isInArbeitsgruppe(id, Utils.getPersonalnummerFromSessionID(auth))
+				&& Utils.getLeiter(id).equals(Utils.getPersonalnummerFromSessionID(auth)))
 				|| RightHandler.checkPermission(auth, "addMitarbeiterToArbeitsgruppe")))
 			return JsonHandler.fehler("Der Mitarbeiter hat keine Berechtigung.");
 		String sqlStmt = "INSERT INTO gfos.arbeitsgruppenteilnahme (ArbeitsgruppenID, Mitarbeiter) Values ('" + id
