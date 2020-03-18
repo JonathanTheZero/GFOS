@@ -13,7 +13,7 @@ export class PageNotFoundComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.titleService.setTitle("Fehler");
+    this.titleService.setTitle("Fehler 404");
   }
 
 }

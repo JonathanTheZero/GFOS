@@ -104,6 +104,8 @@ export class SettingsComponent implements OnInit {
       logOut: this.dataService.getTimeout()
     };
     this.titleService.setTitle("Einstellungen");
+
+    //allows to display current settings
     this.dataService.idleCounter.subscribe(x => this.currentSettings.idle = x);
     this.dataService.timeoutCounter.subscribe(x => this.currentSettings.logOut = x);
   }

@@ -62,7 +62,7 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
-    if (!["admin", "personalabteilung", "gruppenleiter", "user"].includes(this.form.accessLevel)) {
+    if (!this.form.accessLevel) {
       this.err.reason = "Bitte wählen Sie eine Rechteklasse!";
       return;
     }

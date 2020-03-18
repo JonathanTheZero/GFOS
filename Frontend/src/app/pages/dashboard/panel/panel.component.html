@@ -1,18 +1,10 @@
-<div style="width: 100">
+<div id="employee-panels">
   <clr-accordion [clrAccordionMultiPanel]="true" class="left">
-    <clr-accordion-panel>
-      <clr-accordion-title>Item 1</clr-accordion-title>
-      <clr-accordion-content>Content 1</clr-accordion-content>
-    </clr-accordion-panel>
-  
-    <clr-accordion-panel>
-      <clr-accordion-title>Item 2</clr-accordion-title>
-      <clr-accordion-content>Content 2</clr-accordion-content>
-    </clr-accordion-panel>
-  
-    <clr-accordion-panel>
-      <clr-accordion-title>Item 3</clr-accordion-title>
-      <clr-accordion-content>Content 3</clr-accordion-content>
+    <clr-accordion-panel *ngFor="let e of employees">
+      <clr-accordion-title>{{e.vorname + " " + e.name}}</clr-accordion-title>
+      <clr-accordion-content>
+        Status: {{e.status}}
+      </clr-accordion-content>
     </clr-accordion-panel>
   </clr-accordion>
 </div>

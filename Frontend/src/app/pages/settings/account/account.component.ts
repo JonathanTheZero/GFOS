@@ -50,6 +50,7 @@ export class AccountComponent implements OnInit {
   }
 
   submit() {
+    //validate input and give user success alert
     if (this.form.valid) {
       if (this.onSubmit === "email") {
         this.api.changeEmail(

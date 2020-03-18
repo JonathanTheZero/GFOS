@@ -36,6 +36,8 @@ export class ApiService {
    * All methods are using API requests (using Angulars HttpModule)
    * the answer has a specified JSON format (apiAnswer from ../interfaces/default.model.ts)
    * the data service handels saving the auth token and the user data
+   * some methods are available either as Observable or as normal object
+   * in order to provide live updates via subscribing
    */
   public registerNewUser(
     name: string,
@@ -79,8 +81,6 @@ export class ApiService {
   }
 
   public changeEmail(pw: string, email: string): Promise<apiAnswer> {
-    alert("not implemented yet");
-    throw new Error("Not implemented yet!");
     const auth: string = this.dataService.getAuth();
     var answer: Promise<apiAnswer> = this.http
       .get<apiAnswer>(``)
@@ -89,9 +89,7 @@ export class ApiService {
   }
 
   public changePassword(pw: string, newPw: string): Promise<apiAnswer> {
-    alert("not implemented yet");
-    throw new Error("Not implemented yet!");
-    var answer: Promise<apiAnswer> = this.http.get<apiAnswer>(``).toPromise();
+    var answer: Promise<apiAnswer> = this.http.get<apiAnswer>(`/alter:auth=${this.dataService.getAuth()}&pw=${newPw}`).toPromise();
     return answer;
   }
 
