@@ -29,6 +29,62 @@ import java.util.ArrayList;
 public class ArbeitsgruppenResource {
 
 	/**
+	 * Die Methode <i>getAllArbeitsgruppen</i> gibt alle bestehenden Arbeitsgruppen zur�ck.
+	 * 
+	 * @param auth - SessionID des anfordernden Mitarbeiters
+	 * @return String - alle Arbeitsgruppen als Json
+	 */
+	@GET
+	@Path("getAll{attributes}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public static String getAllArbeitsgruppen(@PathParam("attributes") String query) {
+		query = query.substring(1);
+		String[] attributes = query.split("&");
+		if (attributes.length != 1)
+			return JsonHandler.fehler("Falsche Anzahl an Parametern.");
+		for (String attribute : attributes) {
+			if (attribute.split("=").length != 2)
+				return JsonHandler.fehler("Parameter sind falsch formatiert.");
+		}
+		String auth = attributes[0].split("=")[1];
+		if (!SessionHandler.checkSessionID(auth))
+			return JsonHandler.fehler("SessionID ist ungültig.");
+		if(!RightHandler.checkPermission(auth, "getAllArbeitsgruppen"))
+			return JsonHandler.fehler("Der Mitarbeiter hat keine Berechtigung.");
+		String sqlStmt = "SELECT gfos.arbeitsgruppe.ArbeitsgruppenID, gfos.arbeitsgruppe.Bezeichnung, gfos.arbeitsgruppe.Leiter FROM gfos.arbeitsgruppe;";
+		try {
+			ResultSet rs = QueryHandler.query(sqlStmt);
+			if (!rs.next())
+				return JsonHandler.fehler("Leere Rückgabe der Datenbank.");
+			ArrayList<Arbeitsgruppe> arbeitsgruppen = new ArrayList<Arbeitsgruppe>();
+			ObjectMapper om = new ObjectMapper();
+			do {
+				Arbeitsgruppe a = new Arbeitsgruppe();
+				a.setBezeichnung(rs.getString("Bezeichnung"));
+				a.setLeiter(rs.getString("Leiter"));
+				a.setArbeitsgruppenID(rs.getString("ArbeitsgruppenID"));
+				String sql = "SELECT gfos.arbeitsgruppenteilnahme.Mitarbeiter FROM gfos.arbeitsgruppenteilnahme WHERE \"" + a.getArbeitsgruppenID() + "\" = gfos.arbeitsgruppenteilnahme.ArbeitsgruppenID;";
+				try {
+					ResultSet mitarbeiter = QueryHandler.query(sql);
+					while(mitarbeiter.next()) {
+						a.addMitglied(mitarbeiter.getString("Mitarbeiter"));
+					}
+				}catch (SQLException e) {
+					return JsonHandler.fehler(e.toString());
+				}
+				arbeitsgruppen.add(a);
+			}while(rs.next());
+			try {
+				return om.writeValueAsString(arbeitsgruppen);
+			} catch (Exception e) {
+				return JsonHandler.fehler(e.toString());
+			}
+		} catch (SQLException e) {
+			return JsonHandler.fehler(e.toString());
+		}
+	}
+	
+	/**
 	 * Die Methode <i>getArbeitsgruppenFromMitarbeiter</i> gibt die Arbeitsgruppen des
 	 * Mitarbeiters, dem die Personalnummer gehört, aus der Datenbank zurück, falls
 	 * diese existieren.
@@ -53,10 +109,10 @@ public class ArbeitsgruppenResource {
 		String pn = attributes[1].split("=")[1];
 		if (pn.length() != 12)
 			return JsonHandler.fehler("Ungültige Personalnummer.");
-		if(!RightHandler.checkPermission(auth, "getArbeitsgruppen"))
-			return JsonHandler.fehler("Der Mitarbeiter hat keine Berechtigung.");
 		if (!SessionHandler.checkSessionID(auth))
 			return JsonHandler.fehler("SessionID ist ungültig.");
+		if(!RightHandler.checkPermission(auth, "getArbeitsgruppen"))
+			return JsonHandler.fehler("Der Mitarbeiter hat keine Berechtigung.");
 		String sqlStmt = "SELECT gfos.arbeitsgruppe.ArbeitsgruppenID, gfos.arbeitsgruppe.Bezeichnung, gfos.arbeitsgruppe.Leiter FROM gfos.arbeitsgruppe WHERE gfos.arbeitsgruppe.ArbeitsgruppenID IN (SELECT gfos.arbeitsgruppenteilnahme.ArbeitsgruppenID FROM gfos.arbeitsgruppenteilnahme WHERE gfos.arbeitsgruppenteilnahme.Mitarbeiter = \"" + pn + "\") ORDER BY gfos.arbeitsgruppe.ArbeitsgruppenID ASC;";
 		try {
 			ResultSet rs = QueryHandler.query(sqlStmt);
