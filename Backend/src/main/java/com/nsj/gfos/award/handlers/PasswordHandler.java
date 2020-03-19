@@ -19,12 +19,12 @@ public class PasswordHandler {
 	 * @param password - das zu verhashende Passwort
 	 * @return String - das verhashte Passwort
 	 */
-	public static String getHash(String password) { // Passwort als Parameter eiongeben
+	public static String getHash(String password) {
 		String hashValue = "";
 		if (password.equals(""))
-			return hashValue; // Falls das Passwort leer ist, gibt es einen leeren Hash-Code
+			return hashValue;
 
-		password += "GF05@!*6R73L"; // Salt dranhängen wegen Wörterbuch-Attacken
+		password += "GF05@!*6R73L";
 		byte[] inputBytes = password.getBytes();
 		try {
 			MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
@@ -33,7 +33,7 @@ public class PasswordHandler {
 			hashValue = DatatypeConverter.printHexBinary(digestedBytes).toLowerCase();
 		} catch (Exception ex) {
 		}
-		return hashValue; // falls ein Fehler auftritt, wird ein leerer String zurückgegeben
+		return hashValue;
 	}
 
 }
