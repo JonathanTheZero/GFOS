@@ -241,6 +241,8 @@ public class MitarbeiterResource {
 				return JsonHandler.fehler("Leere Rückgabe der Datenbank.");
 			if(!PasswordHandler.getHash(oldPassword).equals(rs.getString("Passwort")))
 				return JsonHandler.fehler("Falsches altes Passwort eingegeben.");
+			if(PasswordHandler.getHash(oldPassword).equals(PasswordHandler.getHash(newPassword)))
+				return JsonHandler.fehler("Das neue Passwort gleicht dem alten.");
 			sqlStmt = "UPDATE gfos.mitarbeiter SET Passwort = \"" + PasswordHandler.getHash(newPassword) + "\" WHERE Personalnummer = \"" + personalnummer + "\";";
 			int result = QueryHandler.update(sqlStmt);
 			if(result == 0)
