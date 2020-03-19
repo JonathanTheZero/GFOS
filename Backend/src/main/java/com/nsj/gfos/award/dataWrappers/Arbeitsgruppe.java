@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Die Klasse <i>Arbeitsgruppe</i> ist lediglich dazu da, die Tabelle 'arbeitsgruppe' der Datenbank in einem 
  * Java Objekt zusammenzufassen.
- * @author Artemis
+ * @author Sophief
  */
 public class Arbeitsgruppe {
     

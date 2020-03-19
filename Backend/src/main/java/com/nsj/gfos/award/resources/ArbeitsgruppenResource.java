@@ -23,7 +23,7 @@ import java.util.ArrayList;
 /**
  * Die Klasse <i>ArbeitsgruppenResource</i> ist eine Resource der Api und wird über den Pfad /api/arbeitsgruppen angesprochen.
  * Sie ist dafür da, die Anfragen des Clients bezüglich der Arbeitsgruppen zu verwalten.
- * @author Artemis
+ * @author Sophief
  */
 @Path("arbeitsgruppen")
 public class ArbeitsgruppenResource {
