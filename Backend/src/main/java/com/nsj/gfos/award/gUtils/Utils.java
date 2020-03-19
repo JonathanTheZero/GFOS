@@ -142,9 +142,6 @@ public class Utils {
 		a.setBezeichnung(rs.getString("Bezeichnung"));
 		a.setLeiter(rs.getString("Leiter"));
 		a.setArbeitsgruppenID(rs.getString("ArbeitsgruppenID"));
-		do {
-			a.addMitglied(rs.getString("Mitarbeiter"));
-		} while (rs.next());
 		return a;
 	}
 
@@ -214,6 +211,25 @@ public class Utils {
 		} catch (SQLException e) {
 			return true;
 		}
+	}
+	
+	/**
+	 * Die Methode <i>getArbeitsgruppenIDFromBezeichnung</i> gibt die Bezeichnung der Arbeitsgruppe zurück, die die ArbeitsgruppenID hat.
+	 * 
+	 * @param bezeichnung - Bezeichnung der Arbeitsgruppe, dessen ID man haben möchte
+	 * @return String - ArbeitsgruppenID
+	 */
+	public static String getArbeitsgruppenIDFromBezeichnung(String bezeichnung) {
+		String sqlStmt = "SELECT ArbeitsgruppenID FROM gfos.arbeitsgruppe WHERE Bezeichnung = \"" + bezeichnung + "\";";
+		try {
+			ResultSet rs = QueryHandler.query(sqlStmt);
+			if(!rs.next())
+				return "";
+			return rs.getString("ArbeitsgruppenID");
+		} catch (SQLException e) {
+			return "";
+		}
+		
 	}
 
 	/**
