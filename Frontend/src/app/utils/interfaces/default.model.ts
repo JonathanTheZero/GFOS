@@ -20,3 +20,10 @@ export interface apiAnswer {
 export interface apiStats {
     
 }
+
+export interface Arbeitsgruppe {
+    mitglieder: Array<string>;
+    leiter: string;
+    bezeichnung: string;
+    arbeitsgruppenID: string;
+}

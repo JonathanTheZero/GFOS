@@ -28,7 +28,6 @@ export class DataService{
      * when the user adjusts the screen size, toggles mobile/desktop view, etc.
      */
     interval(1000).subscribe(() => {
-      console.log(); 
       this._mobile.next(this.isMobileDevice())
     });
   }
@@ -54,7 +53,7 @@ export class DataService{
     * @returns the current logged in user
     */
   public getUser(): Mitarbeiter {
-    if (!environment.production) return employeeSamples[0];
+    //if (!environment.production) return employeeSamples[0];
     return this.currentUser;
   }
 

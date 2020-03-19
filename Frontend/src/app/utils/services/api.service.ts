@@ -11,10 +11,12 @@ import { employeeSamples } from '../mock.data';
 })
 
 export class ApiService {
-  private readonly url: string = "http://localhost:8080/Backend/api";
+  private readonly url: string = "http://localhost:4200/Backend/api";
 
   private httpOptions = {
-    headers: new HttpHeaders({ "Content-Type": "application/json" })
+    headers: new HttpHeaders({
+      "Content-Type": "application/json"
+    })
   };
 
   constructor(private http: HttpClient, private dataService: DataService) { }
@@ -76,6 +78,8 @@ export class ApiService {
     let a = await this.http
       .get<apiAnswer>(`${this.url}/login:auth=${auth}&pn=${pn}&pw=${pw}`)
       .toPromise<apiAnswer>();
+
+      console.log(JSON.stringify(a));
 
     this.dataService.setAuth(auth);
     return a;
@@ -187,6 +191,7 @@ export class ApiService {
     const dec2hex = (dec: number) => ("0" + dec.toString(16)).substr(-2); //convert decimal to hexadecimal
     var arr = new Uint8Array(24); //makes a length 12 auth token
     window.crypto.getRandomValues(arr);
-    return Array.from(arr, dec2hex).join("");
+    let x = Array.from(arr, dec2hex).join("");
+    return x.substr(0, 12);
   }
 }

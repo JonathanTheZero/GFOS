@@ -39,10 +39,10 @@ public class LoginResource {
 		if(auth[1].length() != 12) 
 			return JsonHandler.fehler("Parameter sind falsch formatiert.");
 		String pn = Utils.getPersonalnummerFromEmail(em[1]);
-		if(Utils.checkIfUserIsConnected(pn))
-			return JsonHandler.fehler("Dieser Benutzer ist bereits angemeldet.");
 		if(!Utils.checkPassword(pw[1], pn)) 
 			return JsonHandler.fehler("Passwort oder Email falsch oder Benutzer existiert nicht.");
+		if(Utils.checkIfUserIsConnected(pn))
+			return JsonHandler.fehler("Dieser Benutzer ist bereits angemeldet.");		
 		return SessionHandler.createSession(new String[]{auth[1], pn});
 	}	
 				

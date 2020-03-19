@@ -29,6 +29,8 @@ export class AppComponent implements OnInit {
       if (this.dataService.getUser()) {
         this.api.logout();
       }
+
+      return false;
     });
 
 

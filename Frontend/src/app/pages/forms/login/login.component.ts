@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
         );
         setTimeout(() => this.router.navigate([this.url || "dashboard"]), 5000);
       } else {
-        this.err.reason = "Die von Ihnen angegeben Daten sind nicht korrekt";
+        this.err.reason = answer.fehler;
       }
     });
   }
