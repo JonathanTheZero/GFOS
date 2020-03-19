@@ -1,9 +1,3 @@
-/*
-d * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.nsj.gfos.award.resources;
 
 import javax.ws.rs.GET;
@@ -203,7 +197,7 @@ public class MitarbeiterResource {
 			if(!Arrays.asList(validParams).contains(params[i].split("=")[0]))
 				return JsonHandler.fehler("Kein valider Parameter.");
 			String action = Utils.getAlterAction(params[0].split("=")[1], pn);
-			if (!RightHandler.checkPermission(params[0].split("=")[1], action) || !RightHandler.permittedAttribute(action, params[i].split("=")[0]))
+			if (!RightHandler.checkPermission(params[0].split("=")[1], action))
 				return JsonHandler.fehler("Keine Genehmigung für diese Aktion erhalten.");
 			values += Utils.getColumnName(params[i].split("=")[0]) + " = " + Utils.getFormattedValue(params[i].split("=")) + ", ";
 		}	
@@ -238,6 +232,8 @@ public class MitarbeiterResource {
 		String personalnummer = Utils.getPersonalnummerFromSessionID(auth);
 		if(!Utils.checkPassword(oldPassword, personalnummer))
 			return JsonHandler.fehler("Falsches altes Passwort eingegeben.");
+		if(oldPassword.equals(newPassword))
+			return JsonHandler.fehler("Das neue Passwort darf nicht dem alten entsprechen.");
 		try {
 			String sqlStmt = "UPDATE gfos.mitarbeiter SET Passwort = \"" + PasswordHandler.getHash(newPassword) + "\" WHERE Personalnummer = \"" + personalnummer + "\";";
 			int result = QueryHandler.update(sqlStmt);

@@ -474,14 +474,14 @@ public class Utils {
 	 *         "sicheresPasswort123".
 	 */
 	public static String getFormattedValue(String[] param) {
-		String[] strings = { "n", "vn", "em", "s", "pw", "rk", "gda", "ab", "ve" };
+		String[] strings = { "n", "vn", "em", "s", "rk", "gda", "ab", "ve" };
 		if (Arrays.asList(strings).contains(param[0]))
 			return "\"" + param[1] + "\"";
 		return param[1];
 	}
 
 	/**
-	 * Die Methode <i>getFormattedValue</i> wird bei einer Anfrage an die
+	 * Die Methode <i>getColumnName</i> wird bei einer Anfrage an die
 	 * /mitarbeiter/alter Resource aufgerufen und gibt den vollen Namen einer
 	 * Spalte, abhängig von dem übergebeben Kürzel zurück.
 	 * 
@@ -577,9 +577,9 @@ public class Utils {
 	}
 
 	/**
-	 * 
-	 * @param email
-	 * @return
+	 * Die Methode <i>getPersonalnummerFromEmail</i> gibt die Personalnummer eines Mitarbeiters mit Hilfe der Email zurück.
+	 * @param email - Email des Mitarbeiters
+	 * @return String - Personalnummer des Mitarbeiters
 	 */
 	public static String getPersonalnummerFromEmail(String email) {
 		String sqlStmt = "SELECT Personalnummer FROM gfos.mitarbeiter WHERE EMail = \"" + email + "\";";
@@ -611,7 +611,10 @@ public class Utils {
 	}
 
 	/**
-	 * TODO
+	 * Die Methode <i>checkIfUSerIsConnected</i> prüft anhand der gegebenen Personalnummer, ob eine aktive Session 
+	 * dieses Mitarbeiters existiert.
+	 * @param pn - Personalnummer des Mitarbeiters
+	 * @return boolean - true, wenn eine aktive Session existiert, false, wenn nicht
 	 */
 	public static boolean checkIfUserIsConnected(String pn) {
 		String sqlStmt = "SELECT * FROM gfos.active_sessions WHERE Mitarbeiter = \"" + pn + "\";";	
@@ -624,7 +627,11 @@ public class Utils {
 	}
 
 	/**
-	 * TODO
+	 * Die Methode <i>checkPassword</i> prüft, ob ein gegebenes Passwort mit dem des gegebenen Mitarbeiters 
+	 * übereinstimmt.
+	 * @param password - eingegebenes Passwort
+	 * @param pn - Personalnummer des zu überprüfenden Mitarbeiters
+	 * @return boolean - true, wenn die Passwörter übereinstimmen, false, wenn nicht
 	 */
 	public static boolean checkPassword(String password, String pn) {
 		String hashed = PasswordHandler.getHash(password);

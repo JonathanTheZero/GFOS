@@ -1,11 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.nsj.gfos.award.dataWrappers;
 
+/**
+ * Die Klasse <i>Mitarbeiter</i> ist lediglich dazu da, die Tabelle 'mitarbeiter' der Datenbank in einem 
+ * Java Objekt zusammenzufassen.
+ * @author Schnuels
+ */
 public class Mitarbeiter {
     
     private String personalnummer = null;

@@ -8,10 +8,11 @@ import java.util.Arrays;
  * Verwaltung der Rechteklassen der Mitarbeiter. Gibt Bestätigung, wenn eine
  * Aktion ausgeführt werden darf.
  * 
- * @author sophi
+ * @author Artemis
  *
  */
 public class RightHandler {
+
 	/**
 	 * String Arrays, in denen alle möglichen Rechteklassen und auszuführende
 	 * Aktionen abgespeichert sind.
@@ -61,19 +62,6 @@ public class RightHandler {
 		} catch (SQLException e) {
 			return "";
 		}
-	}
-
-	/**
-	 * TODO
-	 * 
-	 * @param action
-	 * @param attribute
-	 * @return
-	 */
-	public static boolean permittedAttribute(String action, String attribute) {
-		if (!action.equals("selfAlter") && attribute.equals("pw"))
-			return false;
-		return true;
 	}
 
 	/**

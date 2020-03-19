@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package com.nsj.gfos.award.resources;
 
 import javax.ws.rs.GET;
@@ -24,6 +18,12 @@ import com.nsj.gfos.award.handlers.SessionHandler;
 @Path("login{params}")
 public class LoginResource {
 
+	/**
+	 * Die Methode <i>login</i> wird bei einer Anfrage an die Resource aufgerufen und prüft verschiedenste Fehler und die
+	 * Richtigkeit der Anmeldedaten, bevor sie über den <i>SessionHandler</i> eine neue Session für den Mitarbeiter erstellt.
+	 * @param param - Teil der URL nach 'login' also zum Beispiel ':auth=123456789012&em=e@e.de&pw=1234'
+	 * @return String - über den <i>JsonHandler</i> formatierter Fehler oder die Rückgabe von <i>SessionHandler.createSession(...)</i>
+	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public String login(@PathParam("params") String param) {
