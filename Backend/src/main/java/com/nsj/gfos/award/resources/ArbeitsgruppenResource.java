@@ -23,7 +23,7 @@ import java.util.ArrayList;
 /**
  * Die Klasse <i>ArbeitsgruppenResource</i> ist eine Resource der Api und wird über den Pfad /api/arbeitsgruppen angesprochen.
  * Sie ist dafür da, die Anfragen des Clients bezüglich der Arbeitsgruppen zu verwalten.
- * @author Sophief
+ * @author Artemis
  */
 @Path("arbeitsgruppen")
 public class ArbeitsgruppenResource {
@@ -148,7 +148,7 @@ public class ArbeitsgruppenResource {
 	 * @param auth        - SessionID des ausführenden Mitarbeiters
 	 * @param bezeichnung - Bezeichnung für neue Arbeitsgruppe
 	 * @param pn          - Personalnummer des Mitarbeiters, der Leiter werden soll
-	 * @return String - Erfolg oder Fehler als Rückgabe
+	 * @return String - neu erstellte Arbeitsgruppe oder Fehler als Rückgabe
 	 */
 	@GET
 	@Path("add{attributes}")
@@ -193,7 +193,12 @@ public class ArbeitsgruppenResource {
 			int rs = QueryHandler.update(sqlStmt);
 			if (rs == 0)
 				return JsonHandler.fehler("Das Einfügen des Leiters konnte nicht durchgeführt werden.");
-			return JsonHandler.erfolg("Arbeitsgruppe wurde erfolgreich erstellt.");
+			Arbeitsgruppe a = new Arbeitsgruppe();
+			a.setBezeichnung(bezeichnung);
+			a.setArbeitsgruppenID(arbeitsgruppenID);
+			a.setLeiter(leiter);
+			a.addMitglied(leiter);
+			return JsonHandler.createJsonFromArbeitsgruppe(a);
 		} catch (SQLException e) {
 			return JsonHandler.fehler(e.toString());
 		}
