@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { apiAnswer, Mitarbeiter, apiStats } from "../interfaces/default.model";
+import { apiAnswer, Mitarbeiter, Arbeitsgruppe } from "../interfaces/default.model";
 import { environment } from "src/environments/environment";
 import { DataService } from "./data.service";
 import { employeeSamples } from '../mock.data';
@@ -10,6 +10,9 @@ import { employeeSamples } from '../mock.data';
   providedIn: "root"
 })
 
+/**
+ * @author Jonathan
+ */
 export class ApiService {
   private readonly url: string = "http://localhost:4200/Backend/api";
 
@@ -123,16 +126,6 @@ export class ApiService {
   }
 
   /**
-   * Returns the current stats about the system (if wished as Observble)
-   * @returns the current stats hold by a Promise
-   */
-  public async getStats(): Promise<apiStats> {
-    return await this.http
-      .get<apiStats>(`${this.url}/stats`)
-      .toPromise();
-  }
-
-  /**
   * Returns the data of a specific user
   * @param pn the ID of the requested employee
   * @returns the stats as Promise that holds the API answer Object
@@ -151,7 +144,7 @@ export class ApiService {
    */
   public async addGroup(name: string, pn?: string | number): Promise<apiAnswer> {
     return await this.http
-      .get<apiAnswer>(`${this.url}/arbeitsgruppe/add:auth=${this.dataService.getAuth()}&name=${name}&pn=${pn || this.dataService.getUser().personalnummer}`)
+      .get<apiAnswer>(`${this.url}/arbeitsgruppen/add:auth=${this.dataService.getAuth()}&name=${name}&pn=${pn || this.dataService.getUser().personalnummer}`)
       .toPromise();
   }
 
@@ -163,7 +156,7 @@ export class ApiService {
    */
   public async removeFromGroup(pn: number | string, groupID: string): Promise<apiAnswer> {
     return await this.http
-      .get<apiAnswer>(`${this.url}/arbeitsgruppe/removeMitarbeiter:auth=${this.dataService.getAuth()}&pn=${pn}&arbeitsgruppenID=${groupID}`)
+      .get<apiAnswer>(`${this.url}/arbeitsgruppen/removeMitarbeiter:auth=${this.dataService.getAuth()}&pn=${pn}&arbeitsgruppenID=${groupID}`)
       .toPromise();
   }
 
@@ -175,7 +168,28 @@ export class ApiService {
    */
   public async addToGroup(pn: number | string, groupID: string): Promise<apiAnswer> {
     return await this.http
-      .get<apiAnswer>(`${this.url}/arbeitsgruppe/addMitarbeiter:auth=${this.dataService.getAuth()}&pn=${pn}&arbeitsgruppe=${groupID}`)
+      .get<apiAnswer>(`${this.url}/arbeitsgruppen/addMitarbeiter:auth=${this.dataService.getAuth()}&pn=${pn}&arbeitsgruppe=${groupID}`)
+      .toPromise();
+  }
+
+  /**
+   * Gets a group via it's name
+   * @param name the name of the group
+   * @returns a Promise that holds the answer given back by the server
+   */
+  public async getGroupByName(name: string): Promise<Arbeitsgruppe> {
+    return await this.http
+      .get<Arbeitsgruppe>(`${this.url}/arbeitsgruppen/getFromBezeichnung:auth=${this.dataService.getAuth()}&name=${name}`) //TODO
+      .toPromise();
+  }
+
+  /**
+   * Requests all groups from the server
+   * @returns an Array including all current groups from the server
+   */
+  public async getAllGroups(): Promise<Array<Arbeitsgruppe>> {
+    return await this.http
+      .get<Array<Arbeitsgruppe>>(`${this.url}/arbeitsgruppen/getAll:auth=${this.dataService.getAuth()}`)
       .toPromise();
   }
 

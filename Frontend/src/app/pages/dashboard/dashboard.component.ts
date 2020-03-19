@@ -15,6 +15,7 @@ export class DashboardComponent implements OnInit {
   public isMobile: boolean;
   public user: Mitarbeiter;
   public valid: boolean;
+  x: boolean = false;
 
   constructor(private titleService: Title,
     public api: ApiService,

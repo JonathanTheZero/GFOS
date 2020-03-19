@@ -11,6 +11,8 @@ import { Observable, of, Subject, BehaviorSubject, interval } from 'rxjs';
 /**
  * This service explicity <b>doesn't</b> work with the API
  * it only serves static data that has been a result of previous API requests to the User
+ * 
+ * @author Jonathan
  */
 export class DataService{
 
@@ -53,7 +55,7 @@ export class DataService{
     * @returns the current logged in user
     */
   public getUser(): Mitarbeiter {
-    //if (!environment.production) return employeeSamples[0];
+    if (!environment.production) return employeeSamples[0];
     return this.currentUser;
   }
 

@@ -17,10 +17,6 @@ export interface apiAnswer {
     data?: Mitarbeiter;
 }
 
-export interface apiStats {
-    
-}
-
 export interface Arbeitsgruppe {
     mitglieder: Array<string>;
     leiter: string;

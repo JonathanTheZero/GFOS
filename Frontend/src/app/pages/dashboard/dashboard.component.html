@@ -11,6 +11,7 @@
     <br />
 
     <ng-container *ngIf="valid">
-        <button class="btn">Arbeitsgruppe hinzufügen</button>
+        <button class="btn" (click)="x != x">Arbeitsgruppe hinzufügen</button>
     </ng-container>
+    <dashboard-add-group-wizard [openOnStart]="x"></dashboard-add-group-wizard>
 </div>
