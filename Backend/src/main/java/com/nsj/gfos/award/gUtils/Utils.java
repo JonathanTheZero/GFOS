@@ -212,6 +212,19 @@ public class Utils {
 			return true;
 		}
 	}
+	
+	public static String getArbeitsgruppenIDFromBezeichnung(String bezeichnung) {
+		String sqlStmt = "SELECT ArbeitsgruppenID FROM gfos.arbeitsgruppe WHERE Bezeichnung = \"" + bezeichnung + "\";";
+		try {
+			ResultSet rs = QueryHandler.query(sqlStmt);
+			if(!rs.next())
+				return "";
+			return rs.getString("ArbeitsgruppenID");
+		} catch (SQLException e) {
+			return "";
+		}
+		
+	}
 
 	/**
 	 * Die Methode <i>getGetAction</i> wird aufgerufen, wenn der Client eine Anfrage
