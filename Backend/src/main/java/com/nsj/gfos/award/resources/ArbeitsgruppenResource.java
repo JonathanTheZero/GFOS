@@ -362,14 +362,14 @@ public class ArbeitsgruppenResource {
 	}
 	
 	/**
-	 * Die Methode <i>getArbeitsgruppe</i> gibt die Arbeitsgruppe mit Hilfe ihrer ID zurück.
+	 * Die Methode <i>getArbeitsgruppeFromID</i> gibt die Arbeitsgruppe mit Hilfe ihrer ID zurück.
 	 * 
 	 * @param auth - SessionID des ausführenden Mitarbeiters
 	 * @param id   - ArbeitsgruppenID von der Abreitsgruppe, die man haben möchte
 	 * @return String - Arbeitsgruppe als Json
 	 */
 	@GET
-	@Path("get{attributes}")
+	@Path("getFromID{attributes}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public static String getArbeitsgruppeFromID(@PathParam("attributes") String query) {
 		query = query.substring(1);
@@ -388,6 +388,57 @@ public class ArbeitsgruppenResource {
 			return JsonHandler.fehler("SessionID ist ungültig.");
 		if (!Utils.checkIfArbeitsgruppeExistsFromID(id))
 			return JsonHandler.fehler("Arbeitsgruppe existiert nicht.");
+		if(!(Utils.isInArbeitsgruppe(id, Utils.getPersonalnummerFromSessionID(auth)) || RightHandler.checkPermission(auth, "getArbeitsgruppe")))
+			return JsonHandler.fehler("Der Mitarbeiter hat keine Berechtigung.");
+		String sqlStmt = "SELECT gfos.arbeitsgruppe.ArbeitsgruppenID, gfos.arbeitsgruppe.Bezeichnung, gfos.arbeitsgruppe.Leiter FROM gfos.arbeitsgruppe WHERE gfos.arbeitsgruppe.ArbeitsgruppenID = \"" + id + "\";";
+		try {
+			ResultSet rs = QueryHandler.query(sqlStmt);
+			if (!rs.next())
+				return JsonHandler.fehler("Leere Rückgabe der Datenbank.");
+			Arbeitsgruppe a = Utils.createArbeitsgruppeFromQuery(rs);
+			sqlStmt = "SELECT mitarbeiter FROM gfos.arbeitsgruppenteilnahme WHERE gfos.arbeitsgruppenteilnahme.ArbeitsgruppenID = \"" + id + "\";";
+			if (!rs.next())
+				return JsonHandler.fehler("Leere Rückgabe der Datenbank.");
+			do {
+				a.addMitglied(rs.getString("Mitarbeiter"));
+			} while (rs.next());
+			return JsonHandler.createJsonFromArbeitsgruppe(a);
+		}catch (SQLException e) {
+			return JsonHandler.fehler(e.toString());
+		}
+	}
+	
+	/**
+	 * Die Methode <i>getArbeitsgruppeFromBezeichnung</i> gibt die Arbeitsgruppe mit
+	 * Hilfe ihrer Bezeichnung zurück.
+	 * 
+	 * @param auth        - SessionID des ausführenden Mitarbeiters
+	 * @param bezeichnung - Bezeichnung von der Abreitsgruppe, die man haben möchte
+	 * @return String - Arbeitsgruppe als Json
+	 */
+	@GET
+	@Path("getFromBezeichnung{attributes}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public static String getArbeitsgruppeFromBezeichnung(@PathParam("attributes") String query) {
+		query = query.substring(1);
+		String[] attributes = query.split("&");
+		if (attributes.length != 2)
+			return JsonHandler.fehler("Falsche Anzahl an Parametern.");
+		for (String attribute : attributes) {
+			if (attribute.split("=").length != 2)
+				return JsonHandler.fehler("Parameter sind falsch formatiert.");
+		}
+		String auth = attributes[0].split("=")[1];
+		String bezeichnung = attributes[1].split("=")[1];
+		if (bezeichnung.equals(""))
+			return JsonHandler.fehler("Bezeichnung ist leer.");
+		if (!SessionHandler.checkSessionID(auth))
+			return JsonHandler.fehler("SessionID ist ungültig.");
+		if (!Utils.checkIfArbeitsgruppeExistsFromBezeichnung(bezeichnung))
+			return JsonHandler.fehler("Arbeitsgruppe existiert nicht.");
+		if(Utils.getArbeitsgruppenIDFromBezeichnung(bezeichnung).equals(""))
+			return JsonHandler.fehler("Arbeitsgruppe existiert nicht.");
+		String id = Utils.getArbeitsgruppenIDFromBezeichnung(bezeichnung);
 		if(!(Utils.isInArbeitsgruppe(id, Utils.getPersonalnummerFromSessionID(auth)) || RightHandler.checkPermission(auth, "getArbeitsgruppe")))
 			return JsonHandler.fehler("Der Mitarbeiter hat keine Berechtigung.");
 		String sqlStmt = "SELECT gfos.arbeitsgruppe.ArbeitsgruppenID, gfos.arbeitsgruppe.Bezeichnung, gfos.arbeitsgruppe.Leiter FROM gfos.arbeitsgruppe WHERE gfos.arbeitsgruppe.ArbeitsgruppenID = \"" + id + "\";";
