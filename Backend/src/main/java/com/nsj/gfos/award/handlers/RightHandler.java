@@ -18,11 +18,11 @@ public class RightHandler {
 	 * Aktionen abgespeichert sind.
 	 */
 	private static final String[] allRightclasses = { "root", "admin", "personnelDepartment", "headOfDepartment",
-			"user" };
+			"user"};
 	private static final String[] allActions = { "getAllMitarbeiter", "addMitarbeiter", "addAdmin", "removeAdmin",
 			"removeMitarbeiter", "test", "selfGet", "unrestrictedGet", "restrictedGet", "userGet", "selfAlter",
-			"unrestrictedAlter", "restrictedAlter", "getArbeitsgruppen", "alterLeiter", "addArbeitsgruppe",
-			"removeArbeitsgruppe", "removeMitarbeiterFromArbeitsgruppe", "addMitarbeiterToArbeitsgruppe", "becomeLeiter", "getArbeitsgruppe", "getAllArbeitsgruppen"};
+			"unrestrictedAlter", "restrictedAlter", "getArbeitsgruppe", "alterLeiter", "addArbeitsgruppe",
+			"removeArbeitsgruppe", "removeMitarbeiterFromArbeitsgruppe", "addMitarbeiterToArbeitsgruppe", "becomeLeiter", "getArbeitsgruppenFromMitarbeiter", "getAllArbeitsgruppen", "getAddedToArbeitsgruppe"};
 
 	/**
 	 * Die Methode <i>getRightclassFromSessionID</i> liefert die Rechteklasse zum
@@ -166,8 +166,10 @@ public class RightHandler {
 			return false;
 		case "addMitarbeiterToArbeitsgruppe":
 			return false;
-		case "getAllArbeitsgruppen":
+		case "becomeLeiter":
 			return false;
+		case "getAddedToArbeitsgruppe":
+			return false;	
 		default:
 			return true;
 		}
@@ -197,7 +199,11 @@ public class RightHandler {
 			return false;
 		case "getArbeitsgruppe":
 			return false;
+		case "getArbeitsgruppenFromMitarbeiter":
+			return false;
 		case "getAllArbeitsgruppen":
+			return false;
+		case "alterLeiter":
 			return false;
 		default:
 			return true;
@@ -223,7 +229,7 @@ public class RightHandler {
 			return false;
 		case "restrictedAlter":
 			return false;
-		case "getArbeitsgruppen":
+		case "getArbeitsgruppe":
 			return false;
 		case "alterLeiter":
 			return false;
@@ -237,9 +243,9 @@ public class RightHandler {
 			return false;
 		case "becomeLeiter":
 			return false;
-		case "getArbeitsgruppe":
-			return false;
 		case "getAllArbeitsgruppen":
+			return false;
+		case "getArbeitsgruppenFromMitarbeiter":
 			return false;
 		default:
 			return true;
