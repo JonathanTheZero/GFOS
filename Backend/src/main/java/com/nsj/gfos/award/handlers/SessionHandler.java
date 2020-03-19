@@ -44,17 +44,7 @@ public class SessionHandler {
 			return JsonHandler.fehler(e.toString());
 		}				
 	}
-	
-	public static boolean doSessionsExistForPersonalnummer(String pn) {
-		String sqlStmt = "SELECT * FROM gfos.active_sessions WHERE Mitarbeiter = \"" + pn + "\";";
-    	try {
-			ResultSet rs = QueryHandler.query(sqlStmt);
-			return rs.next();
-		} catch (SQLException e) {			
-			return true;
-		}
-	}
-	
+			
 	public static String closeSession(String sessionID) {
 		String sqlStmt = "DELETE FROM gfos.active_sessions WHERE SessionID = \"" + sessionID + "\";";
 		if(!checkSessionID(sessionID))

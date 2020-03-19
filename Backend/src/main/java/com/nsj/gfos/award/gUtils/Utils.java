@@ -6,9 +6,9 @@ import java.util.Arrays;
 
 import com.nsj.gfos.award.dataWrappers.Arbeitsgruppe;
 import com.nsj.gfos.award.dataWrappers.Mitarbeiter;
+import com.nsj.gfos.award.handlers.PasswordHandler;
 import com.nsj.gfos.award.handlers.QueryHandler;
 import com.nsj.gfos.award.handlers.RightHandler;
-import com.nsj.gfos.award.handlers.SessionHandler;
 
 /**
  * Die Klasse Utils enthält eine Ansammlung von Hilfsmethoden, welche in den
@@ -411,7 +411,7 @@ public class Utils {
 	 */
 	public static String checkReferencesInDatabase(String pn) {
 		String error = "";
-		if (SessionHandler.doSessionsExistForPersonalnummer(pn))
+		if (checkIfUserIsConnected(pn))
 			error += " Mitarbeiter ist noch angemeldet.";
 		if (isVertreter(pn))
 			error += " Mitarbeiter ist noch als Vertreter eingetragen.";
@@ -607,6 +607,35 @@ public class Utils {
 			return "";
 		} catch (SQLException e) {
 			return "";
+		}
+	}
+
+	/**
+	 * TODO
+	 */
+	public static boolean checkIfUserIsConnected(String pn) {
+		String sqlStmt = "SELECT * FROM gfos.active_sessions WHERE Mitarbeiter = \"" + pn + "\";";	
+		try {
+			ResultSet rs = QueryHandler.query(sqlStmt);
+			return rs.next();
+		} catch (SQLException e) {
+			return false;
+		}
+	}
+
+	/**
+	 * TODO
+	 */
+	public static boolean checkPassword(String password, String pn) {
+		String hashed = PasswordHandler.getHash(password);
+		String sqlStmt = "SELECT Passwort FROM gfos.mitarbeiter WHERE Personalnummer = \"" + pn + "\";";
+		try {
+			ResultSet rs = QueryHandler.query(sqlStmt);
+			if(!rs.next())
+				return false;
+			return rs.getString("Passwort").equals(hashed);
+		} catch (SQLException e) {
+			return false;
 		}
 	}
 

@@ -9,6 +9,11 @@ import javax.ws.rs.core.MediaType;
 import com.nsj.gfos.award.handlers.JsonHandler;
 import com.nsj.gfos.award.handlers.SessionHandler;
 
+/**
+ * Die Klasse LogoutResource ist eine Resource der Api und wird über den Pfad /api/logout angesprochen. Sie ist dafür da, einen
+ * Client von dem Webservice abzumelden.
+ * @author Schnuels
+ */
 @Path("logout{sessionID}")
 public class LogoutResource {
 

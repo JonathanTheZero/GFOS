@@ -6,9 +6,6 @@
 
 package com.nsj.gfos.award.resources;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -17,13 +14,12 @@ import javax.ws.rs.core.MediaType;
 
 import com.nsj.gfos.award.gUtils.Utils;
 import com.nsj.gfos.award.handlers.JsonHandler;
-import com.nsj.gfos.award.handlers.PasswordHandler;
-import com.nsj.gfos.award.handlers.QueryHandler;
 import com.nsj.gfos.award.handlers.SessionHandler;
 
 /**
- *
- * @author LoL
+ * Die Klasse LoginResource ist eine Resource der Api und wird über den Pfad /api/login angesprochen. Sie ist dafür da, einen
+ * Client an den Webservice anzumelden.
+ * @author Schnuels
  */
 @Path("login{params}")
 public class LoginResource {
@@ -43,34 +39,11 @@ public class LoginResource {
 		if(auth[1].length() != 12) 
 			return JsonHandler.fehler("Parameter sind falsch formatiert.");
 		String pn = Utils.getPersonalnummerFromEmail(em[1]);
-		if(checkIfUserIsConnected(pn))
+		if(Utils.checkIfUserIsConnected(pn))
 			return JsonHandler.fehler("Dieser Benutzer ist bereits angemeldet.");
-		if(!checkPassword(pw[1], pn)) 
+		if(!Utils.checkPassword(pw[1], pn)) 
 			return JsonHandler.fehler("Passwort oder Email falsch oder Benutzer existiert nicht.");
 		return SessionHandler.createSession(new String[]{auth[1], pn});
 	}	
-	
-	private boolean checkPassword(String password, String pn) {
-		String hashed = PasswordHandler.getHash(password);
-		String sqlStmt = "SELECT Passwort FROM gfos.mitarbeiter WHERE Personalnummer = \"" + pn + "\";";
-		try {
-			ResultSet rs = QueryHandler.query(sqlStmt);
-			if(!rs.next())
-				return false;
-			return rs.getString("Passwort").equals(hashed);
-		} catch (SQLException e) {
-			return false;
-		}
-	}
-	
-	private boolean checkIfUserIsConnected(String pn) {
-		String sqlStmt = "SELECT * FROM gfos.active_sessions WHERE Mitarbeiter = \"" + pn + "\";";	
-		try {
-			ResultSet rs = QueryHandler.query(sqlStmt);
-			return rs.next();
-		} catch (SQLException e) {
-			return false;
-		}
-	}
-	
+				
 }

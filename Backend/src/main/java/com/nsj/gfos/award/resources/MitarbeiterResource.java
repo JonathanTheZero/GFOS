@@ -84,7 +84,7 @@ public class MitarbeiterResource {
 		String vorname = "\"" + attributes[2].split("=")[1] + "\"";
 		String email = "\"" + attributes[3].split("=")[1] + "\"";
 		String passwort = "\"" + PasswordHandler.getHash(attributes[4].split("=")[1]) + "\"";
-		String rechteklasse = attributes[5].split("=")[1];
+		String rechteklasse = "\"" + attributes[5].split("=")[1] + "\""; 
 		String abteilung = "\"" + attributes[6].split("=")[1] + "\"";
 		String vertreter = "\"" + attributes[7].split("=")[1] + "\"";
 		String pn = Utils.createMitarbeiterID();
@@ -92,14 +92,14 @@ public class MitarbeiterResource {
 			return JsonHandler.fehler("Root Account kann nicht erstellt werden.");
 		if (!RightHandler.checkPermission(auth, (rechteklasse.equals("admin")) ? "addAdmin" : "addMitarbeiter"))
 			return JsonHandler.fehler("Keine Genehmigung für diese Aktion erhalten.");
-		String sqlStmt = "INSERT INTO gfos.mitarbeiter VALUES(\"" + pn + "\"," + name + "," + vorname + ", false, 0," 
-			+ email + "," + passwort + ", Abwesend, - ,\"" + rechteklasse
-				+ "\"," + abteilung + "," + vertreter + ");";
+		String sqlStmt = "INSERT INTO gfos.mitarbeiter VALUES(\"" + pn + "\", " + name + ", " + vorname + ", 0, 0," 
+			+ email + ", " + passwort + ", \"Abwesend\", \"-\" , " + rechteklasse
+				+ ", " + abteilung + ", " + vertreter + ");";
 		if (Utils.checkIfMitarbeiterExists(pn))
 			return JsonHandler.fehler("Personalnummer wurde bereits verwendet.");
 		try {
 			int rs = QueryHandler.update(sqlStmt);
-			if (rs == 0)
+			if (rs == 0 || rs == -1)
 				return JsonHandler.fehler("Fehler!");
 			return JsonHandler.erfolg("Mitarbeiter wurde erfolgreich hinzugefügt.");
 		} catch (SQLException e) {
@@ -121,6 +121,8 @@ public class MitarbeiterResource {
 		String pn = params[1].split("=")[1];
 		if (pn.length() != 12)
 			return JsonHandler.fehler("Ungültige Personalnummer.");
+		if(!Utils.checkIfMitarbeiterExists(pn))
+			return JsonHandler.fehler("Mitarbeiter existiert nicht.");
 		String action = Utils.getGetAction(auth, pn);
 		if (!RightHandler.checkPermission(auth, action))
 			return JsonHandler.fehler("Keine Genehmigung für diese Aktion erhalten.");
@@ -168,7 +170,7 @@ public class MitarbeiterResource {
 			int rs = QueryHandler.update(sqlStmt);
 			if (rs == 0)
 				return JsonHandler.fehler("Personalnummer existiert nicht.");
-			if (Utils.checkIfMitarbeiterExists("\"" + pn + "\""))
+			if (Utils.checkIfMitarbeiterExists(pn))
 				return JsonHandler.fehler(Utils.checkReferencesInDatabase(pn));
 			return JsonHandler.erfolg("Mitarbeiter wurde erfolgreich gelöscht.");
 		} catch (SQLException e) {
@@ -234,16 +236,10 @@ public class MitarbeiterResource {
 		if(!SessionHandler.checkSessionID(auth))
 			return JsonHandler.fehler("Ungültige SessionID angegeben.");		
 		String personalnummer = Utils.getPersonalnummerFromSessionID(auth);
-		String sqlStmt = "SELECT Passwort FROM gfos.mitarbeiter WHERE Personalnummer = \""  + personalnummer + "\";";
+		if(!Utils.checkPassword(oldPassword, personalnummer))
+			return JsonHandler.fehler("Falsches altes Passwort eingegeben.");
 		try {
-			ResultSet rs = QueryHandler.query(sqlStmt);
-			if(!rs.next())
-				return JsonHandler.fehler("Leere Rückgabe der Datenbank.");
-			if(!PasswordHandler.getHash(oldPassword).equals(rs.getString("Passwort")))
-				return JsonHandler.fehler("Falsches altes Passwort eingegeben.");
-			if(PasswordHandler.getHash(oldPassword).equals(PasswordHandler.getHash(newPassword)))
-				return JsonHandler.fehler("Das neue Passwort gleicht dem alten.");
-			sqlStmt = "UPDATE gfos.mitarbeiter SET Passwort = \"" + PasswordHandler.getHash(newPassword) + "\" WHERE Personalnummer = \"" + personalnummer + "\";";
+			String sqlStmt = "UPDATE gfos.mitarbeiter SET Passwort = \"" + PasswordHandler.getHash(newPassword) + "\" WHERE Personalnummer = \"" + personalnummer + "\";";
 			int result = QueryHandler.update(sqlStmt);
 			if(result == 0)
 				return JsonHandler.fehler("Die Veränderung konnte aufgrund eines Fehlers nicht ausgeführt werden.");
