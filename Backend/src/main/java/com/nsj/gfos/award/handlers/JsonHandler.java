@@ -9,7 +9,7 @@ import com.nsj.gfos.award.dataWrappers.Mitarbeiter;
  * Die Klasse <i>JsonHandler</i> stellt einige Hilfsmethoden bereit, um Nachrichten oder Objekte in Form von Json-Objekten
  * zu verpacken, welche von der Api zurückgegeben werden können.
  * @author Schnuels
- * @author Artemis
+ * @author Sophief
  */
 public class JsonHandler {
 

@@ -8,7 +8,7 @@ import java.util.Arrays;
  * Verwaltung der Rechteklassen der Mitarbeiter. Gibt Bestätigung, wenn eine
  * Aktion ausgeführt werden darf.
  * 
- * @author Artemis
+ * @author Sophief
  *
  */
 public class RightHandler {
