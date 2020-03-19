@@ -1,25 +1,4 @@
-import { Todo } from './interfaces/dashboard.model';
 import { Mitarbeiter } from './interfaces/default.model';
-
-export const todoSamples: Todo[] = [
-    {
-        title: "Test"
-    },
-    {
-        title: "Test2"
-    },
-    {
-        title: "Test3",
-        subs: [
-            {
-                title: "Test4"
-            },
-            {
-                title: "Test5"
-            }
-        ]
-    }
-]
 
 export const employeeSamples: Mitarbeiter[] = [
     {

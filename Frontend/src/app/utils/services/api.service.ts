@@ -1,11 +1,10 @@
 import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
-import { Todo } from "../interfaces/dashboard.model";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { todoSamples, employeeSamples } from "../mock.data";
 import { apiAnswer, Mitarbeiter, apiStats } from "../interfaces/default.model";
 import { environment } from "src/environments/environment";
 import { DataService } from "./data.service";
+import { employeeSamples } from '../mock.data';
 
 @Injectable({
   providedIn: "root"
@@ -19,13 +18,6 @@ export class ApiService {
   };
 
   constructor(private http: HttpClient, private dataService: DataService) { }
-
-  /**
-   * Samples for local testing only
-   */
-  getTodoSamples(): Observable<Array<Todo>> {
-    return of(todoSamples);
-  }
 
   getEmployeeSamples(): Observable<Array<Mitarbeiter>> {
     return of(employeeSamples);
@@ -63,12 +55,9 @@ export class ApiService {
     abt: string,
     ve: string
   ): Promise<apiAnswer> {
-    const auth: string = this.generateAuthToken();
-    let a = await this.http
-      .get<apiAnswer>(`${this.url}/mitarbeiter/add:auth=${auth}&n=${name}&vn=${vn}&em=${email}&pw=${pw}&rk=${rk}&ab=${abt}&ve=${ve}`)
+    return await this.http
+      .get<apiAnswer>(`${this.url}/mitarbeiter/add:auth=${this.dataService.getAuth()}&n=${name}&vn=${vn}&em=${email}&pw=${pw}&rk=${rk}&ab=${abt}&ve=${ve}`)
       .toPromise();
-    this.dataService.setAuth(auth);
-    return a;
   }
 
   /**
@@ -79,11 +68,16 @@ export class ApiService {
    */
   public async login(pn: string, pw: string): Promise<apiAnswer> {
     const auth: string = this.generateAuthToken();
+    //keeping the user up-to-date
+    this.http
+      .get<apiAnswer>(`${this.url}/login:auth=${auth}&pn=${pn}&pw=${pw}`)
+      .subscribe(a => this.dataService.setUser(a.data));
+
     let a = await this.http
       .get<apiAnswer>(`${this.url}/login:auth=${auth}&pn=${pn}&pw=${pw}`)
       .toPromise<apiAnswer>();
+
     this.dataService.setAuth(auth);
-    this.dataService.setUser(a.data);
     return a;
   }
 
@@ -108,7 +102,7 @@ export class ApiService {
    */
   public async changeEmail(pw: string, email: string): Promise<apiAnswer> {
     return await this.http
-      .get<apiAnswer>(``)
+      .get<apiAnswer>(`${this.url}/mitarbeiter/alter:auth=${this.dataService.getAuth()}&pn=${this.dataService.getUser().personalnummer}&em=${email}`)
       .toPromise();
   }
 
@@ -119,7 +113,9 @@ export class ApiService {
    * @returns a Promsie that holds the answer of the API as object
    */
   public async changePassword(pw: string, newPw: string): Promise<apiAnswer> {
-    return await this.http.get<apiAnswer>(`/alter:auth=${this.dataService.getAuth()}&pw=${newPw}`).toPromise();
+    return await this.http
+      .get<apiAnswer>(`${this.url}/mitarbeiter/alterPassword:auth=${this.dataService.getAuth()}&old=${pw}&new=${newPw}`)
+      .toPromise();
   }
 
   /**
@@ -140,6 +136,42 @@ export class ApiService {
   public async getUser(pn: string | number): Promise<Mitarbeiter> {
     return await this.http
       .get<Mitarbeiter>(`${this.url}/mitarbeiter/get:auth=${this.dataService.getAuth()}&pn=${pn}`)
+      .toPromise();
+  }
+
+  /**
+   * Sends a request to create a new group
+   * @param name Name of the new Group
+   * @param pn optional parameter who should be the admin, if no is giving the current user is used
+   * @returns a Promise that holds the API answer Object
+   */
+  public async addGroup(name: string, pn?: string | number): Promise<apiAnswer> {
+    return await this.http
+      .get<apiAnswer>(`${this.url}/arbeitsgruppe/add:auth=${this.dataService.getAuth()}&name=${name}&pn=${pn || this.dataService.getUser().personalnummer}`)
+      .toPromise();
+  }
+
+  /**
+   * Sends a request to remove a sepcific user from a specific group
+   * @param pn the ID of the user that should get removed
+   * @param groupID the ID of the group from which the user should get removed
+   * @returns a Promise that holds the API answer Object
+   */
+  public async removeFromGroup(pn: number | string, groupID: string): Promise<apiAnswer> {
+    return await this.http
+      .get<apiAnswer>(`${this.url}/arbeitsgruppe/removeMitarbeiter:auth=${this.dataService.getAuth()}&pn=${pn}&arbeitsgruppenID=${groupID}`)
+      .toPromise();
+  }
+
+  /**
+   * Sends a request to add a specific user to a specific group
+   * @param pn the ID of the user that should get added
+   * @param groupID the ID of the group to which the user should get added
+   * @returns a Promies that holds the API answer Object
+   */
+  public async addToGroup(pn: number | string, groupID: string): Promise<apiAnswer> {
+    return await this.http
+      .get<apiAnswer>(`${this.url}/arbeitsgruppe/addMitarbeiter:auth=${this.dataService.getAuth()}&pn=${pn}&arbeitsgruppe=${groupID}`)
       .toPromise();
   }
 

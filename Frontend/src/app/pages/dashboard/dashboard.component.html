@@ -1,4 +1,16 @@
 <div id="dashboard">
-    <dashboard-todos></dashboard-todos>
-    <dashboard-employees [employees]="employees"></dashboard-employees>
+    <ng-container *ngIf="!isMobile">
+        <dashboard-employees [employees]="employees"></dashboard-employees>
+    </ng-container>
+    <ng-container *ngIf="isMobile">
+        <dashboard-panel [employees]="employees"></dashboard-panel>
+    </ng-container>
+
+    <br />
+    <hr />
+    <br />
+
+    <ng-container *ngIf="valid">
+        <button class="btn">Arbeitsgruppe hinzufügen</button>
+    </ng-container>
 </div>

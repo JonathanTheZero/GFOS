@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DashboardComponent } from './dashboard.component';
-import { TodosComponent } from './todos/todos.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ClarityModule } from '@clr/angular';
@@ -12,7 +11,6 @@ import { EmployeesComponent } from './employees/employees.component';
 @NgModule({
   declarations: [
     DashboardComponent, 
-    TodosComponent,
     PanelComponent,
     EmployeesComponent
   ],

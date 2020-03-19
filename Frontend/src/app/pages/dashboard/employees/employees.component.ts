@@ -13,10 +13,7 @@ export class EmployeesComponent implements OnInit {
   @Input() employees: Mitarbeiter[];
   user: Mitarbeiter;
   public valid: boolean;
-  public isMobile: boolean;
-  test;
-  test2;
-
+  
   constructor(public api: ApiService,
     public dataService: DataService,) { 
   }
@@ -24,7 +21,6 @@ export class EmployeesComponent implements OnInit {
   ngOnInit(): void {
     this.user = this.dataService.getUser();
     this.valid = this.user.rechteklasse === "admin" || this.user.rechteklasse === "root";
-    this.dataService.isMobile().subscribe(m => this.isMobile = m);
   }
 
 }
