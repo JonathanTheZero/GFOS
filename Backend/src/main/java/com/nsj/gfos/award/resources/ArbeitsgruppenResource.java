@@ -111,7 +111,7 @@ public class ArbeitsgruppenResource {
 			return JsonHandler.fehler("Ungültige Personalnummer.");
 		if (!SessionHandler.checkSessionID(auth))
 			return JsonHandler.fehler("SessionID ist ungültig.");
-		if(!RightHandler.checkPermission(auth, "getArbeitsgruppen"))
+		if(!(pn.equals(Utils.getPersonalnummerFromSessionID(auth)) ||RightHandler.checkPermission(auth, "getArbeitsgruppen")))
 			return JsonHandler.fehler("Der Mitarbeiter hat keine Berechtigung.");
 		String sqlStmt = "SELECT gfos.arbeitsgruppe.ArbeitsgruppenID, gfos.arbeitsgruppe.Bezeichnung, gfos.arbeitsgruppe.Leiter FROM gfos.arbeitsgruppe WHERE gfos.arbeitsgruppe.ArbeitsgruppenID IN (SELECT gfos.arbeitsgruppenteilnahme.ArbeitsgruppenID FROM gfos.arbeitsgruppenteilnahme WHERE gfos.arbeitsgruppenteilnahme.Mitarbeiter = \"" + pn + "\") ORDER BY gfos.arbeitsgruppe.ArbeitsgruppenID ASC;";
 		try {
@@ -183,7 +183,9 @@ public class ArbeitsgruppenResource {
 			return JsonHandler.fehler("Der Mitarbeiter ist bereits der Leiter der Arbeitsgruppe.");
 		if (!RightHandler.checkPermissionFromPn(pn, "becomeLeiter"))
 			return JsonHandler.fehler("Der angegebene Mitarbeiter hat keine Berechtigung Leiter zu werden.");
-		if (!RightHandler.checkPermission(auth, "alterLeiter"))
+		if (!((Utils.isInArbeitsgruppe(id, Utils.getPersonalnummerFromSessionID(auth))
+				&& Utils.getLeiter(id).equals(Utils.getPersonalnummerFromSessionID(auth)))
+				|| RightHandler.checkPermission(auth, "alterLeiter")))
 			return JsonHandler.fehler("Der Mitarbeiter hat keine Berechtigung.");
 		String sqlStmt = "UPDATE gfos.arbeitsgruppe SET gfos.arbeitsgruppe.Leiter = \"" + pn
 				+ "\" WHERE gfos.arbeitsgruppe.ArbeitsgruppenID = \"" + id + "\";";
@@ -405,6 +407,8 @@ public class ArbeitsgruppenResource {
 				&& Utils.getLeiter(id).equals(Utils.getPersonalnummerFromSessionID(auth)))
 				|| RightHandler.checkPermission(auth, "addMitarbeiterToArbeitsgruppe")))
 			return JsonHandler.fehler("Der Mitarbeiter hat keine Berechtigung.");
+		if(!RightHandler.checkPermissionFromPn(pn, "getAddedToArbeitsgruppe"))
+			return JsonHandler.fehler("Der Mitarbeiter darf nicht in die Arbeitsgruppe hinzugef�gt werden.");
 		String sqlStmt = "INSERT INTO gfos.arbeitsgruppenteilnahme (ArbeitsgruppenID, Mitarbeiter) Values ('" + id
 				+ "', '" + pn + "');";
 		try {
