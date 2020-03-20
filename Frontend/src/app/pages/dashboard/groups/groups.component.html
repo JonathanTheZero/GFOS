@@ -1,1 +1,15 @@
-<p>groups works!</p>
+<clr-datagrid>
+  <clr-dg-column>ArbeitsgruppenID</clr-dg-column>
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column>Mitglieder</clr-dg-column>
+  <clr-dg-column>Leiter</clr-dg-column>
+
+  <clr-dg-row *ngFor="let group of groups">
+    <clr-dg-cell>{{group.arbeitsgruppenID}}</clr-dg-cell>
+    <clr-dg-cell>{{group.bezeichnung}}</clr-dg-cell>
+    <clr-dg-cell>{{group.mitglieder |json}}</clr-dg-cell>
+    <clr-dg-cell>{{group.leiter}}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{groups.length}} Gruppen</clr-dg-footer>
+</clr-datagrid>

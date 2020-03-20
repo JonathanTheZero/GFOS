@@ -6,12 +6,14 @@ import { Arbeitsgruppe } from 'src/app/utils/interfaces/default.model';
   templateUrl: './groups.component.html',
   styleUrls: ['./groups.component.scss']
 })
+
 export class GroupsComponent implements OnInit {
-  @Input() group: Arbeitsgruppe;
+  @Input() groups: Array<Arbeitsgruppe>;
   
   constructor() { }
 
   ngOnInit(): void {
+    this.groups = this.groups.sort((a, b) => a.arbeitsgruppenID > b.arbeitsgruppenID ? 1 : -1);
   }
 
 }

@@ -1,4 +1,6 @@
 <div id="dashboard">
+
+    <h2>Mitarbeiter</h2>
     <ng-container *ngIf="!isMobile">
         <dashboard-employees [employees]="employees"></dashboard-employees>
     </ng-container>
@@ -11,7 +13,10 @@
     <br />
 
     <ng-container *ngIf="valid">
-        <button class="btn" (click)="x != x">Arbeitsgruppe hinzufügen</button>
+        <h2>Arbeitsgruppen</h2>
+        <button class="btn" (click)="openWizard()">Arbeitsgruppe hinzufügen</button>
+        <h1>{{open}}</h1>
+        <dashboard-add-group-wizard [(open)]="open"></dashboard-add-group-wizard>
+        <dashboard-groups [groups]="samples"></dashboard-groups>
     </ng-container>
-    <dashboard-add-group-wizard [openOnStart]="x"></dashboard-add-group-wizard>
 </div>

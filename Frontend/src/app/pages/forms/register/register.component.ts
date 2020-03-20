@@ -42,7 +42,7 @@ export class RegisterComponent implements OnInit {
    */
   public validate(): void {
     if (!this.form.name || !this.form.lastName) {
-      this.err.reason = "Bitte geben Sie Ihrern vollständigen Namen an";
+      this.err.reason = "Bitte geben Sie den vollständigen Namen an";
       return;
     }
 
@@ -53,7 +53,7 @@ export class RegisterComponent implements OnInit {
     }
 
     if (!this.form.password || this.form.password.length < 8) {
-      this.err.reason = "Ihr Passwort muss mindestens 8 Zeichen lang sein!";
+      this.err.reason = "Das Passwort muss mindestens 8 Zeichen lang sein!";
       return;
     }
 
@@ -67,8 +67,8 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
-    if(!this.form.agent){
-      this.err.reason = "Bitte geben Sie einen Vertreter an!";
+    if(!this.form.agent || this.form.agent.length != 12){
+      this.err.reason = "Bitte geben Sie eine/n Vertreter*in in Form seiner/ihrer 12-stelligen Personalnummer an!";
       return;
     }
 
@@ -84,7 +84,7 @@ export class RegisterComponent implements OnInit {
       if (answer.fehler) {
         Swal.fire(
           "Es tut uns leid",
-          "Bei der Verarbeitung Ihrer Anfrage ist leider etwas schiefgelaufen: Der Server meldete folgenden Grund: " + answer.fehler,
+          "Bei der Verarbeitung Ihrer Anfrage ist leider etwas schiefgelaufen: " + answer.fehler,
           "error"
         );
       }
@@ -93,7 +93,7 @@ export class RegisterComponent implements OnInit {
           "Ein neuer Account wurde registriert!",
           "Sie werden in kürze weitergeleitet.",
           "success"
-        );
+        ).then(() => this.router.navigate(['dashboard']));
         setTimeout(() => this.router.navigate(['dashboard']), 5000);
       }
     });

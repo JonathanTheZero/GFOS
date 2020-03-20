@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { Mitarbeiter } from 'src/app/utils/interfaces/default.model';
+import { Mitarbeiter, Arbeitsgruppe } from 'src/app/utils/interfaces/default.model';
 import { ApiService } from 'src/app/utils/services/api.service';
 import { DataService } from 'src/app/utils/services/data.service';
+import { groupSamples } from 'src/app/utils/mock.data';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,7 +16,8 @@ export class DashboardComponent implements OnInit {
   public isMobile: boolean;
   public user: Mitarbeiter;
   public valid: boolean;
-  x: boolean = false;
+  open: boolean = false;
+  samples: Array<Arbeitsgruppe> = groupSamples;
 
   constructor(private titleService: Title,
     public api: ApiService,
@@ -28,6 +30,10 @@ export class DashboardComponent implements OnInit {
 
     this.user = this.dataService.getUser();
     this.valid = this.user.rechteklasse === "admin" || this.user.rechteklasse === "root";
+  }
+
+  public openWizard(){
+    this.open = !this.open;
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, Output, EventEmitter } from '@angular/core';
 import { ClrWizard } from '@clr/angular';
 
 @Component({
@@ -9,13 +9,37 @@ import { ClrWizard } from '@clr/angular';
 
 export class AddGroupWizardComponent implements OnInit {
 
-  @ViewChild("wizardmd") wizardMedium: ClrWizard;
-  @Input() openOnStart: boolean;
-  open: boolean = this.openOnStart || false;
+  @ViewChild("wizard") wizard: ClrWizard;
+  @Input() open: boolean;
+  @Output() openChange = new EventEmitter<boolean>();
+  public model: any = {
+    name: "",
+    admin: "",
+    mitglieder: []
+  };
+  public current: string;
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  finish() {
+    this.openChange.emit(false);
+    this.wizard.reset();
+    this.model = {
+      name: "",
+      admin: "",
+      mitglieder: []
+    };
+  }
+
+  public removeEmployeeFromList(i: number | string){
+    this.model.mitglieder.splice(i, 1);
+  }
+
+  public addToList(){
+    this.model.mitglieder.push(this.current);
+    this.current = "";
+  }
 }
