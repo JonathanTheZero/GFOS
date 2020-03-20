@@ -29,7 +29,7 @@ import java.util.ArrayList;
 public class ArbeitsgruppenResource {
 
 	/**
-	 * Die Methode <i>getAllArbeitsgruppen</i> gibt alle bestehenden Arbeitsgruppen zurück.
+	 * Die Methode <i>getAllArbeitsgruppen</i> gibt alle bestehenden Arbeitsgruppen zurÃ¼ck.
 	 * 
 	 * @param auth - SessionID des anfordernden Mitarbeiters
 	 * @return String - alle Arbeitsgruppen als Json
@@ -408,7 +408,7 @@ public class ArbeitsgruppenResource {
 				|| RightHandler.checkPermission(auth, "addMitarbeiterToArbeitsgruppe")))
 			return JsonHandler.fehler("Der Mitarbeiter hat keine Berechtigung.");
 		if(!RightHandler.checkPermissionFromPn(pn, "getAddedToArbeitsgruppe"))
-			return JsonHandler.fehler("Der Mitarbeiter darf nicht in die Arbeitsgruppe hinzugefügt werden.");
+			return JsonHandler.fehler("Der Mitarbeiter darf nicht in die Arbeitsgruppe hinzugefÃ¼gt werden.");
 		String sqlStmt = "INSERT INTO gfos.arbeitsgruppenteilnahme (ArbeitsgruppenID, Mitarbeiter) Values ('" + id
 				+ "', '" + pn + "');";
 		try {
@@ -422,10 +422,10 @@ public class ArbeitsgruppenResource {
 	}
 	
 	/**
-	 * Die Methode <i>getArbeitsgruppeFromID</i> gibt die Arbeitsgruppe mit Hilfe ihrer ID zurück.
+	 * Die Methode <i>getArbeitsgruppeFromID</i> gibt die Arbeitsgruppe mit Hilfe ihrer ID zurÃ¼ck.
 	 * 
-	 * @param auth - SessionID des ausführenden Mitarbeiters
-	 * @param id   - ArbeitsgruppenID von der Abreitsgruppe, die man haben möchte
+	 * @param auth - SessionID des ausfÃ¼hrenden Mitarbeiters
+	 * @param id   - ArbeitsgruppenID von der Abreitsgruppe, die man haben mÃ¶chte
 	 * @return String - Arbeitsgruppe als Json
 	 */
 	@GET
@@ -443,9 +443,9 @@ public class ArbeitsgruppenResource {
 		String auth = attributes[0].split("=")[1];
 		String id = attributes[1].split("=")[1];
 		if (id.length() != 12)
-			return JsonHandler.fehler("ID ist ungültig");
+			return JsonHandler.fehler("ID ist ungÃ¼ltig");
 		if (!SessionHandler.checkSessionID(auth))
-			return JsonHandler.fehler("SessionID ist ungültig.");
+			return JsonHandler.fehler("SessionID ist ungÃ¼ltig.");
 		if (!Utils.checkIfArbeitsgruppeExistsFromID(id))
 			return JsonHandler.fehler("Arbeitsgruppe existiert nicht.");
 		if(!(Utils.isInArbeitsgruppe(id, Utils.getPersonalnummerFromSessionID(auth)) || RightHandler.checkPermission(auth, "getArbeitsgruppe")))
@@ -454,11 +454,12 @@ public class ArbeitsgruppenResource {
 		try {
 			ResultSet rs = QueryHandler.query(sqlStmt);
 			if (!rs.next())
-				return JsonHandler.fehler("Leere Rückgabe der Datenbank.");
+				return JsonHandler.fehler("Leere RÃ¼ckgabe der Datenbank.");
 			Arbeitsgruppe a = Utils.createArbeitsgruppeFromQuery(rs);
 			sqlStmt = "SELECT mitarbeiter FROM gfos.arbeitsgruppenteilnahme WHERE gfos.arbeitsgruppenteilnahme.ArbeitsgruppenID = \"" + id + "\";";
+			rs = QueryHandler.query(sqlStmt);
 			if (!rs.next())
-				return JsonHandler.fehler("Leere Rückgabe der Datenbank.");
+				return JsonHandler.fehler("Leere RÃ¼ckgabe der Datenbank.");
 			do {
 				a.addMitglied(rs.getString("Mitarbeiter"));
 			} while (rs.next());
@@ -470,10 +471,10 @@ public class ArbeitsgruppenResource {
 	
 	/**
 	 * Die Methode <i>getArbeitsgruppeFromBezeichnung</i> gibt die Arbeitsgruppe mit
-	 * Hilfe ihrer Bezeichnung zurück.
+	 * Hilfe ihrer Bezeichnung zurÃ¼ck.
 	 * 
-	 * @param auth        - SessionID des ausführenden Mitarbeiters
-	 * @param bezeichnung - Bezeichnung von der Abreitsgruppe, die man haben möchte
+	 * @param auth        - SessionID des ausfÃ¼hrenden Mitarbeiters
+	 * @param bezeichnung - Bezeichnung von der Abreitsgruppe, die man haben mÃ¶chte
 	 * @return String - Arbeitsgruppe als Json
 	 */
 	@GET
@@ -493,7 +494,7 @@ public class ArbeitsgruppenResource {
 		if (bezeichnung.equals(""))
 			return JsonHandler.fehler("Bezeichnung ist leer.");
 		if (!SessionHandler.checkSessionID(auth))
-			return JsonHandler.fehler("SessionID ist ungültig.");
+			return JsonHandler.fehler("SessionID ist ungÃ¼ltig.");
 		if (!Utils.checkIfArbeitsgruppeExistsFromBezeichnung(bezeichnung))
 			return JsonHandler.fehler("Arbeitsgruppe existiert nicht.");
 		if(Utils.getArbeitsgruppenIDFromBezeichnung(bezeichnung).equals(""))
@@ -505,11 +506,12 @@ public class ArbeitsgruppenResource {
 		try {
 			ResultSet rs = QueryHandler.query(sqlStmt);
 			if (!rs.next())
-				return JsonHandler.fehler("Leere Rückgabe der Datenbank.");
+				return JsonHandler.fehler("Leere RÃ¼ckgabe der Datenbank.");
 			Arbeitsgruppe a = Utils.createArbeitsgruppeFromQuery(rs);
 			sqlStmt = "SELECT mitarbeiter FROM gfos.arbeitsgruppenteilnahme WHERE gfos.arbeitsgruppenteilnahme.ArbeitsgruppenID = \"" + id + "\";";
+			rs = QueryHandler.query(sqlStmt);
 			if (!rs.next())
-				return JsonHandler.fehler("Leere Rückgabe der Datenbank.");
+				return JsonHandler.fehler("Leere RÃ¼ckgabe der Datenbank.");
 			do {
 				a.addMitglied(rs.getString("Mitarbeiter"));
 			} while (rs.next());
