@@ -15,9 +15,8 @@ export class DashboardComponent implements OnInit {
   employees: Mitarbeiter[];
   public isMobile: boolean;
   public user: Mitarbeiter;
-  public valid: boolean;
-  open: boolean = false;
-  samples: Array<Arbeitsgruppe> = groupSamples;
+  public open: boolean = false;
+  public groups: Array<Arbeitsgruppe>;
 
   constructor(private titleService: Title,
     public api: ApiService,
@@ -27,9 +26,9 @@ export class DashboardComponent implements OnInit {
     this.titleService.setTitle("Dashboard");
     this.api.getEmployeeSamples().subscribe(x => this.employees = x);
     this.dataService.isMobile().subscribe(m => this.isMobile = m);
+    this.api.getAllGroups().then((data: Arbeitsgruppe[]) => this.groups = data || groupSamples);
 
     this.user = this.dataService.getUser();
-    this.valid = this.user.rechteklasse === "admin" || this.user.rechteklasse === "root";
   }
 
   public openWizard(){

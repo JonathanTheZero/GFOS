@@ -14,7 +14,7 @@ export interface Mitarbeiter {
 export interface apiAnswer {
     fehler?: string;
     erfolg?: string;
-    data?: Mitarbeiter;
+    data?: Mitarbeiter | Arbeitsgruppe;
 }
 
 export interface Arbeitsgruppe {

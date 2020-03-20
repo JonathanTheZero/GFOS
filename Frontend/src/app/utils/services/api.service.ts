@@ -85,7 +85,7 @@ export class ApiService {
       //keeping the user up-to-date
       this.http
         .get<apiAnswer>(`${this.url}/login:auth=${auth}&pn=${pn}&pw=${pw}`)
-        .subscribe(a => this.dataService.setUser(a.data));
+        .subscribe(a => this.dataService.setUser(a.data as Mitarbeiter));
 
       let a = await this.http
         .get<apiAnswer>(`${this.url}/login:auth=${auth}&pn=${pn}&pw=${pw}`)
@@ -184,7 +184,7 @@ export class ApiService {
    * @param pn optional parameter who should be the admin, if no is giving the current user is used
    * @returns a Promise that holds the API answer Object
    */
-  public async addGroup(name: string, pn?: string | number): Promise<apiAnswer> {
+  public async addGroup(name: string, pn?: string | number): Promise<apiAnswer | Arbeitsgruppe> {
     try {
       return await this.http
         .get<apiAnswer>(`${this.url}/arbeitsgruppen/add:auth=${this.dataService.getAuth()}&name=${name}&pn=${pn || this.dataService.getUser().personalnummer}`)
@@ -256,7 +256,7 @@ export class ApiService {
    * Requests all groups from the server
    * @returns an Array including all current groups from the server
    */
-  public async getAllGroups(): Promise<Array<Arbeitsgruppe>> {
+  public async getAllGroups(): Promise<Array<Arbeitsgruppe>> | undefined {
     try {
       return await this.http
         .get<Array<Arbeitsgruppe>>(`${this.url}/arbeitsgruppen/getAll:auth=${this.dataService.getAuth()}`)
