@@ -43,7 +43,6 @@ export class AddGroupWizardComponent implements OnInit {
 
   public addToList() {
     this.model.mitglieder.push(this.current);
-    this.current = "";
   }
 
   public send(): void {
@@ -57,7 +56,7 @@ export class AddGroupWizardComponent implements OnInit {
       for (let m of this.model.mitglieder) {
         promises.push(this.api.addToGroup(m, group.arbeitsgruppenID));
       }
-      
+
       const res: Array<apiAnswer> = await Promise.all(promises);
       for (let r of res) {
         if (r.fehler) {
