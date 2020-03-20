@@ -214,9 +214,9 @@ public class Utils {
 	}
 	
 	/**
-	 * Die Methode <i>getArbeitsgruppenIDFromBezeichnung</i> gibt die Bezeichnung der Arbeitsgruppe zurück, die die ArbeitsgruppenID hat.
+	 * Die Methode <i>getArbeitsgruppenIDFromBezeichnung</i> gibt die Bezeichnung der Arbeitsgruppe zurÃ¼ck, die die ArbeitsgruppenID hat.
 	 * 
-	 * @param bezeichnung - Bezeichnung der Arbeitsgruppe, dessen ID man haben möchte
+	 * @param bezeichnung - Bezeichnung der Arbeitsgruppe, dessen ID man haben mÃ¶chte
 	 * @return String - ArbeitsgruppenID
 	 */
 	public static String getArbeitsgruppenIDFromBezeichnung(String bezeichnung) {
