@@ -1,9 +1,10 @@
 import { Component, OnInit } from "@angular/core";
-import { Mitarbeiter } from "src/app/utils/interfaces/default.model";
+import { Mitarbeiter, apiAnswer } from "src/app/utils/interfaces/default.model";
 import { ApiService } from "src/app/utils/services/api.service";
 import { ActivatedRoute } from "@angular/router";
 import { DataService } from 'src/app/utils/services/data.service';
 import { Title } from '@angular/platform-browser';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: "employee-stats",
@@ -27,8 +28,11 @@ export class EmployeeStatsComponent implements OnInit {
       }
       else {
         this.api.getUser(params.get("id"))
-          .then(x => this.user = x)
-          .then(() => this.titleService.setTitle(`Übersicht für ${this.user.vorname} ${this.user.name}`));
+          .then(answer => {
+            if((answer as apiAnswer)?.fehler) return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + (answer as apiAnswer)?.fehler, "error");
+            this.user = answer as Mitarbeiter
+          })
+          .then(() => this.titleService.setTitle(`Übersicht für ${this.user?.vorname} ${this.user?.name}`));
       }
     });
   }

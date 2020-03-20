@@ -23,15 +23,14 @@ export class DataService{
   public idleCounter: BehaviorSubject<string> = new BehaviorSubject<string>(this.getIdle());
   public timeoutCounter: BehaviorSubject<string> = new BehaviorSubject<string>(this.getTimeout());
   private _mobile: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.isMobileDevice());
+  public userSubject: Subject<Mitarbeiter> = new Subject<Mitarbeiter>();
 
   constructor() { 
     /*
      * every second the user agent is checked again, this allows live refreshment
      * when the user adjusts the screen size, toggles mobile/desktop view, etc.
      */
-    interval(1000).subscribe(() => {
-      this._mobile.next(this.isMobileDevice())
-    });
+    interval(1000).subscribe(() => this._mobile.next(this.isMobileDevice()));
   }
 
   /*
@@ -48,14 +47,22 @@ export class DataService{
    * @param user the current logged in user as object
    */
   public setUser(user: Mitarbeiter) {
+    this.userSubject.next(user);
     this.currentUser = user;
   }
 
    /**
-    * @returns the current logged in user
+    * @param asObservable whether the object should be returned as object or Observable
+    * @returns the current logged in user as Object or Observable
     */
-  public getUser(): Mitarbeiter {
-    if (!environment.production) return employeeSamples[0];
+  public getUser(asObservable: boolean): Observable<Mitarbeiter>;
+  public getUser(): Mitarbeiter;
+  public getUser(asObservable?: boolean): Mitarbeiter | Observable<Mitarbeiter> {
+    if(asObservable){
+      if (!environment.production) return of(employeeSamples[0]);
+      return this.userSubject.asObservable();
+    }
+    if(!environment.production) return employeeSamples[0];
     return this.currentUser;
   }
 

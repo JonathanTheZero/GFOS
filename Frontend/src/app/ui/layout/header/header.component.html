@@ -1,6 +1,6 @@
 <clr-header class="header header-1">
   <div class="branding unselectable" unselectable="on">
-    <span class="title">TO BE DONE</span>
+    <span class="title">NSJ</span>
   </div>
   <div class="header-nav">
     <a *ngFor="let headerLink of headerLinks" [routerLink]="headerLink.link" routerLinkActive="active"
@@ -8,35 +8,6 @@
       <clr-icon [attr.shape]="headerLink.icon"></clr-icon>
     </a>
   </div>
-  <!--<form class="search">
-    <label for="search_input">
-      <input id="search_input" type="text" placeholder="Search for keywords...">
-    </label>
-  </form>--
-  <div class="header-actions dropdown bottom-right">
-    <!--<clr-dropdown class="dropdown bottom-right">
-      <button class="nav-icon" clrDropdownToggle>
-        <clr-icon shape="user"></clr-icon>
-        <clr-icon shape="caret down"></clr-icon>
-      </button>
-      <div class="dropdown-menu">
-        <a clrDropdownItem>About</a>
-        <a clrDropdownItem>Preferences</a>
-        <a clrDropdownItem>Log out</a>
-      </div>
-    </clr-dropdown>--
-    <clr-dropdown [clrCloseMenuOnItemClick]="false" class="dropdown bottom-right" style="margin-right: 20px;">
-      <button clrDropdownTrigger class="dropdown-toggle">
-        <clr-icon shape="user"></clr-icon>
-        <clr-icon shape="caret down"></clr-icon>
-      </button>
-      <clr-dropdown-menu *clrIfOpen>
-        <label class="dropdown-header" aria-hidden="true">Menü</label>
-        <a clrDropdownItem>Link 1</a>
-        <a clrDropdownItem>Link 2</a>
-      </clr-dropdown-menu>
-    </clr-dropdown>--
-  </div>-->
   <div class="header-actions">
     <clr-dropdown>
         <button class="nav-text" clrDropdownTrigger aria-label="open user profile">

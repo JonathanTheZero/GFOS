@@ -166,7 +166,7 @@ export class ApiService {
   * @param pn the ID of the requested employee
   * @returns the stats as Promise that holds the API answer Object
   */
-  public async getUser(pn: string | number): Promise<Mitarbeiter> {
+  public async getUser(pn: string | number): Promise<Mitarbeiter | apiAnswer> {
     try {
       return await this.http
         .get<Mitarbeiter>(`${this.url}/mitarbeiter/get:auth=${this.dataService.getAuth()}&pn=${pn}`)
@@ -240,7 +240,7 @@ export class ApiService {
    * @param name the name of the group
    * @returns a Promise that holds the answer given back by the server
    */
-  public async getGroupByName(name: string): Promise<Arbeitsgruppe> {
+  public async getGroupByName(name: string): Promise<Arbeitsgruppe | apiAnswer> {
     try {
       return await this.http
         .get<Arbeitsgruppe>(`${this.url}/arbeitsgruppen/getFromBezeichnung:auth=${this.dataService.getAuth()}&name=${name}`) //TODO
@@ -265,6 +265,24 @@ export class ApiService {
     catch {
       Swal.fire("Fehler", "Es konnte keine Verbindung zum Server aufgebaut werden", "error");
       return undefined;
+    }
+  }
+
+  /**
+   * Sends a request to fetch all groups a specific user is in
+   * @param pn the ID of the user whose groups should be requested
+   * @returns a Promsie that holds an Array of all groups or an error
+   */
+  public async getGroupsFromUser(pn=this.dataService.getUser().personalnummer): Promise<Array<Arbeitsgruppe> | apiAnswer> {
+    try {
+      return await this.http
+        .get<Arbeitsgruppe[]>(`${this.url}/arbeitsgruppen/getAllFromMitarbeiter:auth=${this.dataService.getAuth()}&pn=${pn}`)
+        .toPromise();
+    }
+    catch {
+      return {
+        fehler: "Es konnte keine Verbindung zum Server aufgebaut werden"
+      };
     }
   }
 

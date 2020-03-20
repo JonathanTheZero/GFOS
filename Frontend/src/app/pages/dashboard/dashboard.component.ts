@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { Mitarbeiter, Arbeitsgruppe } from 'src/app/utils/interfaces/default.model';
+import { Mitarbeiter, Arbeitsgruppe, apiAnswer } from 'src/app/utils/interfaces/default.model';
 import { ApiService } from 'src/app/utils/services/api.service';
 import { DataService } from 'src/app/utils/services/data.service';
 import { groupSamples } from 'src/app/utils/mock.data';
 import { environment } from 'src/environments/environment';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,11 +14,12 @@ import { environment } from 'src/environments/environment';
 })
 export class DashboardComponent implements OnInit {
 
-  employees: Mitarbeiter[];
+  public employees: Mitarbeiter[];
   public isMobile: boolean;
   public user: Mitarbeiter;
   public open: boolean = false;
   public groups: Array<Arbeitsgruppe>;
+  public userGroups: Array<Arbeitsgruppe>;
 
   constructor(private titleService: Title,
     public api: ApiService,
@@ -31,6 +33,10 @@ export class DashboardComponent implements OnInit {
     else this.api.getAllGroups().then(g => this.groups = g);
 
     this.user = this.dataService.getUser();
+    this.api.getGroupsFromUser().then((answer) => {
+      if((answer as apiAnswer)?.fehler) return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + (answer as apiAnswer).fehler, "error");
+      this.userGroups = answer as Arbeitsgruppe[];
+    });
   }
 
   public openWizard(){

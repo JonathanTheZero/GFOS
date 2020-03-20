@@ -1,8 +1,9 @@
 <div id="dashboard">
 
-    <h2>Mitarbeiter</h2>
     <ng-container *ngIf="!isMobile">
-        <dashboard-employees [employees]="employees"></dashboard-employees>
+        <ng-container *ngFor="let g of userGroups">
+            <dashboard-group-overview [group]="g"></dashboard-group-overview>
+        </ng-container>
     </ng-container>
     <ng-container *ngIf="isMobile">
         <dashboard-panel [employees]="employees"></dashboard-panel>
@@ -12,7 +13,7 @@
     <hr />
     <br />
 
-    <ng-container *ngIf="['admin', 'root', 'personalabteilung'].includes(user.rechteklasse)">
+    <ng-container *ngIf="['admin', 'root', 'headOfDepartment'].includes(user.rechteklasse)">
         <h2>Arbeitsgruppen</h2>
 
         <ng-container *ngIf="['admin', 'root'].includes(user.rechteklasse)">
@@ -20,7 +21,7 @@
             <dashboard-add-group-wizard [(open)]="open"></dashboard-add-group-wizard>
         </ng-container>
 
-        <ng-container *ngIf="['admin', 'root', 'personalabteilung'].includes(user.rechteklasse)">
+        <ng-container *ngIf="['admin', 'root', 'headOfDepartment'].includes(user.rechteklasse)">
             <button class="btn" (click)="reload()">Aktualisieren</button>
             <ng-container *ngIf="groups">
                 <dashboard-groups [groups]="groups"></dashboard-groups>

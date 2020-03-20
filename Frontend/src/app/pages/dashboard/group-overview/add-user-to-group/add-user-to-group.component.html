@@ -1,12 +1,13 @@
 <clr-modal [(clrModalOpen)]="opened" [clrModalSize]="'sm'">
-  <h3 class="modal-title">I have a nice title</h3>
+  <h3 class="modal-title">Arbeitsgruppe bearbeiten</h3>
+  
   <div class="modal-body">
     <clr-input-container>
-      <label>Wer soll aus der Gruppe entfernt werden?</label>
+      <label *ngIf="mode === 'remove'">Wer soll aus der Gruppe entfernt werden?</label>
+      <label *ngIf="mode === 'add'">Wer soll zur Gruppe hinzugefügt werden?</label>
       <input clrInput required minlength="12" maxlength="12" placeholder="Name?" [(ngModel)]="id" name="name" #name="ngModel" />
       <clr-control-error>Bitte geben Sie die 12-stellige Personalnummer an</clr-control-error>
     </clr-input-container>
-
   </div>
 
   <div class="modal-footer">

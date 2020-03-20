@@ -1,9 +1,10 @@
 <ng-container *ngIf="employees?.length && valid">
 
+  <h2>Mitarbeiter*innen der Gruppe {{group?.bezeichnung}}</h2>
 
-  <ng-container *ngIf="user.rechteklasse === 'gruppenleiter' || user.rechteklasse === 'root'">
-    <button class="btn" (click)="addUser()">Mitarbeiter hinzufügen</button>
-    <button class="btn">Mitarbeiter entfernen</button>
+  <ng-container *ngIf="user.rechteklasse === 'headOfDepartment' || user.rechteklasse === 'root'">
+    <button class="btn" (click)="addUser()">Mitarbeiter*in hinzufügen</button>
+    <button class="btn">Mitarbeiter*in entfernen</button>
     <dashboard-add-user-to-group [(opened)]="addToGroup" [mode]="'add'"></dashboard-add-user-to-group>
   </ng-container>
 

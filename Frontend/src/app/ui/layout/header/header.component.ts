@@ -30,7 +30,7 @@ export class HeaderComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
-    this.user = this.dataService.getUser();
+    this.dataService.getUser(true).subscribe(u => this.user = u);
   }
 
   public logout(): void {

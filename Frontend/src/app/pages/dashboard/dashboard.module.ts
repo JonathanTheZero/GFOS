@@ -6,17 +6,17 @@ import { RouterModule } from '@angular/router';
 import { ClarityModule } from '@clr/angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PanelComponent } from './panel/panel.component';
-import { EmployeesComponent } from './employees/employees.component';
+import { GroupOverviewComponent } from './group-overview/group-overview.component';
 import { PipesModule } from 'src/app/utils/pipes.module';
 import { GroupsComponent } from './groups/groups.component';
 import { AddGroupWizardComponent } from './groups/add-group-wizard/add-group-wizard.component';
-import { AddUserToGroupComponent } from './employees/add-user-to-group/add-user-to-group.component';
+import { AddUserToGroupComponent } from './group-overview/add-user-to-group/add-user-to-group.component';
 
 @NgModule({
   declarations: [
     DashboardComponent, 
     PanelComponent,
-    EmployeesComponent,
+    GroupOverviewComponent,
     GroupsComponent,
     AddGroupWizardComponent,
     AddUserToGroupComponent

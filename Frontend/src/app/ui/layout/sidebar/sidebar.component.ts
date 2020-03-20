@@ -12,10 +12,11 @@ export class SidebarComponent implements OnInit {
 
   data: Mitarbeiter;
 
-  public readonly sidebarLinks : Array<routerLinks> = [
+  public sidebarLinks : Array<routerLinks> = [
     {
-      title: "Normal",
-      icon: "user",
+      title: "Allgemein",
+      icon: "folder-open",
+      iconWhenClosed: "folder",
       links: [
         {
           link: "/dashboard",
@@ -26,6 +27,11 @@ export class SidebarComponent implements OnInit {
           link: "/settings",
           title: "Einstellungen",
           icon: "cog"
+        },
+        {
+          link: "/employee/me",
+          title: "Mein Profil",
+          icon: "user"
         }
       ]
     }
@@ -37,5 +43,10 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {
     this.data = this.dataService.getUser();
+  }
+
+  public changeIcon(index: number, toggle: boolean): void {
+    //swap the two values -> change of animation in the sidebar
+    [this.sidebarLinks[index].icon, this.sidebarLinks[index].iconWhenClosed] = [this.sidebarLinks[index].iconWhenClosed, this.sidebarLinks[index].icon]
   }
 }
