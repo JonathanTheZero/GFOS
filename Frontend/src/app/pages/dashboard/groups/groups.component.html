@@ -4,11 +4,15 @@
   <clr-dg-column>Mitglieder</clr-dg-column>
   <clr-dg-column>Leiter</clr-dg-column>
 
-  <clr-dg-row *ngFor="let group of groups">
+  <clr-dg-row *ngFor="let group of groups; let i = index">
     <clr-dg-cell>{{group.arbeitsgruppenID}}</clr-dg-cell>
     <clr-dg-cell>{{group.bezeichnung}}</clr-dg-cell>
-    <clr-dg-cell>{{group.mitglieder |json}}</clr-dg-cell>
-    <clr-dg-cell>{{group.leiter}}</clr-dg-cell>
+    <clr-dg-cell>
+        <ul *ngFor="let inner of groupMembers[i]">
+            <li>{{inner | employeeName}}</li>
+        </ul>
+    </clr-dg-cell>
+    <clr-dg-cell>{{leaders[i] | employeeName}}</clr-dg-cell>
   </clr-dg-row>
 
   <clr-dg-footer>{{groups.length}} Gruppen</clr-dg-footer>

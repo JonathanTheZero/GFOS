@@ -26,7 +26,7 @@ export class DashboardComponent implements OnInit {
     this.titleService.setTitle("Dashboard");
     this.api.getEmployeeSamples().subscribe(x => this.employees = x);
     this.dataService.isMobile().subscribe(m => this.isMobile = m);
-    this.api.getAllGroups().then((data: Arbeitsgruppe[]) => this.groups = data || groupSamples);
+    this.groups = groupSamples;
 
     this.user = this.dataService.getUser();
   }

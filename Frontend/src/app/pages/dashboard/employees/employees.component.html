@@ -1,5 +1,5 @@
 <ng-container *ngIf="employees?.length && valid">
-  
+
   <clr-datagrid>
     <clr-dg-column>Personalnummer</clr-dg-column>
     <clr-dg-column>Name</clr-dg-column>
@@ -11,7 +11,7 @@
       <clr-dg-cell>{{employee.personalnummer}}</clr-dg-cell>
       <clr-dg-cell>
         <a routerLink="/employee/{{employee.personalnummer}}">
-          {{employee.vorname + " " + employee.name}}
+          {{employee | employeeName}}
         </a>
       </clr-dg-cell>
       <clr-dg-cell>{{employee.status}}</clr-dg-cell>
