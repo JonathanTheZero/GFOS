@@ -10,6 +10,7 @@ import { EmployeesComponent } from './employees/employees.component';
 import { PipesModule } from 'src/app/utils/pipes.module';
 import { GroupsComponent } from './groups/groups.component';
 import { AddGroupWizardComponent } from './add-group-wizard/add-group-wizard.component';
+import { AddUserToGroupComponent } from './employees/add-user-to-group/add-user-to-group.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { AddGroupWizardComponent } from './add-group-wizard/add-group-wizard.com
     PanelComponent,
     EmployeesComponent,
     GroupsComponent,
-    AddGroupWizardComponent
+    AddGroupWizardComponent,
+    AddUserToGroupComponent
   ],
   imports: [
     CommonModule,

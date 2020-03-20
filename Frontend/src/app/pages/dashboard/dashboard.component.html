@@ -12,14 +12,17 @@
     <hr />
     <br />
 
-    <ng-container *ngIf="['admin', 'root', 'personalabteilung', 'gruppenleiter'].includes(user.rechteklasse)">
+    <ng-container *ngIf="['admin', 'root', 'personalabteilung'].includes(user.rechteklasse)">
         <h2>Arbeitsgruppen</h2>
 
         <ng-container *ngIf="['admin', 'root'].includes(user.rechteklasse)">
             <button class="btn" (click)="openWizard()">Arbeitsgruppe hinzufügen</button>
             <dashboard-add-group-wizard [(open)]="open"></dashboard-add-group-wizard>
         </ng-container>
-        
-        <dashboard-groups [groups]="groups"></dashboard-groups>
+
+        <ng-container *ngIf="['admin', 'root', 'personalabteilung'].includes(user.rechteklasse)">
+            <button class="btn" (click)="reload()">Aktualisieren</button>
+            <dashboard-groups [groups]="groups"></dashboard-groups>
+        </ng-container>
     </ng-container>
 </div>

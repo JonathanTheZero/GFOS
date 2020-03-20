@@ -1,5 +1,12 @@
 <ng-container *ngIf="employees?.length && valid">
 
+
+  <ng-container *ngIf="user.rechteklasse === 'gruppenleiter' || user.rechteklasse === 'root'">
+    <button class="btn" (click)="addUser()">Mitarbeiter hinzufügen</button>
+    <button class="btn">Mitarbeiter entfernen</button>
+    <dashboard-add-user-to-group [(opened)]="addToGroup" [mode]="'add'"></dashboard-add-user-to-group>
+  </ng-container>
+
   <clr-datagrid>
     <clr-dg-column>Personalnummer</clr-dg-column>
     <clr-dg-column>Name</clr-dg-column>
@@ -17,8 +24,8 @@
       <clr-dg-cell>{{employee.status}}</clr-dg-cell>
       <clr-dg-cell>{{employee.rechteklasse}}</clr-dg-cell>
       <clr-dg-cell>
-        <clr-icon shape="check" *ngIf="employee.erreichbar"></clr-icon>
-        <clr-icon shape="times" *ngIf="!employee.erreichbar"></clr-icon>
+        <clr-icon shape="check" class="is-success" *ngIf="employee.erreichbar"></clr-icon>
+        <clr-icon shape="times" class="is-error" *ngIf="!employee.erreichbar"></clr-icon>
       </clr-dg-cell>
     </clr-dg-row>
 

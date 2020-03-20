@@ -11,9 +11,10 @@ import { DataService } from 'src/app/utils/services/data.service';
 
 export class EmployeesComponent implements OnInit {
   @Input() employees: Mitarbeiter[];
-  user: Mitarbeiter;
+  public user: Mitarbeiter;
   public valid: boolean;
-  
+  public addToGroup: boolean = false;
+
   constructor(public api: ApiService,
     public dataService: DataService,) { 
   }
@@ -21,6 +22,10 @@ export class EmployeesComponent implements OnInit {
   ngOnInit(): void {
     this.user = this.dataService.getUser();
     this.valid = this.user.rechteklasse === "admin" || this.user.rechteklasse === "root";
+  }
+
+  public addUser(): void {
+    this.addToGroup = !this.addToGroup;
   }
 
 }

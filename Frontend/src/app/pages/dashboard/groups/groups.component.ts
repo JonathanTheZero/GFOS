@@ -18,9 +18,10 @@ export class GroupsComponent implements OnInit {
 
   ngOnInit(): void {
     this.groups = this.groups.sort((a, b) => a.arbeitsgruppenID > b.arbeitsgruppenID ? 1 : -1);
-    alert(this.groups);
-    this.groupMembers = [[...employeeSamples], [...employeeSamples]]
-    this.leaders = employeeSamples
+    
+
+    this.groupMembers = [[...employeeSamples], [...employeeSamples]];
+    this.leaders = employeeSamples;
     return;
     const promises: Array<Array<Promise<Mitarbeiter>>> = [];
     const leaderPromises: Array<Promise<Mitarbeiter>> = [];
