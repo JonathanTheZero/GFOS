@@ -60,9 +60,10 @@ export class AddGroupWizardComponent implements OnInit {
       const res: Array<apiAnswer> = await Promise.all(promises);
       for (let r of res) {
         if (r.fehler) {
-          return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + r.fehler, "error")
+          return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + r.fehler, "error");
         }
       }
+      return Swal.fire("", "Die Arbeitsgruppe wurde erfolgreich erstellt", "success");
     });
   }
 }
