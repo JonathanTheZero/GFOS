@@ -1,8 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Arbeitsgruppe, Mitarbeiter } from 'src/app/utils/interfaces/default.model';
+import { Arbeitsgruppe, Mitarbeiter, apiAnswer } from 'src/app/utils/interfaces/default.model';
 import { ApiService } from 'src/app/utils/services/api.service';
 import { employeeSamples } from 'src/app/utils/mock.data';
 import { environment } from 'src/environments/environment';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'dashboard-groups',
@@ -30,10 +31,15 @@ export class GroupsComponent implements OnInit {
     this.groups.forEach((val, index) => {
 
       val.mitglieder.forEach((innerVal, i) => {
-        promises[index].push(this.api.getUser(innerVal));
+        if ((innerVal as apiAnswer)?.fehler) return;
+        promises[index].push(this.api.getUser(innerVal) as Promise<Mitarbeiter>);
       });
-
-      leaderPromises.push(this.api.getUser(val.leiter));
+      try {
+        leaderPromises.push(this.api.getUser(val.leiter) as Promise<Mitarbeiter>);
+      }
+      catch {
+        Swal.fire("Fehler", "blablabla, später", "error");
+      }
     });
 
     Promise.all(leaderPromises).then(arr => this.leaders = arr);
