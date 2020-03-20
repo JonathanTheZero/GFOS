@@ -55,14 +55,12 @@ export class AppComponent implements OnInit {
     this.idle.onTimeout.subscribe(() => {
       this.timedOut = true;
       console.log('Timed out!');
+      this.api.logout();
       Swal.fire(
         "Inaktivität",
         "Aufgrund von Inaktivität wurden Sie automatisch ausgeloggt. Sie werden nun zur Login-Seite weitergeleitet",
         "info"
-      ).then(() => {
-        this.api.logout();
-        this.router.navigate(['login']);
-      });
+      ).then(() => this.router.navigate(['login']));
     });
 
     this.idle.onIdleStart.subscribe(() => {

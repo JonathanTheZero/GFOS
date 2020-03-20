@@ -1,4 +1,4 @@
-<header class="header-1">
+<clr-header class="header header-1">
   <div class="branding unselectable" unselectable="on">
     <span class="title">TO BE DONE</span>
   </div>
@@ -37,4 +37,16 @@
       </clr-dropdown-menu>
     </clr-dropdown>--
   </div>-->
-</header>
+  <div class="header-actions">
+    <clr-dropdown>
+        <button class="nav-text" clrDropdownTrigger aria-label="open user profile">
+            {{user?.email || "Sie sind nicht eingeloggt"}}
+            <clr-icon shape="caret down"></clr-icon>
+        </button>
+        <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
+            <a routerLink="/settings" clrDropdownItem>Einstellungen</a>
+            <a clrDropdownItem (click)="logout()">Log out</a>
+        </clr-dropdown-menu>
+    </clr-dropdown>
+</div>
+</clr-header>

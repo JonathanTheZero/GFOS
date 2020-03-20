@@ -5,6 +5,7 @@ import { apiAnswer, Mitarbeiter, Arbeitsgruppe } from "../interfaces/default.mod
 import { environment } from "src/environments/environment";
 import { DataService } from "./data.service";
 import { employeeSamples } from '../mock.data';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: "root"
@@ -60,9 +61,16 @@ export class ApiService {
     abt: string,
     ve: string
   ): Promise<apiAnswer> {
-    return await this.http
-      .get<apiAnswer>(`${this.url}/mitarbeiter/add:auth=${this.dataService.getAuth()}&n=${name}&vn=${vn}&em=${email}&pw=${pw}&rk=${rk}&ab=${abt}&ve=${ve}`)
-      .toPromise();
+    try {
+      return await this.http
+        .get<apiAnswer>(`${this.url}/mitarbeiter/add:auth=${this.dataService.getAuth()}&n=${name}&vn=${vn}&em=${email}&pw=${pw}&rk=${rk}&ab=${abt}&ve=${ve}`)
+        .toPromise();
+    }
+    catch {
+      return {
+        fehler: "Es konnte keine Verbindung zum Server aufgebaut werden"
+      }
+    }
   }
 
   /**
@@ -72,20 +80,27 @@ export class ApiService {
    * @returns a Promsie that holds the answer of the API as object
    */
   public async login(pn: string, pw: string): Promise<apiAnswer> {
-    const auth: string = this.generateAuthToken();
-    //keeping the user up-to-date
-    this.http
-      .get<apiAnswer>(`${this.url}/login:auth=${auth}&pn=${pn}&pw=${pw}`)
-      .subscribe(a => this.dataService.setUser(a.data));
+    try {
+      const auth: string = this.generateAuthToken();
+      //keeping the user up-to-date
+      this.http
+        .get<apiAnswer>(`${this.url}/login:auth=${auth}&pn=${pn}&pw=${pw}`)
+        .subscribe(a => this.dataService.setUser(a.data));
 
-    let a = await this.http
-      .get<apiAnswer>(`${this.url}/login:auth=${auth}&pn=${pn}&pw=${pw}`)
-      .toPromise<apiAnswer>();
+      let a = await this.http
+        .get<apiAnswer>(`${this.url}/login:auth=${auth}&pn=${pn}&pw=${pw}`)
+        .toPromise<apiAnswer>();
 
       console.log(JSON.stringify(a));
 
-    this.dataService.setAuth(auth);
-    return a;
+      this.dataService.setAuth(auth);
+      return a;
+    }
+    catch {
+      return {
+        fehler: "Es konnte keine Verbindung zum Server aufgebaut werden"
+      }
+    }
   }
 
   /**
@@ -93,12 +108,19 @@ export class ApiService {
    * @returns a Promsie that holds the answer of the API as object
    */
   public async logout(): Promise<apiAnswer> {
-    var answer = await this.http
-      .get<apiAnswer>(`${this.url}/logout:auth=${this.dataService.getAuth()}`)
-      .toPromise();
-    this.dataService.setAuth(undefined);
-    this.dataService.setUser(undefined);
-    return answer;
+    try {
+      var answer = await this.http
+        .get<apiAnswer>(`${this.url}/logout:auth=${this.dataService.getAuth()}`)
+        .toPromise();
+      this.dataService.setAuth(undefined);
+      this.dataService.setUser(undefined);
+      return answer;
+    }
+    catch {
+      return {
+        fehler: "Es konnte keine Verbindung zum Server aufgebaut werden"
+      }
+    }
   }
 
   /**
@@ -108,9 +130,16 @@ export class ApiService {
    * @returns a Promsie that holds the answer of the API as object
    */
   public async changeEmail(pw: string, email: string): Promise<apiAnswer> {
-    return await this.http
-      .get<apiAnswer>(`${this.url}/mitarbeiter/alter:auth=${this.dataService.getAuth()}&pn=${this.dataService.getUser().personalnummer}&em=${email}`)
-      .toPromise();
+    try {
+      return await this.http
+        .get<apiAnswer>(`${this.url}/mitarbeiter/alter:auth=${this.dataService.getAuth()}&pn=${this.dataService.getUser().personalnummer}&em=${email}`)
+        .toPromise();
+    }
+    catch {
+      return {
+        fehler: "Es konnte keine Verbindung zum Server aufgebaut werden"
+      }
+    }
   }
 
   /**
@@ -120,9 +149,16 @@ export class ApiService {
    * @returns a Promsie that holds the answer of the API as object
    */
   public async changePassword(pw: string, newPw: string): Promise<apiAnswer> {
-    return await this.http
-      .get<apiAnswer>(`${this.url}/mitarbeiter/alterPassword:auth=${this.dataService.getAuth()}&old=${pw}&new=${newPw}`)
-      .toPromise();
+    try {
+      return await this.http
+        .get<apiAnswer>(`${this.url}/mitarbeiter/alterPassword:auth=${this.dataService.getAuth()}&old=${pw}&new=${newPw}`)
+        .toPromise();
+    }
+    catch {
+      return {
+        fehler: "Es konnte keine Verbindung zum Server aufgebaut werden"
+      }
+    }
   }
 
   /**
@@ -131,9 +167,15 @@ export class ApiService {
   * @returns the stats as Promise that holds the API answer Object
   */
   public async getUser(pn: string | number): Promise<Mitarbeiter> {
-    return await this.http
-      .get<Mitarbeiter>(`${this.url}/mitarbeiter/get:auth=${this.dataService.getAuth()}&pn=${pn}`)
-      .toPromise();
+    try {
+      return await this.http
+        .get<Mitarbeiter>(`${this.url}/mitarbeiter/get:auth=${this.dataService.getAuth()}&pn=${pn}`)
+        .toPromise();
+    }
+    catch {
+      Swal.fire("Fehler", "Es konnte keine Verbindung zum Server aufgebaut werden", "error");
+      return undefined;
+    }
   }
 
   /**
@@ -143,9 +185,16 @@ export class ApiService {
    * @returns a Promise that holds the API answer Object
    */
   public async addGroup(name: string, pn?: string | number): Promise<apiAnswer> {
-    return await this.http
-      .get<apiAnswer>(`${this.url}/arbeitsgruppen/add:auth=${this.dataService.getAuth()}&name=${name}&pn=${pn || this.dataService.getUser().personalnummer}`)
-      .toPromise();
+    try {
+      return await this.http
+        .get<apiAnswer>(`${this.url}/arbeitsgruppen/add:auth=${this.dataService.getAuth()}&name=${name}&pn=${pn || this.dataService.getUser().personalnummer}`)
+        .toPromise();
+    }
+    catch {
+      return {
+        fehler: "Es konnte keine Verbindung zum Server aufgebaut werden"
+      }
+    }
   }
 
   /**
@@ -155,9 +204,16 @@ export class ApiService {
    * @returns a Promise that holds the API answer Object
    */
   public async removeFromGroup(pn: number | string, groupID: string): Promise<apiAnswer> {
-    return await this.http
-      .get<apiAnswer>(`${this.url}/arbeitsgruppen/removeMitarbeiter:auth=${this.dataService.getAuth()}&pn=${pn}&arbeitsgruppenID=${groupID}`)
-      .toPromise();
+    try {
+      return await this.http
+        .get<apiAnswer>(`${this.url}/arbeitsgruppen/removeMitarbeiter:auth=${this.dataService.getAuth()}&pn=${pn}&arbeitsgruppenID=${groupID}`)
+        .toPromise();
+    }
+    catch {
+      return {
+        fehler: "Es konnte keine Verbindung zum Server aufgebaut werden"
+      }
+    }
   }
 
   /**
@@ -167,9 +223,16 @@ export class ApiService {
    * @returns a Promies that holds the API answer Object
    */
   public async addToGroup(pn: number | string, groupID: string): Promise<apiAnswer> {
-    return await this.http
-      .get<apiAnswer>(`${this.url}/arbeitsgruppen/addMitarbeiter:auth=${this.dataService.getAuth()}&pn=${pn}&arbeitsgruppe=${groupID}`)
-      .toPromise();
+    try {
+      return await this.http
+        .get<apiAnswer>(`${this.url}/arbeitsgruppen/addMitarbeiter:auth=${this.dataService.getAuth()}&pn=${pn}&arbeitsgruppe=${groupID}`)
+        .toPromise();
+    }
+    catch {
+      return {
+        fehler: "Es konnte keine Verbindung zum Server aufgebaut werden"
+      }
+    }
   }
 
   /**
@@ -178,9 +241,15 @@ export class ApiService {
    * @returns a Promise that holds the answer given back by the server
    */
   public async getGroupByName(name: string): Promise<Arbeitsgruppe> {
-    return await this.http
-      .get<Arbeitsgruppe>(`${this.url}/arbeitsgruppen/getFromBezeichnung:auth=${this.dataService.getAuth()}&name=${name}`) //TODO
-      .toPromise();
+    try {
+      return await this.http
+        .get<Arbeitsgruppe>(`${this.url}/arbeitsgruppen/getFromBezeichnung:auth=${this.dataService.getAuth()}&name=${name}`) //TODO
+        .toPromise();
+    }
+    catch {
+      Swal.fire("Fehler", "Es konnte keine Verbindung zum Server aufgebaut werden", "error");
+      return undefined;
+    }
   }
 
   /**
@@ -188,9 +257,15 @@ export class ApiService {
    * @returns an Array including all current groups from the server
    */
   public async getAllGroups(): Promise<Array<Arbeitsgruppe>> {
-    return await this.http
-      .get<Array<Arbeitsgruppe>>(`${this.url}/arbeitsgruppen/getAll:auth=${this.dataService.getAuth()}`)
-      .toPromise();
+    try {
+      return await this.http
+        .get<Array<Arbeitsgruppe>>(`${this.url}/arbeitsgruppen/getAll:auth=${this.dataService.getAuth()}`)
+        .toPromise();
+    }
+    catch {
+      Swal.fire("Fehler", "Es konnte keine Verbindung zum Server aufgebaut werden", "error");
+      return undefined;
+    }
   }
 
   /*
