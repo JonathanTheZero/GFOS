@@ -6,6 +6,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import com.nsj.gfos.award.gUtils.Utils;
 import com.nsj.gfos.award.handlers.JsonHandler;
 import com.nsj.gfos.award.handlers.SessionHandler;
 
@@ -30,6 +31,8 @@ public class LogoutResource {
 		if(sessionID.split("=").length != 2)
 			return JsonHandler.fehler("Falsche Formatierung des Parameters.");
 		String auth = sessionID.split("=")[1];
+		if(!SessionHandler.changeStatus(Utils.getPersonalnummerFromSessionID(auth), "Offline"))
+			return JsonHandler.fehler("Status konnte aufgrund eines Fehlers nicht geändert werden.");
 		return SessionHandler.closeSession(auth);		
 	}
 	

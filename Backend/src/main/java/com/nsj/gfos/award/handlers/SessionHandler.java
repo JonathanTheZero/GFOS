@@ -7,11 +7,19 @@ import com.nsj.gfos.award.dataWrappers.Mitarbeiter;
 import com.nsj.gfos.award.gUtils.Utils;
 
 /**
- *
+ * Die Klasse <i>SessionHandler</i> stellt Hilfsmethoden bereit, welche sich um das Management
+ * der Sessions und anderer Funktionen bei An- und Abmeldung kümmern.
  * @author Schnuels
  */
 public class SessionHandler {
 
+	/**
+	 * Die Methode <i>createSession</i> erstellt mit Hilfe einer SessionID und einer Personalnummer eine neue Session
+	 * auf der Datenbank und gibt nach erfogreichem Prozess eine Erfolgsmeldung zurück, in welcher das Objekt des 
+	 * angemeldeten Mitarbeiters enthalten ist.
+	 * @param args - Ein Array mit der SessionID und der Personalnummer als Inhalt
+	 * @return String - Eine Fehlermeldung bei einem Fehler und eine Erfolgsmeldung mit Mitarbeiter Objekt bei einem Erfolg
+	 */
 	public static String createSession(String[] args) {		
 		String sessionID = args[0];
 		String personalnummer = args[1];
@@ -39,6 +47,11 @@ public class SessionHandler {
 		}				
 	}
 			
+	/**
+	 * Die Methode <i>closeSession</i> schließt eine vorhandene Session mit Hilfe der SessionID.
+	 * @param sessionID - ID der zu schließenden Session
+	 * @return String - Je nach Ausgang des Vorgangs eine Fehler- oder Erfolgsmeldung
+	 */
 	public static String closeSession(String sessionID) {
 		String sqlStmt = "DELETE FROM gfos.active_sessions WHERE SessionID = \"" + sessionID + "\";";
 		if(!checkSessionID(sessionID))
@@ -53,6 +66,12 @@ public class SessionHandler {
 		}
 	}
 	
+	/**
+	 * DIe Methode <i>checkSessionID</i> prüft, ob zu einer gegebenen SessionID eine aktive Session
+	 * auf der Datenbank hinterlegt ist.
+	 * @param sessionID - zu prüfende SessionID
+	 * @return boolean - true, wenn eine Session für die ID existiert, false, wenn nicht
+	 */
 	public static boolean checkSessionID(String sessionID) {
 		String sqlStmt = "SELECT SessionID FROM gfos.active_sessions WHERE SessionID = \"" + sessionID + "\";";
 		try {
@@ -63,6 +82,24 @@ public class SessionHandler {
 			return false;
 		}
 		return false;
+	}
+
+	/**
+	 * Die Methode <i>changeStatus</i> ändert den Status eines Mitarbeiters auf der Datenbank.
+	 * @param pn - Personalnummer des Mitarbeiters
+	 * @param status - neu einzutragender Status
+	 * @return boolean - true, wenn der Status geändert werden konnte, false, wenn nicht
+	 */
+	public static boolean changeStatus(String pn, String status) {
+		String sqlStmt = "UPDATE gfos.Mitarbeiter SET Status = \"" + status + "\" WHERE Personalnummer = \"" + pn + "\"";
+		try {
+			int rs = QueryHandler.update(sqlStmt);
+			if(rs == 0)
+				return false;
+			return true;
+		} catch (SQLException e) {
+			return false;
+		}
 	}
 	
 }
