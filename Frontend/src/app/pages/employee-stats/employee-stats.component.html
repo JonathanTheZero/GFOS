@@ -20,15 +20,28 @@
             </tr>
             <tr>
               <td>Vertreter:</td>
-              <td>{{user.vertreter}}</td>
+              <td>
+                <a routerLink="/employee{{vertreter.personalnummer}}">
+                  {{vertreter | employeeName}}
+                </a>
+              </td>
             </tr>
             <tr>
               <td>Arbeitskonto:</td>
               <td>{{user.arbeitskonto}} Stunden</td>
             </tr>
             <tr>
-              <td>Arbeitsgruppe:</td>
-              <td>user.arbeitsgruppe TO BE ADDED</td>
+              <td>Arbeitsgruppen:</td>
+              <td>
+                <ng-container *ngIf="groups">
+                  <ul *ngFor="let g of groups">
+                    <li>{{g.bezeichnung}}</li>
+                  </ul>
+                </ng-container>
+                <ng-container *ngIf="!groups">
+                  Keine
+                </ng-container>
+              </td>
             </tr>
           </table>
         </div>

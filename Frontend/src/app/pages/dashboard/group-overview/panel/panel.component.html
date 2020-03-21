@@ -1,8 +1,11 @@
 <div id="employee-panels">
-  <clr-accordion [clrAccordionMultiPanel]="toggle" class="left">
+
+  <h2>Mitarbeiter*innen der Gruppe {{group}}</h2>
+
+  <clr-accordion [clrAccordionMultiPanel]="true" class="left">
     <clr-accordion-panel *ngFor="let e of employees">
       <clr-accordion-title>
-        {{e.vorname + " " + e.name}}
+        {{e | employeeName}}
       </clr-accordion-title>
       <clr-accordion-content>
         <table>
@@ -11,14 +14,14 @@
             <td><a routerLink="/employee/{{e.personalnummer}}">{{e.personalnummer}}</a></td>
           </tr>
           <tr>
-            <td>Stauts:</td>
+            <td>Status:</td>
             <td>{{e.status}}</td>
           </tr>
           <tr>
             <td>Anwesend:</td>
             <td>
-              <clr-icon shape="check" *ngIf="e.erreichbar"></clr-icon>
-              <clr-icon shape="times" *ngIf="!e.erreichbar"></clr-icon>
+              <clr-icon shape="check" class="is-success" *ngIf="e.erreichbar"></clr-icon>
+              <clr-icon shape="times" class="is-error" *ngIf="!e.erreichbar"></clr-icon>
             </td>
           </tr>
         </table>
@@ -26,5 +29,4 @@
       </clr-accordion-content>
     </clr-accordion-panel>
   </clr-accordion>
-  <button class="btn" (click)="toggleView()">Mehrere auswählen? {{toggle | reachable}}</button>
 </div>

@@ -287,6 +287,49 @@ export class ApiService {
     }
   }
 
+  /**
+   * Get a group via it's ID
+   * @param groupID the ID of the group
+   * @returns either a Promise that holds the group object or an error
+   */
+  public async getGroupFromID(groupID: string): Promise<Arbeitsgruppe | apiAnswer> {
+    try {
+      return await this.http
+        .get<Arbeitsgruppe>(`${this.url}/arbeitsgruppen/getFromID:auth=${this.dataService.getAuth()}&ID=${groupID}`)
+        .toPromise();
+    }
+    catch {
+      return {
+        fehler: "Es konnte keine Verbindung zum Server aufgebaut werden"
+      }
+    }
+  }
+
+  /**
+   * This methods allows better handling for requesting all users from a specific group
+   * @param groupID the ID of the group whose users should be returned
+   * @returns a Promise that holds a tuple which has the group leader as first
+   *  object and an Array of users as the second one or an error message
+   */
+  public async getAllUsersFromGroup(groupID: string): Promise<[Mitarbeiter, Array<Mitarbeiter>] | apiAnswer> {
+    try {
+      let arr: [Mitarbeiter, Array<Mitarbeiter>] = [undefined, []];
+      const group: Arbeitsgruppe = await this.getGroupFromID(groupID) as Arbeitsgruppe;
+      arr[0] = await this.getUser(group.leiter) as Mitarbeiter;
+      const promises: Array<Promise<Mitarbeiter>> = [];
+      for(let m of group.mitglieder){
+        promises.push(this.getUser(m) as Promise<Mitarbeiter>);
+      }
+      arr[1] = await Promise.all(promises);
+      return arr; 
+    }
+    catch {
+      return {
+        fehler: "Es konnte keine Verbindung zum Server aufgebaut werden"
+      };
+    }
+  }
+
   /*
    * private methods, names are self explaining
    */

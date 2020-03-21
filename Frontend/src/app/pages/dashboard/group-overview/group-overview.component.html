@@ -1,12 +1,7 @@
 <ng-container *ngIf="employees?.length && valid">
 
-  <h2>Mitarbeiter*innen der Gruppe {{group?.bezeichnung || "Fehler"}}</h2>
+  <h2>Mitarbeiter*innen der Gruppe {{group}}</h2>
 
-  <ng-container *ngIf="user.rechteklasse === 'headOfDepartment' || user.rechteklasse === 'root'">
-    <button class="btn" (click)="addUser()">Mitarbeiter*in hinzufügen</button>
-    <button class="btn">Mitarbeiter*in entfernen</button>
-    <dashboard-add-user-to-group [(opened)]="addToGroup" [mode]="'add'"></dashboard-add-user-to-group>
-  </ng-container>
   <ng-container *ngIf="employees && employees.length != 0">
     <clr-datagrid *ngIf="ready">
       <clr-dg-column>Personalnummer</clr-dg-column>
@@ -15,7 +10,7 @@
       <clr-dg-column>Rechteklasse</clr-dg-column>
       <clr-dg-column>Anwesend</clr-dg-column>
 
-      <clr-dg-row *clrDgItems="let employee of employees">
+      <clr-dg-row *clrDgItems="let employee of employees" [class.leader_row]="employee.personalnummer === leader.personalnummer">
         <clr-dg-cell>{{employee.personalnummer}}</clr-dg-cell>
         <clr-dg-cell>
           <a routerLink="/employee/{{employee.personalnummer}}">

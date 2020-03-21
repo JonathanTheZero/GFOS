@@ -5,9 +5,12 @@
     <clr-input-container>
       <label *ngIf="mode === 'remove'">Wer soll aus der Gruppe entfernt werden?</label>
       <label *ngIf="mode === 'add'">Wer soll zur Gruppe hinzugefügt werden?</label>
-      <input clrInput required minlength="12" maxlength="12" placeholder="Name?" [(ngModel)]="id" name="name" #name="ngModel" />
+      <input clrInput required minlength="12" maxlength="12" placeholder="Personalnummer?" [(ngModel)]="id" name="name" #name="ngModel" />
       <clr-control-error>Bitte geben Sie die 12-stellige Personalnummer an</clr-control-error>
     </clr-input-container>
+    <br />
+    <br />
+    <br />
   </div>
 
   <div class="modal-footer">

@@ -38,7 +38,7 @@ export class GroupsComponent implements OnInit {
         leaderPromises.push(this.api.getUser(val.leiter) as Promise<Mitarbeiter>);
       }
       catch {
-        Swal.fire("Fehler", "blablabla, später", "error");
+        Swal.fire("Fehler", "Es ist ein Fehler aufgetreten", "error");
       }
     });
 

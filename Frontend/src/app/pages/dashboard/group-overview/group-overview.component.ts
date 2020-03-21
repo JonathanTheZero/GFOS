@@ -4,6 +4,7 @@ import { ApiService } from 'src/app/utils/services/api.service';
 import { DataService } from 'src/app/utils/services/data.service';
 import Swal from 'sweetalert2';
 import { employeeSamples } from 'src/app/utils/mock.data';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'dashboard-group-overview',
@@ -13,12 +14,11 @@ import { employeeSamples } from 'src/app/utils/mock.data';
 
 export class GroupOverviewComponent implements OnInit {
 
-  @Input() group: Arbeitsgruppe;
+  @Input() group: string;
   public employees: Mitarbeiter[] = [];
   public leader: Mitarbeiter;
   public user: Mitarbeiter;
   public valid: boolean;
-  public addToGroup: boolean = false;
   public ready: boolean = false;
 
   constructor(public api: ApiService,
@@ -29,21 +29,19 @@ export class GroupOverviewComponent implements OnInit {
     this.user = this.dataService.getUser();
     this.valid = this.user.rechteklasse === "admin" || this.user.rechteklasse === "root";
     
-    for (let m of this.group.mitglieder) {
-      ///this.api.getUser(m).then(this.employees.push);
-      this.api.getUser(m).then(answer => {
-        if ((answer as apiAnswer)?.fehler) return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + (answer as apiAnswer)?.fehler, "error");
-        this.employees.push(answer as Mitarbeiter);
-        if(m === this.group.leiter) this.leader = answer as Mitarbeiter;
-      });
+    if(!environment.production){
+      this.employees = employeeSamples;
+      this.leader = employeeSamples[0];
+      this.ready = true;
+      return;
     }
-    this.leader = employeeSamples[0];
-    this.employees = employeeSamples;
-    this.ready = true;
-  }
 
-  public addUser(): void {
-    this.addToGroup = !this.addToGroup;
+    this.api.getAllUsersFromGroup(this.group).then((answer) => {
+      if((answer as apiAnswer)?.fehler) return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + (answer as apiAnswer)?.fehler, "error");
+      this.leader = answer[0];
+      this.employees = answer[1];
+      this.ready = true;
+    });
   }
 
 }

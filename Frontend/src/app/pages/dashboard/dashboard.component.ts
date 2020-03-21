@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
+
 export class DashboardComponent implements OnInit {
 
   public employees: Mitarbeiter[];
@@ -20,6 +21,8 @@ export class DashboardComponent implements OnInit {
   public open: boolean = false;
   public groups: Array<Arbeitsgruppe>;
   public userGroups: Array<Arbeitsgruppe>;
+  public addToGroup: boolean[] = [];
+  public removeFromGroup: boolean[] = [];
 
   constructor(private titleService: Title,
     public api: ApiService,
@@ -29,23 +32,44 @@ export class DashboardComponent implements OnInit {
     this.titleService.setTitle("Dashboard");
     this.api.getEmployeeSamples().subscribe(x => this.employees = x);
     this.dataService.isMobile().subscribe(m => this.isMobile = m);
-    if(!environment.production) this.groups = groupSamples;
-    else this.api.getAllGroups().then(g => this.groups = g);
+    this.user = this.dataService.getUser();
+
+    if (!environment.production) {
+      this.groups = groupSamples;
+      this.userGroups = groupSamples;
+      this.addToGroup.fill(false, 0, this.userGroups.length);
+      this.removeFromGroup.fill(false, 0, this.userGroups.length);
+      return;
+    }
+
+    this.api.getAllGroups().then(g => this.groups = g);
 
     this.user = this.dataService.getUser();
+
     this.api.getGroupsFromUser().then((answer) => {
-      if((answer as apiAnswer)?.fehler) return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + (answer as apiAnswer).fehler, "error");
+      if ((answer as apiAnswer)?.fehler) return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + (answer as apiAnswer)?.fehler, "error");
       this.userGroups = answer as Arbeitsgruppe[];
+      
+      //fill the binding for the modals
+      this.addToGroup.fill(false, 0, this.userGroups.length);
+      this.removeFromGroup.fill(false, 0, this.userGroups.length);
     });
-    if(!this.userGroups) this.userGroups = groupSamples;
   }
 
-  public openWizard(){
+  public openWizard() {
     this.open = !this.open;
   }
 
-  public reload(){
+  public reload() {
     this.api.getAllGroups().then(g => this.groups = g);
+  }
+
+  public addUser(index: number): void {
+    this.addToGroup[index] = true;
+  }
+
+  public removeUser(index: number): void {
+    this.removeFromGroup[index] = true;
   }
 
 }

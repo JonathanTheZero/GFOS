@@ -4,3 +4,9 @@
   -ms-user-select: none;
   user-select: none;
 }
+
+@media (max-width: 768px) {                  
+   a#link_1 {
+      display: none;
+   }
+}

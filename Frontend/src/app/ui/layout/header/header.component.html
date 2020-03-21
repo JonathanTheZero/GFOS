@@ -3,8 +3,8 @@
     <span class="title">NSJ</span>
   </div>
   <div class="header-nav">
-    <a *ngFor="let headerLink of headerLinks" [routerLink]="headerLink.link" routerLinkActive="active"
-      class="nav-link nav-icon">
+    <a *ngFor="let headerLink of headerLinks;let i = index" [routerLink]="headerLink.link" routerLinkActive="active"
+      class="nav-link nav-icon" id="link_{{i}}">
       <clr-icon [attr.shape]="headerLink.icon"></clr-icon>
     </a>
   </div>
@@ -15,7 +15,8 @@
             <clr-icon shape="caret down"></clr-icon>
         </button>
         <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
-            <a routerLink="/settings" clrDropdownItem>Einstellungen</a>
+            <a clrDropdownItem routerLink="/settings">Einstellungen</a>
+            <a clrDropdownItem routerLink="/employee/me">Mein Profil</a>
             <a clrDropdownItem (click)="logout()">Log out</a>
         </clr-dropdown-menu>
     </clr-dropdown>

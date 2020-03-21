@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ClarityModule } from '@clr/angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { PanelComponent } from './panel/panel.component';
+import { PanelComponent } from './group-overview/panel/panel.component';
 import { GroupOverviewComponent } from './group-overview/group-overview.component';
 import { PipesModule } from 'src/app/utils/pipes.module';
 import { GroupsComponent } from './groups/groups.component';

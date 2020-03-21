@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { Mitarbeiter, apiAnswer } from "src/app/utils/interfaces/default.model";
+import { Mitarbeiter, apiAnswer, Arbeitsgruppe } from "src/app/utils/interfaces/default.model";
 import { ApiService } from "src/app/utils/services/api.service";
 import { ActivatedRoute } from "@angular/router";
 import { DataService } from 'src/app/utils/services/data.service';
@@ -14,6 +14,8 @@ import Swal from 'sweetalert2';
 
 export class EmployeeStatsComponent implements OnInit {
   user: Mitarbeiter;
+  groups: Arbeitsgruppe[];
+  vertreter: Mitarbeiter;
 
   constructor(public api: ApiService,
     private route: ActivatedRoute,
@@ -21,19 +23,24 @@ export class EmployeeStatsComponent implements OnInit {
     private titleService: Title) { }
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.subscribe(async params => {
       if (params.get("id") === "me") {
         this.user = this.dataService.getUser();
-        this.titleService.setTitle(`Übersicht für ${this.user.vorname} ${this.user.name}`)
       }
       else {
-        this.api.getUser(params.get("id"))
-          .then(answer => {
-            if((answer as apiAnswer)?.fehler) return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + (answer as apiAnswer)?.fehler, "error");
-            this.user = answer as Mitarbeiter
-          })
-          .then(() => this.titleService.setTitle(`Übersicht für ${this.user?.vorname} ${this.user?.name}`));
+        let res = await this.api.getUser(params.get("id"));
+        if((res as apiAnswer)?.fehler) return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + (res as apiAnswer)?.fehler, "error");
+        this.user = res as Mitarbeiter;
       }
+      this.titleService.setTitle(`Übersicht für ${this.user?.vorname} ${this.user?.name}`);
+
+      let res: any = await this.api.getGroupsFromUser(this.user.personalnummer);
+      if((res as apiAnswer)?.fehler) return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + (res as apiAnswer)?.fehler, "error");
+      this.groups = res as Arbeitsgruppe[];
+
+      res = await this.api.getUser(this.user.vertreter);
+      if((res as apiAnswer)?.fehler) return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + (res as apiAnswer)?.fehler, "error");
+      this.vertreter = res as Mitarbeiter;
     });
   }
 }

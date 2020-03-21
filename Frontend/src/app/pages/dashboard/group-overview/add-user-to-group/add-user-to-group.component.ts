@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ApiService } from 'src/app/utils/services/api.service';
+import { Arbeitsgruppe } from 'src/app/utils/interfaces/default.model';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'dashboard-add-user-to-group',
@@ -9,6 +11,7 @@ import { ApiService } from 'src/app/utils/services/api.service';
 
 export class AddUserToGroupComponent implements OnInit {
   
+  @Input() group: Arbeitsgruppe;
   @Input() mode: "add" | "remove";
   @Input() opened: boolean;
   @Output() openedChange = new EventEmitter<boolean>();
@@ -25,7 +28,10 @@ export class AddUserToGroupComponent implements OnInit {
 
   public closeAndSend(): void {
     this.close();
-    //this.api.addToGroup(id)
+    this.api.addToGroup(this.id, this.group.arbeitsgruppenID).then((answer) => {
+      if(answer?.fehler) return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + answer?.fehler, "error");
+      Swal.fire("", "Der Mitarbeiter wurde erfolgreich hinzugefügt", "success");
+    });
   }
 
 }

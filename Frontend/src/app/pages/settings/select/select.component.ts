@@ -8,6 +8,7 @@ import { DataService } from 'src/app/utils/services/data.service';
   templateUrl: './select.component.html',
   styleUrls: ['./select.component.scss']
 })
+
 export class SelectComponent implements OnInit {
 
   @Input() options: options;
