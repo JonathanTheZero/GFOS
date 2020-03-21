@@ -33,6 +33,8 @@ public class LogoutResource {
 		String auth = sessionID.split("=")[1];
 		if(!SessionHandler.changeStatus(Utils.getPersonalnummerFromSessionID(auth), "Offline"))
 			return JsonHandler.fehler("Status konnte aufgrund eines Fehlers nicht geändert werden.");
+		if(!SessionHandler.changeErreichbar(Utils.getPersonalnummerFromSessionID(auth), 0))
+			return JsonHandler.fehler("Erreichbarkeit konnte aufgrund eines Fehlers nicht geändert werden.");
 		return SessionHandler.closeSession(auth);		
 	}
 	

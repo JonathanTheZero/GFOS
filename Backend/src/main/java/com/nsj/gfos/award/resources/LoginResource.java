@@ -45,6 +45,8 @@ public class LoginResource {
 			return JsonHandler.fehler("Dieser Benutzer ist bereits angemeldet.");
 		if(!SessionHandler.changeStatus(pn, "Online"))
 			return JsonHandler.fehler("Status konnte aufgrund eines Fehlers nicht geändert werden.");
+		if(!SessionHandler.changeErreichbar(pn, 1))
+			return JsonHandler.fehler("Erreichbarkeit konnte aufgrund eines Fehlers nicht geändert werden.");
 		return SessionHandler.createSession(new String[]{auth[1], pn});
 	}	
 				

@@ -101,5 +101,23 @@ public class SessionHandler {
 			return false;
 		}
 	}
+
+	/**
+	 * Die Methode <i>changeErreichbar</i> ändert den Wert für 'erreichbar' eines Mitarbeiters auf der Datenbank.
+	 * @param pn - Personalnummer des Mitarbeiters
+	 * @param status - neu einzutragender Wert für 'erreichbar'
+	 * @return boolean - true, wenn 'erreichbar' geändert werden konnte, false, wenn nicht
+	 */
+	public static boolean changeErreichbar(String pn, int erreichbar) {
+		String sqlStmt = "UPDATE gfos.Mitarbeiter SET erreichbar = " + erreichbar + " WHERE Personalnummer = \"" + pn + "\"";
+		try {
+			int rs = QueryHandler.update(sqlStmt);
+			if(rs == 0)
+				return false;
+			return true;
+		} catch (SQLException e) {
+			return false;
+		}
+	}
 	
 }
