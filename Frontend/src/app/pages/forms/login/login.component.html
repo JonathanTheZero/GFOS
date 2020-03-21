@@ -1,13 +1,13 @@
 <div class="login-wrapper">
   <form class="login" (ngSubmit)="submit()">
       <section class="title">
-          <h3 class="welcome">Welcome to</h3>
-          Company Product Name
-          <h5 class="hint">Use your Company ID to sign in or create one now</h5>
+          <h3 class="welcome">Willkommen beim</h3>
+          NSJ Dashboard
+          <h5 class="hint">Benutzer Sie Ihre E-Mail Adresse, um sich einzuloggen.</h5>
       </section>
       <div class="login-group">
           <clr-input-container>
-              <label class="clr-sr-only">Benutzername</label>
+              <label class="clr-sr-only">E-Mail Adresse</label>
               <input type="text" name="username" clrInput placeholder="Username" [(ngModel)]="form.username"/>
           </clr-input-container>
           <clr-password-container>

@@ -1,4 +1,10 @@
 <div id="dashboard">
+    
+  <button class="btn dashboard-right-button-desktop" (click)="requestGroups()">Dashboard aktualisieren</button>
+  <h1>Dashboard</h1>
+  <button class="btn dashboard-right-button-mobile" (click)="requestGroups()">Dashboard aktualisieren</button>
+
+  <hr />
 
   <ng-container *ngIf="['admin', 'root', 'headOfDepartment'].includes(user.rechteklasse)">
     <h2>Arbeitsgruppen</h2>
@@ -21,9 +27,7 @@
   <br />
 
   <ng-container *ngFor="let g of userGroups;let i = index">
-    <dashboard-group-overview *ngIf="!isMobile" [group]="g.arbeitsgruppenID"></dashboard-group-overview>
-    <dashboard-groups-panel *ngIf="isMobile" [group]="g.arbeitsgruppenID"></dashboard-groups-panel>
-
+    <h2>Mitarbeiter*innen der Gruppe {{g.bezeichnung}}</h2>
     <ng-container
       *ngIf="user.rechteklasse === 'headOfDepartment' || user.rechteklasse === 'admin' || user.rechteklasse === 'root'">
       <button class="btn" (click)="addUser(i)">Mitarbeiter*in hinzufügen</button>
@@ -34,6 +38,8 @@
       </dashboard-add-user-to-group>
     </ng-container>
 
+    <dashboard-group-overview *ngIf="!isMobile" [group]="g.arbeitsgruppenID"></dashboard-group-overview>
+    <dashboard-groups-panel *ngIf="isMobile" [group]="g.arbeitsgruppenID"></dashboard-groups-panel>
     <hr />
 
   </ng-container>

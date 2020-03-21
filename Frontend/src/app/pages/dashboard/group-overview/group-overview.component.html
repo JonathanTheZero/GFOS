@@ -1,7 +1,5 @@
 <ng-container *ngIf="employees?.length && valid">
 
-  <h2>Mitarbeiter*innen der Gruppe {{group}}</h2>
-
   <ng-container *ngIf="employees && employees.length != 0">
     <clr-datagrid *ngIf="ready">
       <clr-dg-column>Personalnummer</clr-dg-column>
@@ -10,7 +8,8 @@
       <clr-dg-column>Rechteklasse</clr-dg-column>
       <clr-dg-column>Anwesend</clr-dg-column>
 
-      <clr-dg-row *clrDgItems="let employee of employees" [class.leader_row]="employee.personalnummer === leader.personalnummer">
+      <clr-dg-row *clrDgItems="let employee of employees"
+        [class.leader_row]="employee.personalnummer === leader.personalnummer">
         <clr-dg-cell>{{employee.personalnummer}}</clr-dg-cell>
         <clr-dg-cell>
           <a routerLink="/employee/{{employee.personalnummer}}">
@@ -36,7 +35,12 @@
     </clr-datagrid>
 
     <div *ngIf="!ready">
-      <h1>Lädt...</h1>
+      <span class="spinner spinner-inline">
+        Loading...
+      </span>
+      <span>
+        Loading...
+      </span>
     </div>
   </ng-container>
 

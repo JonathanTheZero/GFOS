@@ -15,7 +15,6 @@ import Swal from 'sweetalert2';
 
 export class DashboardComponent implements OnInit {
 
-  public employees: Mitarbeiter[];
   public isMobile: boolean;
   public user: Mitarbeiter;
   public open: boolean = false;
@@ -30,9 +29,16 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.titleService.setTitle("Dashboard");
-    this.api.getEmployeeSamples().subscribe(x => this.employees = x);
     this.dataService.isMobile().subscribe(m => this.isMobile = m);
     this.user = this.dataService.getUser();
+    this.requestGroups();
+  }
+
+  public openWizard() {
+    this.open = !this.open;
+  }
+
+  public requestGroups(): void {
 
     if (!environment.production) {
       this.groups = groupSamples;
@@ -41,10 +47,8 @@ export class DashboardComponent implements OnInit {
       this.removeFromGroup.fill(false, 0, this.userGroups.length);
       return;
     }
-
+    
     this.api.getAllGroups().then(g => this.groups = g);
-
-    this.user = this.dataService.getUser();
 
     this.api.getGroupsFromUser().then((answer) => {
       if ((answer as apiAnswer)?.fehler) return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + (answer as apiAnswer)?.fehler, "error");
@@ -54,10 +58,6 @@ export class DashboardComponent implements OnInit {
       this.addToGroup.fill(false, 0, this.userGroups.length);
       this.removeFromGroup.fill(false, 0, this.userGroups.length);
     });
-  }
-
-  public openWizard() {
-    this.open = !this.open;
   }
 
   public reload() {
