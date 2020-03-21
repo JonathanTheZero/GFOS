@@ -12,6 +12,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { PagesModule } from './pages/pages.module';
 import { AuthGuard } from './utils/auth.guard';
 import { PipesModule } from "./utils/pipes.module";
+import { RouteReuseStrategy } from '@angular/router';
+import { CustomReuseStrategy } from './utils/reuse.strategy';
+
 
 @NgModule({
   declarations: [

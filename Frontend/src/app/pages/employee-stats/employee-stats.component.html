@@ -21,8 +21,8 @@
             <tr>
               <td>Vertreter:</td>
               <td>
-                <a routerLink="/employee/{{vertreter.personalnummer}}">
-                  {{vertreter | employeeName}}
+                <a routerLink="/employee/{{vertreter?.personalnummer}}">
+                  {{(vertreter | employeeName) || ""}}
                 </a>
               </td>
             </tr>

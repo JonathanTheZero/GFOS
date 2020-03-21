@@ -40,14 +40,14 @@ export class DashboardComponent implements OnInit {
 
   public requestGroups(): void {
 
-    if (!environment.production) {
+    /*if (!environment.production) {
       this.groups = groupSamples;
       this.userGroups = groupSamples;
       this.addToGroup.fill(false, 0, this.userGroups.length);
       this.removeFromGroup.fill(false, 0, this.userGroups.length);
       return;
-    }
-    
+    }*/
+
     this.api.getAllGroups().then(g => this.groups = g);
 
     this.api.getGroupsFromUser().then((answer) => {

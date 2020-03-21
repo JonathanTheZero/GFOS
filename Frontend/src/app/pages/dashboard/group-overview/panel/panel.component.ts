@@ -19,11 +19,11 @@ export class PanelComponent implements OnInit {
   constructor(public api: ApiService) { }
 
   ngOnInit(): void {
-    if(!environment.production){
+    /*if(!environment.production){
       this.employees = employeeSamples;
       this.leader = employeeSamples[0];
       return;
-    }
+    }*/
     this.api.getAllUsersFromGroup(this.group).then(answer => {
       if((answer as apiAnswer)?.fehler) return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + (answer as apiAnswer)?.fehler, "error");
       this.leader = answer[0];

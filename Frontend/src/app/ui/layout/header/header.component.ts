@@ -36,11 +36,12 @@ export class HeaderComponent implements OnInit {
   public logout(): void {
     this.api.logout().then((answer: apiAnswer) => {
       if(answer.erfolg){
-        Swal.fire("", "Sie wurden erfolgreich ausgeloggt", "success").then(() => this.router.navigate(['/login']));
+        Swal.fire("", "Sie wurden erfolgreich ausgeloggt", "success");
       }
       else {
         Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + answer.fehler, "error");
       }
+      this.router.navigate(['/login']);
     });
   }
 

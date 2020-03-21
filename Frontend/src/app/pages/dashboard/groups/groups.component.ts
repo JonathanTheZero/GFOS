@@ -12,27 +12,28 @@ import Swal from 'sweetalert2';
 })
 
 export class GroupsComponent implements OnInit {
-  
+
   @Input() groups: Array<Arbeitsgruppe>;
-  public groupMembers: Array<Array<Mitarbeiter>>;
-  public leaders: Array<Mitarbeiter>;
+  public groupMembers: Array<Array<Mitarbeiter>> = [];
+  public leaders: Array<Mitarbeiter> = [];
 
   constructor(private api: ApiService) { }
 
   ngOnInit(): void {
     this.groups = this.groups.sort((a, b) => a.arbeitsgruppenID > b.arbeitsgruppenID ? 1 : -1);
 
-    if (!environment.production) {
+    /*if (!environment.production) {
       this.groupMembers = [[...employeeSamples], [...employeeSamples]];
       this.leaders = employeeSamples;
       return;
-    }
+    }*/
     const promises: Array<Array<Promise<Mitarbeiter>>> = [];
     const leaderPromises: Array<Promise<Mitarbeiter>> = [];
     this.groups.forEach((val, index) => {
 
       val.mitglieder.forEach((innerVal, i) => {
         if ((innerVal as apiAnswer)?.fehler) return;
+        if(!promises[index]) promises[index] = [];
         promises[index].push(this.api.getUser(innerVal) as Promise<Mitarbeiter>);
       });
       try {

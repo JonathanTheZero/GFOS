@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { apiAnswer, Mitarbeiter, Arbeitsgruppe } from "../interfaces/default.model";
 import { environment } from "src/environments/environment";
 import { DataService } from "./data.service";
-import { employeeSamples } from '../mock.data';
+import { employeeSamples, groupSamples } from '../mock.data';
 import Swal from 'sweetalert2';
 
 @Injectable({
@@ -173,6 +173,7 @@ export class ApiService {
         .toPromise();
     }
     catch {
+      if(!environment.production) return employeeSamples[0];
       return {
         fehler: "Es konnte keine Verbindung zum Server aufgebaut werden"
       };
@@ -192,6 +193,7 @@ export class ApiService {
         .toPromise();
     }
     catch {
+      if(!environment.production) return groupSamples[0];
       return {
         fehler: "Es konnte keine Verbindung zum Server aufgebaut werden"
       }
@@ -248,6 +250,7 @@ export class ApiService {
         .toPromise();
     }
     catch {
+      if(!environment.production) return groupSamples[0];
       Swal.fire("Fehler", "Es konnte keine Verbindung zum Server aufgebaut werden", "error");
       return undefined;
     }
@@ -264,6 +267,7 @@ export class ApiService {
         .toPromise();
     }
     catch {
+      if(!environment.production) return groupSamples;
       Swal.fire("Fehler", "Es konnte keine Verbindung zum Server aufgebaut werden", "error");
       return undefined;
     }
@@ -281,6 +285,7 @@ export class ApiService {
         .toPromise();
     }
     catch {
+      if(!environment.production) return groupSamples;
       return {
         fehler: "Es konnte keine Verbindung zum Server aufgebaut werden"
       };
@@ -299,6 +304,7 @@ export class ApiService {
         .toPromise();
     }
     catch {
+      if(!environment.production) groupSamples[1];
       return {
         fehler: "Es konnte keine Verbindung zum Server aufgebaut werden"
       }
@@ -324,6 +330,7 @@ export class ApiService {
       return arr; 
     }
     catch {
+      if(!environment.production) return [employeeSamples[0], employeeSamples];
       return {
         fehler: "Es konnte keine Verbindung zum Server aufgebaut werden"
       };

@@ -8,22 +8,26 @@
     <clr-dg-cell>{{group.arbeitsgruppenID}}</clr-dg-cell>
     <clr-dg-cell>{{group.bezeichnung}}</clr-dg-cell>
     <clr-dg-cell>
-      <ul *ngFor="let inner of groupMembers[i]">
-        <li>
-          <a routerLink="/employee/{{inner.personalnummer}}">
-            {{inner | employeeName}}
-          </a>
+      <ng-container *ngIf="groupMembers[i]">
+        <ul *ngFor="let inner of groupMembers[i]">
+          <li>
+            <a routerLink="/employee/{{inner.personalnummer}}">
+              {{inner | employeeName}}
+            </a>
             <clr-icon shape="check" class="is-success" *ngIf="inner.erreichbar"></clr-icon>
             <clr-icon shape="times" class="is-error" *ngIf="!inner.erreichbar"></clr-icon>
-        </li>
-      </ul>
+          </li>
+        </ul>
+      </ng-container>
     </clr-dg-cell>
     <clr-dg-cell>
-      <a routerLink="/employee/{{leaders[i].personalnummer}}">
-        {{leaders[i] | employeeName}}
-      </a>
-      <clr-icon shape="check" class="is-success" *ngIf="leaders[i].erreichbar"></clr-icon>
-      <clr-icon shape="times" class="is-error" *ngIf="!leaders[i].erreichbar"></clr-icon>
+      <ng-container *ngIf="leaders[i]">
+        <a routerLink="/employee/{{leaders[i].personalnummer}}">
+          {{leaders[i] | employeeName}}
+        </a>
+        <clr-icon shape="check" class="is-success" *ngIf="leaders[i].erreichbar"></clr-icon>
+        <clr-icon shape="times" class="is-error" *ngIf="!leaders[i].erreichbar"></clr-icon>
+      </ng-container>
     </clr-dg-cell>
   </clr-dg-row>
 

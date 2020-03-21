@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
   templateUrl: "./login.component.html",
   styleUrls: ["./login.component.scss"]
 })
+
 export class LoginComponent implements OnInit {
   form: loginForm = {
     username: "",
@@ -35,7 +36,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.titleService.setTitle("Login");
-    this.route.queryParams.subscribe(params => (this.url = params["returnUrl"]));
+    this.route.queryParams.subscribe(params => this.url = params["returnUrl"]);
   }
 
   public submit() {
@@ -49,7 +50,7 @@ export class LoginComponent implements OnInit {
         Swal.fire("", "Sie sind nun eingeloggt", "success").then(() =>
           this.router.navigate([this.url || "dashboard"])
         );
-        setTimeout(() => this.router.navigate([this.url || "dashboard"]), 5000);
+        setTimeout(() => this.router.navigate([this.url || "/dashboard"]), 5000);
       } else {
         this.err.reason = answer.fehler;
       }

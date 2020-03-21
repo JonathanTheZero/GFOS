@@ -60,7 +60,8 @@ export class AppComponent implements OnInit {
         "Inaktivität",
         "Aufgrund von Inaktivität wurden Sie automatisch ausgeloggt. Sie werden nun zur Login-Seite weitergeleitet",
         "info"
-      ).then(() => this.router.navigate(['login']));
+      );
+      this.router.navigate(['/login']);
     });
 
     this.idle.onIdleStart.subscribe(() => {

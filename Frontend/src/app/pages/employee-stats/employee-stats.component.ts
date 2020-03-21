@@ -27,6 +27,7 @@ export class EmployeeStatsComponent implements OnInit {
       if (params.get("id") === "me") {
         this.user = this.dataService.getUser();
       }
+      
       else {
         let res = await this.api.getUser(params.get("id"));
         if((res as apiAnswer)?.fehler) return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + (res as apiAnswer)?.fehler, "error");
