@@ -47,6 +47,11 @@ public class SessionHandler {
 		}				
 	}
 			
+	/**
+	 * Die Methode <i>closeSession</i> schließt eine vorhandene Session mit Hilfe der SessionID.
+	 * @param sessionID - ID der zu schließenden Session
+	 * @return String - Je nach Ausgang des Vorgangs eine Fehler- oder Erfolgsmeldung
+	 */
 	public static String closeSession(String sessionID) {
 		String sqlStmt = "DELETE FROM gfos.active_sessions WHERE SessionID = \"" + sessionID + "\";";
 		if(!checkSessionID(sessionID))
@@ -61,6 +66,12 @@ public class SessionHandler {
 		}
 	}
 	
+	/**
+	 * DIe Methode <i>checkSessionID</i> prüft, ob zu einer gegebenen SessionID eine aktive Session
+	 * auf der Datenbank hinterlegt ist.
+	 * @param sessionID - zu prüfende SessionID
+	 * @return boolean - true, wenn eine Session für die ID existiert, false, wenn nicht
+	 */
 	public static boolean checkSessionID(String sessionID) {
 		String sqlStmt = "SELECT SessionID FROM gfos.active_sessions WHERE SessionID = \"" + sessionID + "\";";
 		try {
@@ -73,6 +84,12 @@ public class SessionHandler {
 		return false;
 	}
 
+	/**
+	 * Die Methode <i>changeStatus</i> ändert den Status eines Mitarbeiters auf der Datenbank.
+	 * @param pn - Personalnummer des Mitarbeiters
+	 * @param status - neu einzutragender Status
+	 * @return boolean - true, wenn der Status geändert werden konnte, false, wenn nicht
+	 */
 	public static boolean changeStatus(String pn, String status) {
 		String sqlStmt = "UPDATE gfos.Mitarbeiter SET Status = \"" + status + "\" WHERE Personalnummer = \"" + pn + "\"";
 		try {
