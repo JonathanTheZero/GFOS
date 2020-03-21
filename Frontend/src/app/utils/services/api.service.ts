@@ -173,8 +173,9 @@ export class ApiService {
         .toPromise();
     }
     catch {
-      Swal.fire("Fehler", "Es konnte keine Verbindung zum Server aufgebaut werden", "error");
-      return undefined;
+      return {
+        fehler: "Es konnte keine Verbindung zum Server aufgebaut werden"
+      };
     }
   }
 

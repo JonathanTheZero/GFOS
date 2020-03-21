@@ -9,6 +9,8 @@ export interface Mitarbeiter {
     rechteklasse: "admin" | "personalabteilung" | "headOfDepartment" | "user" | "root";
     abteilung: string | null;
     vertreter: string | null;
+    passwort?: string | null;
+    grundDAbw: string;
 }
 
 export interface apiAnswer {

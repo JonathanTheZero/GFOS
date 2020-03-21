@@ -1,18 +1,5 @@
 <div id="dashboard">
 
-    <ng-container *ngIf="!isMobile">
-        <ng-container *ngFor="let g of userGroups">
-            <dashboard-group-overview [group]="g"></dashboard-group-overview>
-        </ng-container>
-    </ng-container>
-    <ng-container *ngIf="isMobile">
-        <dashboard-panel [employees]="employees"></dashboard-panel>
-    </ng-container>
-
-    <br />
-    <hr />
-    <br />
-
     <ng-container *ngIf="['admin', 'root', 'headOfDepartment'].includes(user.rechteklasse)">
         <h2>Arbeitsgruppen</h2>
 
@@ -27,5 +14,18 @@
                 <dashboard-groups [groups]="groups"></dashboard-groups>
             </ng-container>
         </ng-container>
+    </ng-container>
+
+    <br />
+    <hr />
+    <br />
+    
+    <ng-container *ngIf="!isMobile">
+        <ng-container *ngFor="let g of userGroups">
+            <dashboard-group-overview [group]="g"></dashboard-group-overview>
+        </ng-container>
+    </ng-container>
+    <ng-container *ngIf="isMobile">
+        <dashboard-panel [employees]="employees"></dashboard-panel>
     </ng-container>
 </div>

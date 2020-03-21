@@ -2,6 +2,20 @@ import { Mitarbeiter, Arbeitsgruppe } from './interfaces/default.model';
 
 export const employeeSamples: Mitarbeiter[] = [
     {
+        personalnummer: "000000000001",
+        name: "Somafehlt",
+        vorname: "Nils",
+        erreichbar: false,
+        arbeitskonto: 0,
+        email: "nils.sommerfeld@gmx.net",
+        status: "abwesend",
+        rechteklasse: "admin",
+        abteilung: "IT-Sicherheit",
+        vertreter: "000000000002",
+        passwort: null,
+        grundDAbw: "-"
+    },
+    {
         personalnummer: "01",
         name: "Test",
         vorname: "Auch",
@@ -11,7 +25,8 @@ export const employeeSamples: Mitarbeiter[] = [
         status: "string",
         rechteklasse: "root",
         abteilung: "string",
-        vertreter: "string"
+        vertreter: "string",
+        grundDAbw: "-"
     },
     {
         personalnummer: "02",
@@ -23,7 +38,8 @@ export const employeeSamples: Mitarbeiter[] = [
         status: "string",
         rechteklasse: "user",
         abteilung: "string",
-        vertreter: "string"
+        vertreter: "string",
+        grundDAbw: "-"
     },
     {
         personalnummer: "02",
@@ -35,7 +51,8 @@ export const employeeSamples: Mitarbeiter[] = [
         status: "string",
         rechteklasse: "user",
         abteilung: "string",
-        vertreter: "string"
+        vertreter: "string",
+        grundDAbw: "-"
     },
     {
         personalnummer: "02",
@@ -47,7 +64,8 @@ export const employeeSamples: Mitarbeiter[] = [
         status: "string",
         rechteklasse: "user",
         abteilung: "string",
-        vertreter: "string"
+        vertreter: "string",
+        grundDAbw: "-"
     },
     {
         personalnummer: "02",
@@ -59,7 +77,8 @@ export const employeeSamples: Mitarbeiter[] = [
         status: "string",
         rechteklasse: "user",
         abteilung: "string",
-        vertreter: "string"
+        vertreter: "string",
+        grundDAbw: "-"
     }
 ];
 

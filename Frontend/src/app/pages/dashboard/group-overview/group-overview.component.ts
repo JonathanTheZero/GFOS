@@ -3,6 +3,7 @@ import { Mitarbeiter, Arbeitsgruppe, apiAnswer } from 'src/app/utils/interfaces/
 import { ApiService } from 'src/app/utils/services/api.service';
 import { DataService } from 'src/app/utils/services/data.service';
 import Swal from 'sweetalert2';
+import { employeeSamples } from 'src/app/utils/mock.data';
 
 @Component({
   selector: 'dashboard-group-overview',
@@ -18,6 +19,7 @@ export class GroupOverviewComponent implements OnInit {
   public user: Mitarbeiter;
   public valid: boolean;
   public addToGroup: boolean = false;
+  public ready: boolean = false;
 
   constructor(public api: ApiService,
     public dataService: DataService, ) {
@@ -26,7 +28,7 @@ export class GroupOverviewComponent implements OnInit {
   ngOnInit(): void {
     this.user = this.dataService.getUser();
     this.valid = this.user.rechteklasse === "admin" || this.user.rechteklasse === "root";
-
+    
     for (let m of this.group.mitglieder) {
       ///this.api.getUser(m).then(this.employees.push);
       this.api.getUser(m).then(answer => {
@@ -35,6 +37,9 @@ export class GroupOverviewComponent implements OnInit {
         if(m === this.group.leiter) this.leader = answer as Mitarbeiter;
       });
     }
+    this.leader = employeeSamples[0];
+    this.employees = employeeSamples;
+    this.ready = true;
   }
 
   public addUser(): void {

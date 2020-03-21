@@ -37,6 +37,7 @@ export class DashboardComponent implements OnInit {
       if((answer as apiAnswer)?.fehler) return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + (answer as apiAnswer).fehler, "error");
       this.userGroups = answer as Arbeitsgruppe[];
     });
+    if(!this.userGroups) this.userGroups = groupSamples;
   }
 
   public openWizard(){
