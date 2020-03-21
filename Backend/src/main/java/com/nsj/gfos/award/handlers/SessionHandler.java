@@ -7,11 +7,19 @@ import com.nsj.gfos.award.dataWrappers.Mitarbeiter;
 import com.nsj.gfos.award.gUtils.Utils;
 
 /**
- *
+ * Die Klasse <i>SessionHandler</i> stellt Hilfsmethoden bereit, welche sich um das Management
+ * der Sessions und anderer Funktionen bei An- und Abmeldung kümmern.
  * @author Schnuels
  */
 public class SessionHandler {
 
+	/**
+	 * Die Methode <i>createSession</i> erstellt mit Hilfe einer SessionID und einer Personalnummer eine neue Session
+	 * auf der Datenbank und gibt nach erfogreichem Prozess eine Erfolgsmeldung zurück, in welcher das Objekt des 
+	 * angemeldeten Mitarbeiters enthalten ist.
+	 * @param args - Ein Array mit der SessionID und der Personalnummer als Inhalt
+	 * @return String - Eine Fehlermeldung bei einem Fehler und eine Erfolgsmeldung mit Mitarbeiter Objekt bei einem Erfolg
+	 */
 	public static String createSession(String[] args) {		
 		String sessionID = args[0];
 		String personalnummer = args[1];
