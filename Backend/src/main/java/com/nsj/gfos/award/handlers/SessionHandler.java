@@ -64,5 +64,17 @@ public class SessionHandler {
 		}
 		return false;
 	}
+
+	public static boolean changeStatus(String pn, String status) {
+		String sqlStmt = "UPDATE gfos.Mitarbeiter SET Status = \"" + status + "\" WHERE Personalnummer = \"" + pn + "\"";
+		try {
+			int rs = QueryHandler.update(sqlStmt);
+			if(rs == 0)
+				return false;
+			return true;
+		} catch (SQLException e) {
+			return false;
+		}
+	}
 	
 }
