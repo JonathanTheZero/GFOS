@@ -16,6 +16,10 @@ const routes: Routes = [
     component: LoginComponent
   },
   {
+    path: "credits",
+    component: CreditsComponent
+  },
+  {
     path: "",
     canActivate: [AuthGuard],
     children: [
@@ -39,10 +43,6 @@ const routes: Routes = [
       {
         path: "employee/:id",
         component: EmployeeStatsComponent
-      },
-      {
-        path: "credits",
-        component: CreditsComponent
       },
       {
         path: "Backend/api",

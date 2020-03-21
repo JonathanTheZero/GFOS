@@ -1,1 +1,18 @@
+.dashboard-right-button-desktop {
+    float: right; 
+    display: block;
+}
 
+.dashboard-right-button-mobile {
+    display: none;
+}
+
+@media only screen and (max-width: 768px) {
+    .dashboard-right-button-desktop {
+        display: none;
+    }
+    
+    .dashboard-right-button-mobile {
+        display: initial;
+    }
+}

@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
 })
 
 export class GroupsComponent implements OnInit {
+  
   @Input() groups: Array<Arbeitsgruppe>;
   public groupMembers: Array<Array<Mitarbeiter>>;
   public leaders: Array<Mitarbeiter>;
