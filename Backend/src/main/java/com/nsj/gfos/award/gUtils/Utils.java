@@ -4,11 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
 
-import com.nsj.gfos.award.dataWrappers.Arbeitsgruppe;
-import com.nsj.gfos.award.dataWrappers.Mitarbeiter;
-import com.nsj.gfos.award.handlers.PasswordHandler;
 import com.nsj.gfos.award.handlers.QueryHandler;
-import com.nsj.gfos.award.handlers.RightHandler;
+import com.nsj.gfos.award.handlers.SessionHandler;
 
 /**
  * Die Klasse Utils enthält eine Ansammlung von Hilfsmethoden, welche in den
@@ -18,63 +15,6 @@ import com.nsj.gfos.award.handlers.RightHandler;
  * @author Artemis
  */
 public class Utils {
-
-	/**
-	 * Die Methode <i>createMitarbeiterFromQuery</i> bekommt ein ResultSet und einen
-	 * Array von Spalten übergeben, und speichert die Werte aus den angegebenen
-	 * Spalten der Datenbank in einem Mitarbeiter Objekt, welches schlussendlich
-	 * zurückgegeben wird.
-	 * 
-	 * @param rs      - ResultSet aus einer Abfrage auf der Mitarbeiter Tabelle der
-	 *                Datenbank
-	 * @param columns - Ein Array aller Spalten, dessen Werte übernommen werden.
-	 * @return Mitarbeiter - Objekt vom Typ Mitarbeiter != null.
-	 * @throws SQLException - falls das ResultSet eine Spalte nicht finden kann.
-	 */
-	public static Mitarbeiter createMitarbeiterFromQuery(ResultSet rs, String[] columns) throws SQLException {
-		Mitarbeiter m = new Mitarbeiter();
-		for (String column : columns) {
-			switch (column) {
-			case "Personalnummer":
-				m.setPersonalnummer(rs.getString("Personalnummer"));
-				break;
-			case "Name":
-				m.setName(rs.getString("Name"));
-				break;
-			case "Vorname":
-				m.setVorname(rs.getString("Vorname"));
-				break;
-			case "erreichbar":
-				m.setErreichbar((rs.getString("erreichbar").equals("1") ? true : false));
-				break;
-			case "Arbeitskonto":
-				m.setArbeitskonto(Integer.parseInt(rs.getString("Arbeitskonto")));
-				break;
-			case "EMail":
-				m.setEmail(rs.getString("EMail"));
-				break;
-			case "Status":
-				m.setStatus(rs.getString("Status"));
-				break;
-			case "Rechteklasse":
-				m.setRechteklasse(rs.getString("Rechteklasse"));
-				break;
-			case "Passwort":
-				m.setPasswort(rs.getString("Passwort"));
-				break;
-			case "Abteilung":
-				m.setAbteilung(rs.getString("Abteilung"));
-				break;
-			case "Vertreter":
-				m.setVertreter(rs.getString("Vertreter"));
-				break;
-			case "gda":
-				m.setGrundDAbw(rs.getString("gda"));
-				break;
-			}
-		}
-		return m;
-	}
 
 	/**
 	 * Die Methode <i>createMitarbeiterID</i> gibt die niedrigste Personalnummer als
@@ -125,24 +65,6 @@ public class Utils {
 		} catch (SQLException e) {
 			return true;
 		}
-	}
-
-	/**
-	 * Die Methode <i>createArbeitsgruppeFromQuer</i> bekommt ein ResultSet
-	 * übergeben und speichert die Werte aus den angegebenen Spalten der Datenbank
-	 * in einem Arbeitsgruppen Objekt, welches schlussendlich zurückgegeben wird.
-	 * 
-	 * @param rs - ResultSet aus einer Abfrage auf der Arbeitsgruppen und
-	 *           Arbeitsgruppenteilnahme Tabelle der Datenbank
-	 * @return Arbeitsgruppe - Objekt vom Typ Arbeitsgruppe != null.
-	 * @throws SQLException - falls das ResultSet eine Spalte nicht finden kann.
-	 */
-	public static Arbeitsgruppe createArbeitsgruppeFromQuery(ResultSet rs) throws SQLException {
-		Arbeitsgruppe a = new Arbeitsgruppe();
-		a.setBezeichnung(rs.getString("Bezeichnung"));
-		a.setLeiter(rs.getString("Leiter"));
-		a.setArbeitsgruppenID(rs.getString("ArbeitsgruppenID"));
-		return a;
 	}
 
 	/**
@@ -212,80 +134,26 @@ public class Utils {
 			return true;
 		}
 	}
-	
+
 	/**
-	 * Die Methode <i>getArbeitsgruppenIDFromBezeichnung</i> gibt die Bezeichnung der Arbeitsgruppe zurück, die die ArbeitsgruppenID hat.
+	 * Die Methode <i>getArbeitsgruppenIDFromBezeichnung</i> gibt die Bezeichnung
+	 * der Arbeitsgruppe zurück, die die ArbeitsgruppenID hat.
 	 * 
-	 * @param bezeichnung - Bezeichnung der Arbeitsgruppe, dessen ID man haben möchte
+	 * @param bezeichnung - Bezeichnung der Arbeitsgruppe, dessen ID man haben
+	 *                    möchte
 	 * @return String - ArbeitsgruppenID
 	 */
 	public static String getArbeitsgruppenIDFromBezeichnung(String bezeichnung) {
 		String sqlStmt = "SELECT ArbeitsgruppenID FROM gfos.arbeitsgruppe WHERE Bezeichnung = \"" + bezeichnung + "\";";
 		try {
 			ResultSet rs = QueryHandler.query(sqlStmt);
-			if(!rs.next())
+			if (!rs.next())
 				return "";
 			return rs.getString("ArbeitsgruppenID");
 		} catch (SQLException e) {
 			return "";
 		}
-		
-	}
 
-	/**
-	 * Die Methode <i>getGetAction</i> wird aufgerufen, wenn der Client eine Anfrage
-	 * an die /mitarbeiter/get Resource stellt und bestimmt abhängig von den
-	 * Rechteklassen des Clients und des Mitarbeiters, welcher zurückgegeben werden
-	 * soll, eine im RightHandler registrierte Aktion, welche als String
-	 * zurückgegeben wird.
-	 * 
-	 * @param auth - SessionID der Anfrage
-	 * @param pn   - Personalnummer des angefragten Mitarbeiters
-	 * @return String - Eine Aktion aus: selfGet, unrestrictedGet, restrictedGet,
-	 *         userGet.
-	 */
-	public static String getGetAction(String auth, String pn) {
-		if (checkSelfOperation(auth, pn))
-			return "selfGet";
-		switch (RightHandler.getRightclassFromSessionID(auth)) {
-		case "root":
-			return "unrestrictedGet";
-		case "admin":
-			return "unrestrictedGet";
-		case "personnelDepartment":
-			return "unrestrictedGet";
-		case "headOfDepartment":
-			return "restrictedGet";
-		case "user":
-			if (checkAbteilung(auth, pn) || checkArbeitsgruppe(auth, pn) || checkVertreter(auth, pn))
-				return "restrictedGet";
-			return "userGet";
-		}
-		return "";
-	}
-
-	/**
-	 * Die Methode <i>getColumns</i> wird während einer Anfrage an die
-	 * /mitarbeiter/get Resource aufgerufen und bekommt eine Aktion als Parameter,
-	 * von welcher abhängig sie die Spalten zurück gibt, welche der Client sehen
-	 * darf zurück.
-	 * 
-	 * @param action - Auf der Rechteklasse des Clients und des angefragten
-	 *               Mitarbeiters basierende Aktion
-	 * @return String - Die Methode gibt die erlaubten Spalten durch ", " getrennt
-	 *         als String zurück. Im Fall eines Fehlers würde ein leerer String
-	 *         zurückgegeben werden.
-	 */
-	public static String getColumns(String action) {
-		switch (action) {
-		case "selfGet":
-			return "Personalnummer, Name, Vorname, erreichbar, Arbeitskonto, EMail, Status, Rechteklasse, Abteilung, Passwort, Vertreter, gda";
-		case "unrestrictedGet":
-			return "Personalnummer, Name, Vorname, erreichbar, Arbeitskonto, EMail, Status, Rechteklasse, Abteilung, Vertreter, gda";
-		case "restrictedGet":
-			return "Personalnummer, Name, Vorname, erreichbar, EMail, Status, Rechteklasse, Abteilung, Vertreter";
-		}
-		return "";
 	}
 
 	/**
@@ -299,7 +167,7 @@ public class Utils {
 	 * @return boolean - Die Methode gibt zurück, ob der Mitarbeiter zu pn Vertreter
 	 *         des Clients ist.
 	 */
-	private static boolean checkVertreter(String auth, String pn) {
+	public static boolean checkVertreter(String auth, String pn) {
 		String sessionPn = "";
 		String sqlStmt = "SELECT Mitarbeiter FROM gfos.active_sessions WHERE SessionID = \"" + auth + "\";";
 		try {
@@ -329,7 +197,7 @@ public class Utils {
 	 * @return boolean - Die Methode gibt zurück, ob der Mitarbeiter und der Client
 	 *         in der gleichen Abteilung sind.
 	 */
-	private static boolean checkAbteilung(String auth, String pn) {
+	public static boolean checkAbteilung(String auth, String pn) {
 		String sessionPn = "";
 		String sqlStmt = "SELECT Mitarbeiter FROM gfos.active_sessions WHERE SessionID = \"" + auth + "\";";
 		try {
@@ -362,7 +230,7 @@ public class Utils {
 	 * @return boolean - Die Methode gibt zurück, ob der Mitarbeiter und der Client
 	 *         in mindestens einer gemeinsamen Arbeitsgruppe sind.
 	 */
-	private static boolean checkArbeitsgruppe(String auth, String pn) {
+	public static boolean checkArbeitsgruppe(String auth, String pn) {
 		String sessionPn = "";
 		String sqlStmt = "SELECT Mitarbeiter FROM gfos.active_sessions WHERE SessionID = " + auth + ";";
 		try {
@@ -386,35 +254,6 @@ public class Utils {
 	}
 
 	/**
-	 * Die Methode <i>getAlterAction</i> wird aufgerufen, wenn der Client eine Anfrage
-	 * an die /mitarbeiter/alter Resource stellt und bestimmt abhängig von den
-	 * Rechteklassen des Clients und des Mitarbeiters, wessen Attribut verändert werden soll,
-	 * eine im RightHandler registrierte Aktion, welche als String
-	 * zurückgegeben wird.
-	 * 
-	 * @param auth - SessionID der Anfrage
-	 * @param attribute - das angefragte Attribut
-	 * @return String - eine Aktion aus: SelfAlter, unrestrictedAlter, restrictedAlter.
-	 */
-	public static String getAlterAction(String auth, String pn) {
-		if (checkSelfOperation(auth, pn))
-			return "selfAlter";
-		switch (RightHandler.getRightclassFromSessionID(auth)) {
-		case "root":
-			return "unrestrictedAlter";
-		case "admin":
-			return "unrestrictedAlter";
-		case "personnelDepartment":
-			return "unrestrictedAlter";
-		case "headOfDepartment":
-			return "restrictedAlter";
-		case "user":
-			return "restrictedAlter";
-		}
-		return "";
-	}
-
-	/**
 	 * Die Methode <i>checkReferencesInDatabase</i> wird aufgerufen, wenn bei einer
 	 * Anfrage an die /mitarbeiter/remove Resource der Mitarbeiter trotz
 	 * einwandfreiem Verlauf der Anfrage an die Datenbank der Mitarbeiter nicht
@@ -427,7 +266,7 @@ public class Utils {
 	 */
 	public static String checkReferencesInDatabase(String pn) {
 		String error = "";
-		if (checkIfUserIsConnected(pn))
+		if (SessionHandler.checkIfUserIsConnected(pn))
 			error += " Mitarbeiter ist noch angemeldet.";
 		if (isVertreter(pn))
 			error += " Mitarbeiter ist noch als Vertreter eingetragen.";
@@ -506,28 +345,28 @@ public class Utils {
 	 */
 	public static String getColumnName(String param) {
 		switch (param) {
-		case "n":
-			return "Name";
-		case "vn":
-			return "Vorname";
-		case "er":
-			return "erreichbar";
-		case "em":
-			return "EMail";
-		case "ak":
-			return "Arbeitskonto";
-		case "pw":
-			return "Passwort";
-		case "s":
-			return "Status";
-		case "rk":
-			return "Rechteklasse";
-		case "ab":
-			return "Abteilung";
-		case "gda":
-			return "gda";
-		case "ve":
-			return "Vertreter";
+			case "n":
+				return "Name";
+			case "vn":
+				return "Vorname";
+			case "er":
+				return "erreichbar";
+			case "em":
+				return "EMail";
+			case "ak":
+				return "Arbeitskonto";
+			case "pw":
+				return "Passwort";
+			case "s":
+				return "Status";
+			case "rk":
+				return "Rechteklasse";
+			case "ab":
+				return "Abteilung";
+			case "gda":
+				return "gda";
+			case "ve":
+				return "Vertreter";
 		}
 		return "";
 	}
@@ -574,9 +413,11 @@ public class Utils {
 			return true;
 		}
 	}
-	
+
 	/**
-	 * Die Methode <i>getPersonalnummerFromSessionID</i> gibt die Personalnummer des Mitarbeiter mit Hilfe der SessionID zurück.
+	 * Die Methode <i>getPersonalnummerFromSessionID</i> gibt die Personalnummer des
+	 * Mitarbeiter mit Hilfe der SessionID zurück.
+	 * 
 	 * @param auth - SessionID des Clients
 	 * @return String - Personalnummer des Mitarbeiters
 	 */
@@ -593,7 +434,9 @@ public class Utils {
 	}
 
 	/**
-	 * Die Methode <i>getPersonalnummerFromEmail</i> gibt die Personalnummer eines Mitarbeiters mit Hilfe der Email zurück.
+	 * Die Methode <i>getPersonalnummerFromEmail</i> gibt die Personalnummer eines
+	 * Mitarbeiters mit Hilfe der Email zurück.
+	 * 
 	 * @param email - Email des Mitarbeiters
 	 * @return String - Personalnummer des Mitarbeiters
 	 */
@@ -608,9 +451,11 @@ public class Utils {
 			return "";
 		}
 	}
-	
+
 	/**
-	 * Die Methode <i>getLeiter</i> gibt den Leiter der Arbeitsgruppe mit Hilde der ArbeitsgruppenID zurück.
+	 * Die Methode <i>getLeiter</i> gibt den Leiter der Arbeitsgruppe mit Hilde der
+	 * ArbeitsgruppenID zurück.
+	 * 
 	 * @param id - ArbeitsgruppenID
 	 * @return String - Personalnummer des Leiter der Arbeitsgruppe
 	 */
@@ -625,41 +470,4 @@ public class Utils {
 			return "";
 		}
 	}
-
-	/**
-	 * Die Methode <i>checkIfUSerIsConnected</i> prüft anhand der gegebenen Personalnummer, ob eine aktive Session 
-	 * dieses Mitarbeiters existiert.
-	 * @param pn - Personalnummer des Mitarbeiters
-	 * @return boolean - true, wenn eine aktive Session existiert, false, wenn nicht
-	 */
-	public static boolean checkIfUserIsConnected(String pn) {
-		String sqlStmt = "SELECT * FROM gfos.active_sessions WHERE Mitarbeiter = \"" + pn + "\";";	
-		try {
-			ResultSet rs = QueryHandler.query(sqlStmt);
-			return rs.next();
-		} catch (SQLException e) {
-			return false;
-		}
-	}
-
-	/**
-	 * Die Methode <i>checkPassword</i> prüft, ob ein gegebenes Passwort mit dem des gegebenen Mitarbeiters 
-	 * übereinstimmt.
-	 * @param password - eingegebenes Passwort
-	 * @param pn - Personalnummer des zu überprüfenden Mitarbeiters
-	 * @return boolean - true, wenn die Passwörter übereinstimmen, false, wenn nicht
-	 */
-	public static boolean checkPassword(String password, String pn) {
-		String hashed = PasswordHandler.getHash(password);
-		String sqlStmt = "SELECT Passwort FROM gfos.mitarbeiter WHERE Personalnummer = \"" + pn + "\";";
-		try {
-			ResultSet rs = QueryHandler.query(sqlStmt);
-			if(!rs.next())
-				return false;
-			return rs.getString("Passwort").equals(hashed);
-		} catch (SQLException e) {
-			return false;
-		}
-	}
-
 }
