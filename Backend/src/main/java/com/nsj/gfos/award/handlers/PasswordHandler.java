@@ -1,11 +1,13 @@
 package com.nsj.gfos.award.handlers;
 
 import java.security.MessageDigest;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.xml.bind.DatatypeConverter;
 
 /**
- * Die Klasse <i>PasswordHandler</i> sorgt für die Verhashung der Passwörter.
+ * Die Klasse <i>PasswordHandler</i> sorgt fï¿½r die Verhashung der Passwï¿½rter.
  * 
  * @author Sophief
  *
@@ -13,8 +15,10 @@ import javax.xml.bind.DatatypeConverter;
 public class PasswordHandler {
 
 	/**
-	 * Die Methode <i>getHash</i> hängt zunächst einen Salt an das Passwort und verhasht dieses dann mit Hilfe der importierten Klasse javax.xml.bind.DatatypeConverter.
-	 * Als Hashalgorithmus wird SHA-512 benutzt, der das Passwort in eine Zeichenkette mit 128 Zeichen verhasht.
+	 * Die Methode <i>getHash</i> hï¿½ngt zunï¿½chst einen Salt an das Passwort und
+	 * verhasht dieses dann mit Hilfe der importierten Klasse
+	 * javax.xml.bind.DatatypeConverter. Als Hashalgorithmus wird SHA-512 benutzt,
+	 * der das Passwort in eine Zeichenkette mit 128 Zeichen verhasht.
 	 * 
 	 * @param password - das zu verhashende Passwort
 	 * @return String - das verhashte Passwort
@@ -34,6 +38,27 @@ public class PasswordHandler {
 		} catch (Exception ex) {
 		}
 		return hashValue;
+	}
+
+	/**
+	 * Die Methode <i>checkPassword</i> prÃ¼ft, ob ein gegebenes Passwort mit dem des
+	 * gegebenen Mitarbeiters Ã¼bereinstimmt.
+	 * 
+	 * @param password - eingegebenes Passwort
+	 * @param pn       - Personalnummer des zu Ã¼berprÃ¼fenden Mitarbeiters
+	 * @return boolean - true, wenn die PasswÃ¶rter Ã¼bereinstimmen, false, wenn nicht
+	 */
+	public static boolean checkPassword(String password, String pn) {
+		String hashed = PasswordHandler.getHash(password);
+		String sqlStmt = "SELECT Passwort FROM gfos.mitarbeiter WHERE Personalnummer = \"" + pn + "\";";
+		try {
+			ResultSet rs = QueryHandler.query(sqlStmt);
+			if (!rs.next())
+				return false;
+			return rs.getString("Passwort").equals(hashed);
+		} catch (SQLException e) {
+			return false;
+		}
 	}
 
 }

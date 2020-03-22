@@ -1,12 +1,13 @@
 package com.nsj.gfos.award.dataWrappers;
 
 /**
- * Die Klasse <i>Mitarbeiter</i> ist lediglich dazu da, die Tabelle 'mitarbeiter' der Datenbank in einem 
- * Java Objekt zusammenzufassen.
+ * Die Klasse <i>Mitarbeiter</i> ist lediglich dazu da, die Tabelle
+ * 'mitarbeiter' der Datenbank in einem Java Objekt zusammenzufassen.
+ * 
  * @author Schnuels
  */
 public class Mitarbeiter {
-    
+
     private String personalnummer = null;
     private String name = null;
     private String vorname = null;
@@ -19,9 +20,9 @@ public class Mitarbeiter {
     private String vertreter = null;
     private String passwort = null;
     private String grundDAbw = null;
-    
+
     public Mitarbeiter() {
-        
+
     }
 
     public String getPersonalnummer() {
@@ -104,20 +105,20 @@ public class Mitarbeiter {
         this.vertreter = vertreter;
     }
 
-	public String getPasswort() {
-		return passwort;
-	}
+    public String getPasswort() {
+        return passwort;
+    }
 
-	public void setPasswort(String passwort) {
-		this.passwort = passwort;
-	}
+    public void setPasswort(String passwort) {
+        this.passwort = passwort;
+    }
 
-	public String getGrundDAbw() {
-		return grundDAbw;
-	}
+    public String getGrundDAbw() {
+        return grundDAbw;
+    }
 
-	public void setGrundDAbw(String grundDAbw) {
-		this.grundDAbw = grundDAbw;
-	}
-            
+    public void setGrundDAbw(String grundDAbw) {
+        this.grundDAbw = grundDAbw;
+    }
+
 }
