@@ -1,6 +1,7 @@
 package com.nsj.gfos.award.resources;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -31,6 +32,7 @@ public class LogoutResource {
 	 *         Rückgabe von <i>SessionHandler.closeSession(...)</i>
 	 */
 	@GET
+	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	public String logout(@PathParam("sessionID") String sessionID) {
 		sessionID = sessionID.substring(1);
