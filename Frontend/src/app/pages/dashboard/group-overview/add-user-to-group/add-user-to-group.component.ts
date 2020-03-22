@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
 })
 
 export class AddUserToGroupComponent implements OnInit {
-  
+
   @Input() group: Arbeitsgruppe;
   @Input() mode: "add" | "remove";
   @Input() opened: boolean;
@@ -28,10 +28,18 @@ export class AddUserToGroupComponent implements OnInit {
 
   public closeAndSend(): void {
     this.close();
-    this.api.addToGroup(this.id, this.group.arbeitsgruppenID).then((answer) => {
-      if(answer?.fehler) return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + answer?.fehler, "error");
-      Swal.fire("", "Der Mitarbeiter wurde erfolgreich hinzugefügt", "success");
-    });
+    if (this.mode === "add") {
+      this.api.addToGroup(this.id, this.group.arbeitsgruppenID).then((answer) => {
+        if (answer?.fehler) return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + answer?.fehler, "error");
+        Swal.fire("", "Der Mitarbeiter wurde erfolgreich hinzugefügt", "success");
+      });
+    }
+    else if (this.mode === "remove") {
+      this.api.removeFromGroup(this.id, this.group.arbeitsgruppenID).then((answer) => {
+        if (answer?.fehler) return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + answer?.fehler, "error");
+        Swal.fire("", "Der Mitarbeiter wurde erfolgreich entfernt", "success");
+      });
+    }
   }
 
 }

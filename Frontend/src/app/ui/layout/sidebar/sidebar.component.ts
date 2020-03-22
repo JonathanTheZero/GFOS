@@ -34,6 +34,17 @@ export class SidebarComponent implements OnInit {
           icon: "user"
         }
       ]
+    },
+    {
+      title: "Meine Gruppen",
+      icon: "",
+      links: [
+        {
+          link: "/group/x",
+          title: "..",
+          icon: ""
+        }
+      ]
     }
   ];
 
@@ -46,7 +57,9 @@ export class SidebarComponent implements OnInit {
   }
 
   public changeIcon(index: number, toggle: boolean): void {
+    if(!this.sidebarLinks[index].iconWhenClosed) return;
     //swap the two values -> change of animation in the sidebar
-    [this.sidebarLinks[index].icon, this.sidebarLinks[index].iconWhenClosed] = [this.sidebarLinks[index].iconWhenClosed, this.sidebarLinks[index].icon]
+    [this.sidebarLinks[index].icon, this.sidebarLinks[index].iconWhenClosed] = 
+      [this.sidebarLinks[index].iconWhenClosed, this.sidebarLinks[index].icon];
   }
 }

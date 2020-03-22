@@ -9,19 +9,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss'],
-  animations: [
-    trigger('inOutAnimation', [
-      transition(':enter', [
-        style({ height: 0, opacity: 0 }),
-        animate('0.5s ease-out', style({ height: '100%', opacity: 1 }))
-      ]),
-      transition(':leave', [
-        style({ height: '100%', opacity: 1 }),
-        animate('0.5s ease-in', style({ height: 0, opacity: 0 }))
-      ])
-    ])
-  ]
+  styleUrls: ['./dashboard.component.scss']
 })
 
 export class DashboardComponent implements OnInit {
@@ -33,10 +21,9 @@ export class DashboardComponent implements OnInit {
   public userGroups: Array<Arbeitsgruppe>;
   public addToGroup: boolean[] = [];
   public removeFromGroup: boolean[] = [];
-
+  
+  public viewMyGroups: boolean = false;
   public viewAllGroups: boolean = false;
-  public viewOwnGroups: boolean = false;
-
 
   constructor(private titleService: Title,
     public api: ApiService,
@@ -75,12 +62,12 @@ export class DashboardComponent implements OnInit {
     this.removeFromGroup[index] = true;
   }
 
-  public viewAllGroupsSwitch() {
-    this.viewAllGroups = !this.viewAllGroups;
+  public toggleMyGroups(){
+    this.viewMyGroups = !this.viewMyGroups;
   }
 
-  public viewOwnGroupsSwitch() {
-    this.viewOwnGroups = !this.viewOwnGroups;
+  public toggleAllGroups(){
+    this.viewAllGroups = !this.viewAllGroups;
   }
 
 }
