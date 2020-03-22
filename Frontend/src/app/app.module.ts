@@ -1,6 +1,7 @@
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouteReuseStrategy } from '@angular/router';
 import { ClarityModule } from '@clr/angular';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { HttpClientModule }    from '@angular/common/http';
@@ -12,7 +13,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { PagesModule } from './pages/pages.module';
 import { AuthGuard } from './utils/auth.guard';
 import { PipesModule } from "./utils/pipes.module";
-import { RouteReuseStrategy } from '@angular/router';
 import { CustomReuseStrategy } from './utils/reuse.strategy';
 
 
@@ -34,7 +34,11 @@ import { CustomReuseStrategy } from './utils/reuse.strategy';
   ],
   providers: [
     AuthGuard,
-    Title
+    Title,
+    {
+      provide: RouteReuseStrategy, 
+      useClass: CustomReuseStrategy
+    }
   ],
   bootstrap: [
     AppComponent

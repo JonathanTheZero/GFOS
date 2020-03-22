@@ -9,6 +9,7 @@ import { RegisterComponent } from "./pages/forms/register/register.component";
 import { LoginComponent } from "./pages/forms/login/login.component";
 import { EmployeeStatsComponent } from './pages/employee-stats/employee-stats.component';
 import { CreditsComponent } from './pages/credits/credits.component';
+import { GroupStatsComponent } from './pages/group-stats/group-stats.component';
 
 const routes: Routes = [
   {
@@ -24,11 +25,6 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       {
-        path: "",
-        redirectTo: "/login",
-        pathMatch: "full"
-      },
-      {
         path: "dashboard",
         component: DashboardComponent
       },
@@ -43,6 +39,10 @@ const routes: Routes = [
       {
         path: "employee/:id",
         component: EmployeeStatsComponent
+      },
+      {
+        path: "group/:id",
+        component: GroupStatsComponent
       },
       {
         path: "Backend/api",

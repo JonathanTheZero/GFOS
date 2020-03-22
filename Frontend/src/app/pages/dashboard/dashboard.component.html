@@ -1,5 +1,5 @@
 <div id="dashboard">
-    
+
   <button class="btn dashboard-right-button-desktop" (click)="requestGroups()">Dashboard aktualisieren</button>
   <h1>Dashboard</h1>
   <button class="btn dashboard-right-button-mobile" (click)="requestGroups()">Dashboard aktualisieren</button>
@@ -7,40 +7,59 @@
   <hr />
 
   <ng-container *ngIf="['admin', 'root', 'headOfDepartment'].includes(user.rechteklasse)">
-    <h2>Arbeitsgruppen</h2>
+    <h2 style="display: inline-block;">
+      <clr-icon shape="caret" style="transform: rotate(180deg);" (click)="viewAllGroupsSwitch()" *ngIf="viewAllGroups">
+      </clr-icon>
+      <clr-icon shape="caret" style="transform: rotate(90deg);" (click)="viewAllGroupsSwitch()" *ngIf="!viewAllGroups">
+      </clr-icon>
+      Alle Arbeitsgruppen
+    </h2>
 
-    <ng-container *ngIf="['admin', 'root'].includes(user.rechteklasse)">
-      <button class="btn" (click)="openWizard()">Arbeitsgruppe hinzufügen</button>
-      <dashboard-add-group-wizard [(open)]="open"></dashboard-add-group-wizard>
-    </ng-container>
+    <div *ngIf="viewAllGroups" @inOutAnimation>
 
-    <ng-container *ngIf="['admin', 'root', 'headOfDepartment'].includes(user.rechteklasse)">
-      <button class="btn" (click)="reload()">Aktualisieren</button>
-      <ng-container *ngIf="groups">
-        <dashboard-groups [groups]="groups"></dashboard-groups>
+      <ng-container *ngIf="['admin', 'root'].includes(user.rechteklasse)">
+        <button class="btn" (click)="openWizard()">Arbeitsgruppe hinzufügen</button>
+        <dashboard-add-group-wizard [(open)]="open"></dashboard-add-group-wizard>
       </ng-container>
-    </ng-container>
+
+      <ng-container *ngIf="['admin', 'root', 'headOfDepartment'].includes(user.rechteklasse)">
+        <ng-container *ngIf="groups">
+          <dashboard-groups [groups]="groups"></dashboard-groups>
+        </ng-container>
+      </ng-container>
+    </div>
   </ng-container>
 
   <br />
   <hr />
   <br />
 
-  <ng-container *ngFor="let g of userGroups;let i = index">
-    <h2>Mitarbeiter*innen der Gruppe {{g.bezeichnung}}</h2>
-    <ng-container
-      *ngIf="user.rechteklasse === 'headOfDepartment' || user.rechteklasse === 'admin' || user.rechteklasse === 'root'">
-      <button class="btn" (click)="addUser(i)">Mitarbeiter*in hinzufügen</button>
-      <button class="btn" (click)="removeUser(i)">Mitarbeiter*in entfernen</button>
+  <h2 style="display: inline-block;">
+    <clr-icon shape="caret" style="transform: rotate(180deg);" (click)="viewOwnGroupsSwitch()" *ngIf="viewOwnGroups">
+    </clr-icon>
+    <clr-icon shape="caret" style="transform: rotate(90deg);" (click)="viewOwnGroupsSwitch()" *ngIf="!viewOwnGroups">
+    </clr-icon>
+    Meine Arbeitsgruppen
+  </h2>
+  <hr />
+  <ng-container *ngIf="viewOwnGroups">
+    <ng-container *ngFor="let g of userGroups;let i = index">
+      <h3>Mitarbeiter*innen der Gruppe {{g.bezeichnung}}</h3>
+      <ng-container
+        *ngIf="user.rechteklasse === 'headOfDepartment' || user.rechteklasse === 'admin' || user.rechteklasse === 'root'">
+        <button class="btn" (click)="addUser(i)">Mitarbeiter*in hinzufügen</button>
+        <button class="btn" (click)="removeUser(i)">Mitarbeiter*in entfernen</button>
 
-      <dashboard-add-user-to-group [(opened)]="addToGroup[i]" [mode]="'add'" [group]="g"></dashboard-add-user-to-group>
-      <dashboard-add-user-to-group [(opened)]="removeFromGroup[i]" [mode]="'remove'" [group]="g">
-      </dashboard-add-user-to-group>
+        <dashboard-add-user-to-group [(opened)]="addToGroup[i]" [mode]="'add'" [group]="g">
+        </dashboard-add-user-to-group>
+        <dashboard-add-user-to-group [(opened)]="removeFromGroup[i]" [mode]="'remove'" [group]="g">
+        </dashboard-add-user-to-group>
+      </ng-container>
+
+      <dashboard-group-overview *ngIf="!isMobile" [group]="g.arbeitsgruppenID"></dashboard-group-overview>
+      <dashboard-groups-panel *ngIf="isMobile" [group]="g.arbeitsgruppenID"></dashboard-groups-panel>
+      <hr />
+
     </ng-container>
-
-    <dashboard-group-overview *ngIf="!isMobile" [group]="g.arbeitsgruppenID"></dashboard-group-overview>
-    <dashboard-groups-panel *ngIf="isMobile" [group]="g.arbeitsgruppenID"></dashboard-groups-panel>
-    <hr />
-
   </ng-container>
 </div>

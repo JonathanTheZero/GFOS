@@ -12,6 +12,7 @@ import { SettingsModule } from './settings/settings.module';
 import { EmployeeStatsComponent } from './employee-stats/employee-stats.component';
 import { CreditsComponent } from './credits/credits.component';
 import { PipesModule } from '../utils/pipes.module';
+import { GroupStatsComponent } from './group-stats/group-stats.component';
 
 
 const components = [
@@ -35,6 +36,7 @@ const components = [
   ],
   declarations: [
     ...components,
+    GroupStatsComponent,
   ],
   exports: [
     ...components,

@@ -124,6 +124,14 @@ export class ApiService {
   }
 
   /**
+   * Schedules a beacon that should be fired when the user logs off
+   * @returns whether the scheduling was successful or not
+   */
+  public logoutBeacon(): boolean {
+    return navigator.sendBeacon(`${this.url}/logout:auth=${this.dataService.getAuth()}`, this.dataService.getAuth());
+  }
+
+  /**
    * sends a request to changte the email of the user
    * @param pw the password of the user
    * @param email the new email of the user
@@ -246,7 +254,7 @@ export class ApiService {
   public async getGroupByName(name: string): Promise<Arbeitsgruppe | apiAnswer> {
     try {
       return await this.http
-        .get<Arbeitsgruppe>(`${this.url}/arbeitsgruppen/getFromBezeichnung:auth=${this.dataService.getAuth()}&name=${name}`) //TODO
+        .get<Arbeitsgruppe>(`${this.url}/arbeitsgruppen/getFromBezeichnung:auth=${this.dataService.getAuth()}&name=${name}`)
         .toPromise();
     }
     catch {

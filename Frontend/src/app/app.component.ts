@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { ApiService } from './utils/services/api.service';
 import { apiAnswer } from './utils/interfaces/default.model';
 import Swal from 'sweetalert2';
@@ -23,17 +23,13 @@ export class AppComponent implements OnInit {
     private dataService: DataService) {
   }
 
+  
+  @HostListener('window:beforeunload', ['$event'])
+  logoutBeforeUnloading() {
+    this.api.logout();
+  }
+
   ngOnInit(): void {
-    window.addEventListener("beforeunload", async e => {
-      //user will get logged out if the window is closed
-      if (this.dataService.getUser()) {
-        this.api.logout();
-      }
-
-      return false;
-    });
-
-
     // the user receives a first warning after either 10 minutes or a custom value (can be changed in the settings)
     this.dataService.idleCounter.subscribe(
       idle => this.idle.setIdle(parseInt(idle) * 60 || 600)
@@ -75,6 +71,11 @@ export class AppComponent implements OnInit {
 
     this.idle.onTimeoutWarning.subscribe(countdown => console.log('You will time out in ' + countdown + ' seconds!'));
     this.reset();
+    
+    let res = this.api.logoutBeacon();
+    if(!res){
+      console.error("Could not schedule beacon");
+    }
   }
 
   private reset() {
