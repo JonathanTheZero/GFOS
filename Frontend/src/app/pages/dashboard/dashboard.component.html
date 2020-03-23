@@ -4,22 +4,38 @@
   <h1>Dashboard</h1>
   <button class="btn dashboard-right-button-mobile" (click)="requestGroups()">Dashboard aktualisieren</button>
   <hr />
-  <a routerLink="/employee/me">{{user | employeeName}}</a>
+  <table>
+    <tr>
+      <td>
+        <a routerLink="/employee/me">{{user | employeeName}}</a>
+      </td>
+      <td>
+        <clr-icon shape="check" class="is-success" *ngIf="user.erreichbar"></clr-icon>
+        <clr-icon shape="times" class="is-error" *ngIf="!user.erreichbar"></clr-icon>
+        <clr-signpost>
+          <clr-signpost-content *clrIfOpen>
+            Klicken Sie auf
+            {{user.erreichbar ? "den Haken, um als abwesend" : "das Kreuz, um als anwesend"}}
+            angezeigt zu werden
+          </clr-signpost-content>
+        </clr-signpost>
+      </td>
+      <td>
+        Bla bla
+      </td>
+      <td>
+        <a routerLink="/employee/{{user.vertreter}}">Vertreter</a>
+      </td>
+    </tr>
+  </table>
   <hr />
 
   <ng-container *ngIf="['admin', 'root', 'headOfDepartment'].includes(user.rechteklasse)">
-    <input id="toggle" type="checkbox" unchecked>
-    <button type="button" class="btn btn-icon" aria-label="home" (click)="toggleAllGroups()">
-      <label for="toggle">
-        <clr-icon shape="caret" style="transform: rotate(180deg);" *ngIf="viewAllGroups"></clr-icon>
-        <clr-icon shape="caret" style="transform: rotate(90deg);" *ngIf="!viewAllGroups"></clr-icon>
-      </label>
-    </button>
-    <h2 class="custom-section-header">
-      Alle Arbeitsgruppen
-    </h2>
+    <button class="btn dashboard-right-button-desktop" (click)="toggleAllGroups()">Anzeigen</button>
+    <h2>Alle Arbeitsgruppen</h2>
+    <hr />
 
-    <div id="expand">
+    <div [@inOutAnimation]="viewAllGroups">
       <ng-container *ngIf="['admin', 'root'].includes(user.rechteklasse)">
         <button class="btn" (click)="openWizard()">Arbeitsgruppe hinzufügen</button>
         <dashboard-add-group-wizard [(open)]="open"></dashboard-add-group-wizard>
@@ -39,19 +55,11 @@
   <br />
 
   <div id="myGroups">
-    <input id="toggle2" type="checkbox" unchecked>
-    <button type="button" class="btn btn-icon" aria-label="home" (click)="toggleMyGroups()">
-      <label for="toggle2">
-        <clr-icon shape="caret" style="transform: rotate(180deg);" *ngIf="viewMyGroups"></clr-icon>
-        <clr-icon shape="caret" style="transform: rotate(90deg);" *ngIf="!viewMyGroups"></clr-icon>
-      </label>
-    </button>
-    <h2 class="custom-section-header">
-      Meine Arbeitsgruppen
-    </h2>
-
+    <button class="btn dashboard-right-button-desktop" (click)="toggleMyGroups()">Anzeigen</button>
+    <h2>Meine Arbeitsgruppen</h2>
     <hr />
-    <div id="expand2">
+    
+    <div [@inOutAnimation]="viewMyGroups">
       <ng-container *ngFor="let g of userGroups;let i = index">
         <h3>Mitarbeiter*innen der Gruppe {{g.bezeichnung}}</h3>
         <ng-container

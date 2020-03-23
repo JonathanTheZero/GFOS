@@ -53,15 +53,11 @@ export class AddGroupWizardComponent implements OnInit {
 
       let group: Arbeitsgruppe = answer as Arbeitsgruppe;
       const promises: Array<Promise<apiAnswer>> = [];
-      for (let m of this.model.mitglieder) {
-        promises.push(this.api.addToGroup(m, group.arbeitsgruppenID));
-      }
+      this.model.mitglieder.forEach(val => promises.push(this.api.addToGroup(val, group.arbeitsgruppenID)));
 
       const res: Array<apiAnswer> = await Promise.all(promises);
       for (let r of res) {
-        if (r.fehler) {
-          return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + r.fehler, "error");
-        }
+        if (r.fehler) return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + r.fehler, "error");
       }
       return Swal.fire("", "Die Arbeitsgruppe wurde erfolgreich erstellt", "success");
     });

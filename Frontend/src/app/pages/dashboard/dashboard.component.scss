@@ -7,6 +7,24 @@
   display: none;
 }
 
+table {
+  border: none;
+  width: 100%;
+
+  tr {
+    text-align: left;
+
+    td {
+      text-align: left;
+      width: 33%;
+
+      &:last {
+          text-align: right;
+      }
+    }
+  }
+}
+
 @media only screen and (max-width: 768px) {
   .dashboard-right-button-desktop {
     display: none;
@@ -15,35 +33,4 @@
   .dashboard-right-button-mobile {
     display: initial;
   }
-}
-
-#toggle,
-#toggle2 {
-  display: none;
-}
-
-#expand {
-  height: auto;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 1s linear;
-}
-
-#expand2 {
-  height: auto;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 1s linear;
-}
-
-#toggle:checked~#expand {
-  max-height: 500px; //just something big enough to render everything
-}
-
-#toggle2:checked~#expand2 {
-  max-height: 2500px;
-}
-
-.custom-section-header {
-  display: inline-block;
 }

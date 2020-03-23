@@ -8,7 +8,7 @@
   <clr-wizard-button [type]="'cancel'">Abbrechen</clr-wizard-button>
   <clr-wizard-button [type]="'previous'">Zurück</clr-wizard-button>
   <clr-wizard-button [type]="'next'">Weiter</clr-wizard-button>
-  <clr-wizard-button [type]="'finish'" (click)="send()">Fertigstellen</clr-wizard-button>
+  <clr-wizard-button [type]="'finish'">Fertigstellen</clr-wizard-button>
 
   <clr-wizard-page [clrWizardPageNextDisabled]="name.pristine || admin.pristine || !formPageOne.valid">
     <ng-template clrPageTitle>Seite 1</ng-template>

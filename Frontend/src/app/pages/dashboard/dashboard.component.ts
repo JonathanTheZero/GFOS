@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { trigger, transition, style, animate } from '@angular/animations';
+import { trigger, transition, style, animate, state } from '@angular/animations';
 import { Mitarbeiter, Arbeitsgruppe, apiAnswer } from 'src/app/utils/interfaces/default.model';
 import { ApiService } from 'src/app/utils/services/api.service';
 import { DataService } from 'src/app/utils/services/data.service';
@@ -9,7 +9,16 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
+  animations: [
+    trigger(
+      'inOutAnimation', [
+      state('enter', style({ height: 0, opacity: 0 })),
+      state('leave', style({ height: '100%', opacity: 1 })),
+      transition('enter => leave', animate('1500ms')),
+      transition('leave => enter', animate('1000ms'))
+    ])
+  ]
 })
 
 export class DashboardComponent implements OnInit {
@@ -21,9 +30,9 @@ export class DashboardComponent implements OnInit {
   public userGroups: Array<Arbeitsgruppe>;
   public addToGroup: boolean[] = [];
   public removeFromGroup: boolean[] = [];
-  
-  public viewMyGroups: boolean = false;
-  public viewAllGroups: boolean = false;
+
+  public viewMyGroups: "leave" | "enter" = "enter";
+  public viewAllGroups: "leave" | "enter" = "enter";
 
   constructor(private titleService: Title,
     public api: ApiService,
@@ -62,12 +71,12 @@ export class DashboardComponent implements OnInit {
     this.removeFromGroup[index] = true;
   }
 
-  public toggleMyGroups(){
-    this.viewMyGroups = !this.viewMyGroups;
+  public toggleAllGroups(): void {
+    this.viewAllGroups = this.viewAllGroups === 'leave' ? 'enter' : 'leave';
   }
 
-  public toggleAllGroups(){
-    this.viewAllGroups = !this.viewAllGroups;
+  public toggleMyGroups(): void {
+    this.viewMyGroups = this.viewMyGroups === 'leave' ? 'enter' : 'leave';
   }
 
 }

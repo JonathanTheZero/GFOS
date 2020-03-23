@@ -18,14 +18,15 @@
 
   </ng-container>
 
-  <ng-container *ngIf="data?.rechteklasse === 'admin' || data?.rechteklasse === 'root'">
-    <a clrVerticalNavLink routerLinkActive="active" routerLink="./register">
-      <clr-icon shape="users" clrVerticalNavIcon></clr-icon>
-      Benutzer hinzufügen
-    </a>
-  </ng-container>
 
-  <a clrVerticalNavLink routerLinkActive="active" routerLink="./credits" id="bottom_link">
+
+  <a clrVerticalNavLink routerLinkActive="active" routerLink="/register"
+    *ngIf="['admin', 'root'].includes(data.rechteklasse)" [routerLinkActiveOptions]="{ exact: true }">
+    <clr-icon shape="users" clrVerticalNavIcon></clr-icon>
+    Benutzer hinzufügen
+  </a>
+
+  <a clrVerticalNavLink routerLinkActive="active" routerLink="/credits" [routerLinkActiveOptions]="{ exact: true }">
     <clr-icon shape="certificate" clrVerticalNavIcon></clr-icon>
     Credit
   </a>

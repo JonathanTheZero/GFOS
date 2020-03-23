@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { apiAnswer, Mitarbeiter, Arbeitsgruppe } from "../interfaces/default.model";
+import { apiAnswer, Mitarbeiter, Arbeitsgruppe, MitarbeiterAtribut } from "../interfaces/default.model";
 import { environment } from "src/environments/environment";
 import { DataService } from "./data.service";
 import { employeeSamples, groupSamples } from '../mock.data';
@@ -131,6 +131,17 @@ export class ApiService {
     return navigator.sendBeacon(`${this.url}/logout:auth=${this.dataService.getAuth()}`, this.dataService.getAuth());
   }
 
+  public async alterAttribute(attribute: MitarbeiterAtribut): Promise<apiAnswer> {
+    try {
+      return this.http
+        .get<apiAnswer>("")
+        .toPromise();
+    }
+    catch {
+      
+    }
+  }
+
   /**
    * sends a request to changte the email of the user
    * @param pw the password of the user
@@ -181,7 +192,7 @@ export class ApiService {
         .toPromise();
     }
     catch {
-      if(!environment.production) return employeeSamples[0];
+      if(!environment.production) return employeeSamples[Math.floor((employeeSamples.length - 1) * Math.random())];
       return {
         fehler: "Es konnte keine Verbindung zum Server aufgebaut werden"
       };
