@@ -1,9 +1,9 @@
 <div class="login-wrapper">
     <form class="login" (ngSubmit)="validate()">
         <section class="title">
-            <h3 class="welcome">Registrierung</h3>
-            Company Product Name
-            <h5 class="hint">Use your Company ID to sign in or create one now</h5>
+            NSJ
+            <h3 class="welcome">Mitarbeiter hinzufügen</h3>          
+            <h5 class="hint">Bitte alle Felder ausfüllen und überprüfen</h5>
         </section>
         <div class="login-group">
             <clr-input-container>
@@ -40,8 +40,7 @@
                 <input type="text" name="username" clrInput placeholder="Vertreter" [(ngModel)]="form.agent"/>
             </clr-input-container>
             <form-error [error]="err"></form-error>
-            <button type="submit" class="btn btn-primary">Registrieren</button>
-            <a routerLink="/login" class="signup">Login</a>
+            <button type="submit" class="btn btn-primary">Hinzufügen</button>
         </div>
     </form>
 </div>
