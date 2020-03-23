@@ -18,6 +18,10 @@ table {
       text-align: left;
       width: 33%;
 
+      form {
+        margin: 0;
+      }
+
       &:last {
           text-align: right;
       }

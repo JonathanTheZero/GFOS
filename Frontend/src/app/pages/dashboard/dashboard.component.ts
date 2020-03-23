@@ -34,6 +34,8 @@ export class DashboardComponent implements OnInit {
   public viewMyGroups: "leave" | "enter" = "enter";
   public viewAllGroups: "leave" | "enter" = "enter";
 
+  public status: string;
+
   constructor(private titleService: Title,
     public api: ApiService,
     public dataService: DataService) { }
@@ -42,7 +44,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.titleService.setTitle("Dashboard");
     this.dataService.isMobile().subscribe(m => this.isMobile = m);
-    this.user = this.dataService.getUser();
+    this.dataService.getUser(true).subscribe(u => this.user = u);
     this.requestGroups();
   }
 
@@ -77,6 +79,22 @@ export class DashboardComponent implements OnInit {
 
   public toggleMyGroups(): void {
     this.viewMyGroups = this.viewMyGroups === 'leave' ? 'enter' : 'leave';
+  }
+
+  public changeStatus(): void {
+    this.api.alterStatus(this.status).then(answer => {
+      if (answer.fehler) return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + answer.fehler, "error");
+      Swal.fire("", "Ihr Status wurde erfolgreich übernommen", "success");
+      this.dataService.getUser().status = this.status;
+    });
+  }
+
+  public alterErreichbar(): void {
+    this.api.alterReachable(this.dataService.getUser().erreichbar).then(answer => {
+      if (answer.fehler) return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + answer.fehler, "error");
+      Swal.fire("", "Ihr Status wurde erfolgreich übernommen", "success");
+      this.dataService.getUser().erreichbar = !this.dataService.getUser().erreichbar;
+    });
   }
 
 }

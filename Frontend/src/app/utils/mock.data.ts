@@ -5,7 +5,7 @@ export const employeeSamples: Mitarbeiter[] = [
         personalnummer: "000000000001",
         name: "Somafehlt",
         vorname: "Nils",
-        erreichbar: false,
+        erreichbar: true,
         arbeitskonto: 0,
         email: "nils.sommerfeld@gmx.net",
         status: "abwesend",

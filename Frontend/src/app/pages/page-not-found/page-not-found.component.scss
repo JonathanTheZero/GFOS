@@ -1,4 +1,7 @@
 * {
+  -webkit-transition: all 0.6s;
+  -o-transition: all 0.6s;
+  -moz-transition: all 0.6s;
   transition: all 0.6s;
 }
 
@@ -23,16 +26,57 @@ body {
     font-size: 50px;
     display: inline-block;
     padding-right: 12px;
+    -webkit-animation: type .5s alternate infinite;
+    -moz-animation: type .5s alternate infinite;
+    -o-animation: type .5s alternate infinite;
     animation: type .5s alternate infinite;
   }
 }
 
-@keyframes type {
+@-webkit-keyframes type {
+  from {
+    -webkit-box-shadow: inset -3px 0px 0px #888;
+    box-shadow: inset -3px 0px 0px #888;
+  }
+
+  to {
+    -webkit-box-shadow: inset -3px 0px 0px transparent;
+    box-shadow: inset -3px 0px 0px transparent;
+  }
+}
+
+@-moz-keyframes type {
+  from {
+    -moz-box-shadow: inset -3px 0px 0px #888;
+    box-shadow: inset -3px 0px 0px #888;
+  }
+
+  to {
+    -moz-box-shadow: inset -3px 0px 0px transparent;
+    box-shadow: inset -3px 0px 0px transparent;
+  }
+}
+
+@-o-keyframes type {
   from {
     box-shadow: inset -3px 0px 0px #888;
   }
 
   to {
+    box-shadow: inset -3px 0px 0px transparent;
+  }
+}
+
+@keyframes type {
+  from {
+    -webkit-box-shadow: inset -3px 0px 0px #888;
+    -moz-box-shadow: inset -3px 0px 0px #888;
+    box-shadow: inset -3px 0px 0px #888;
+  }
+
+  to {
+    -webkit-box-shadow: inset -3px 0px 0px transparent;
+    -moz-box-shadow: inset -3px 0px 0px transparent;
     box-shadow: inset -3px 0px 0px transparent;
   }
 }

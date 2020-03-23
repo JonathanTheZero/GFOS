@@ -10,8 +10,12 @@
         <a routerLink="/employee/me">{{user | employeeName}}</a>
       </td>
       <td>
-        <clr-icon shape="check" class="is-success" *ngIf="user.erreichbar"></clr-icon>
-        <clr-icon shape="times" class="is-error" *ngIf="!user.erreichbar"></clr-icon>
+        <button type="button" class="btn btn-icon btn-success" aria-label="done" *ngIf="user.erreichbar" (click)="alterErreichbar()">
+          <clr-icon shape="check"></clr-icon>
+        </button>
+        <button type="button" class="btn btn-icon btn-warning" aria-label="warning" *ngIf="!user.erreichbar" (click)="alterErreichbar()">
+          <clr-icon shape="times"></clr-icon>
+        </button>
         <clr-signpost>
           <clr-signpost-content *clrIfOpen>
             Klicken Sie auf
@@ -21,7 +25,17 @@
         </clr-signpost>
       </td>
       <td>
-        Bla bla
+        <form clrForm (submit)="changeStatus()" style="display: inline-block;">
+          <clr-datalist-container>
+            <label>Status</label>
+            <input name="Option" clrDatalistInput [(ngModel)]="status" />
+            <datalist>
+              <option [value]="'Online'">Online</option>
+              <option [value]="'Abwesend'">Abwesend</option>
+              <option [value]="'Nicht stören'">Nicht stören</option>
+            </datalist>
+          </clr-datalist-container>
+        </form>
       </td>
       <td>
         <a routerLink="/employee/{{user.vertreter}}">Vertreter</a>
@@ -30,7 +44,7 @@
   </table>
   <hr />
 
-  <ng-container *ngIf="['admin', 'root', 'headOfDepartment'].includes(user.rechteklasse)">
+  <div *ngIf="['admin', 'root', 'headOfDepartment'].includes(user.rechteklasse)">
     <button class="btn dashboard-right-button-desktop" (click)="toggleAllGroups()">Anzeigen</button>
     <h2>Alle Arbeitsgruppen</h2>
     <hr />
@@ -46,19 +60,18 @@
           <dashboard-groups [groups]="groups"></dashboard-groups>
         </ng-container>
       </ng-container>
+
+      <br />
+      <hr />
+      <br />
     </div>
-
-  </ng-container>
-
-  <br />
-  <hr />
-  <br />
+  </div>
 
   <div id="myGroups">
     <button class="btn dashboard-right-button-desktop" (click)="toggleMyGroups()">Anzeigen</button>
     <h2>Meine Arbeitsgruppen</h2>
     <hr />
-    
+
     <div [@inOutAnimation]="viewMyGroups">
       <ng-container *ngFor="let g of userGroups;let i = index">
         <h3>Mitarbeiter*innen der Gruppe {{g.bezeichnung}}</h3>

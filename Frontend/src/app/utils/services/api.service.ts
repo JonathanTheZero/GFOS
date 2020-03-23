@@ -68,7 +68,7 @@ export class ApiService {
     }
     catch {
       return {
-        fehler: "Es konnte keine Verbindung zum Server aufgebaut werden"
+        fehler: "Es konnte keine Verbindung zum Server hergestellt werden"
       }
     }
   }
@@ -91,14 +91,13 @@ export class ApiService {
         .get<apiAnswer>(`${this.url}/login:auth=${auth}&pn=${pn}&pw=${pw}`)
         .toPromise<apiAnswer>();
 
-      console.log(JSON.stringify(a));
-
       this.dataService.setAuth(auth);
+      this.logoutBeacon();
       return a;
     }
     catch {
       return {
-        fehler: "Es konnte keine Verbindung zum Server aufgebaut werden"
+        fehler: "Es konnte keine Verbindung zum Server hergestellt werden"
       }
     }
   }
@@ -118,7 +117,7 @@ export class ApiService {
     }
     catch {
       return {
-        fehler: "Es konnte keine Verbindung zum Server aufgebaut werden"
+        fehler: "Es konnte keine Verbindung zum Server hergestellt werden"
       }
     }
   }
@@ -131,14 +130,41 @@ export class ApiService {
     return navigator.sendBeacon(`${this.url}/logout:auth=${this.dataService.getAuth()}`, this.dataService.getAuth());
   }
 
-  public async alterAttribute(attribute: MitarbeiterAtribut): Promise<apiAnswer> {
+  /**
+   * Sends a request to alter the status
+   * @param newStatus the new status that should be set
+   * @param pn the ID of the user, if not given the one of the current user is used
+   * @returns A Promsie that holds the answer of the API
+   */
+  public async alterStatus(newStatus: string, pn=this.dataService.getUser().personalnummer): Promise<apiAnswer> {
     try {
-      return this.http
-        .get<apiAnswer>("")
+      return await this.http
+        .get<apiAnswer>(`${this.url}/mitarbeiter/alter:auth=${this.dataService.getAuth()}&pn=${pn}&s=${newStatus}`)
         .toPromise();
     }
     catch {
-      
+      return {
+        fehler: "Es konnte keine Verbindung zum Server hergestellt werden"
+      };
+    }
+  }
+
+  /**
+   * Sends a request to change the reachable status of a user
+   * @param r the new reachable value
+   * @param pn the ID of the user, if not given the one of the current user is used
+   * @returns a Promise that holds the answer of the API
+   */
+  public async alterReachable(r: boolean, pn=this.dataService.getUser().personalnummer): Promise<apiAnswer> {
+    try {
+      return await this.http
+        .get<apiAnswer>(`${this.url}/mitarbeiter/alter:auth=${this.dataService.getAuth()}&pn=${pn}&er=${Number(r)}`)
+        .toPromise();
+    }
+    catch {
+      return {
+        fehler: "Es konnte keine Verbindung zum Server hergestellt werden"
+      };
     }
   }
 
@@ -156,7 +182,7 @@ export class ApiService {
     }
     catch {
       return {
-        fehler: "Es konnte keine Verbindung zum Server aufgebaut werden"
+        fehler: "Es konnte keine Verbindung zum Server hergestellt werden"
       }
     }
   }
@@ -175,7 +201,7 @@ export class ApiService {
     }
     catch {
       return {
-        fehler: "Es konnte keine Verbindung zum Server aufgebaut werden"
+        fehler: "Es konnte keine Verbindung zum Server hergestellt werden"
       }
     }
   }
@@ -194,7 +220,7 @@ export class ApiService {
     catch {
       if(!environment.production) return employeeSamples[Math.floor((employeeSamples.length - 1) * Math.random())];
       return {
-        fehler: "Es konnte keine Verbindung zum Server aufgebaut werden"
+        fehler: "Es konnte keine Verbindung zum Server hergestellt werden"
       };
     }
   }
@@ -214,7 +240,7 @@ export class ApiService {
     catch {
       if(!environment.production) return groupSamples[0];
       return {
-        fehler: "Es konnte keine Verbindung zum Server aufgebaut werden"
+        fehler: "Es konnte keine Verbindung zum Server hergestellt werden"
       }
     }
   }
@@ -233,7 +259,7 @@ export class ApiService {
     }
     catch {
       return {
-        fehler: "Es konnte keine Verbindung zum Server aufgebaut werden"
+        fehler: "Es konnte keine Verbindung zum Server hergestellt werden"
       }
     }
   }
@@ -252,7 +278,7 @@ export class ApiService {
     }
     catch {
       return {
-        fehler: "Es konnte keine Verbindung zum Server aufgebaut werden"
+        fehler: "Es konnte keine Verbindung zum Server hergestellt werden"
       }
     }
   }
@@ -270,7 +296,7 @@ export class ApiService {
     }
     catch {
       if(!environment.production) return groupSamples[0];
-      Swal.fire("Fehler", "Es konnte keine Verbindung zum Server aufgebaut werden", "error");
+      Swal.fire("Fehler", "Es konnte keine Verbindung zum Server hergestellt werden", "error");
       return undefined;
     }
   }
@@ -287,7 +313,7 @@ export class ApiService {
     }
     catch {
       if(!environment.production) return groupSamples;
-      Swal.fire("Fehler", "Es konnte keine Verbindung zum Server aufgebaut werden", "error");
+      Swal.fire("Fehler", "Es konnte keine Verbindung zum Server hergestellt werden", "error");
       return undefined;
     }
   }
@@ -306,7 +332,7 @@ export class ApiService {
     catch {
       if(!environment.production) return groupSamples;
       return {
-        fehler: "Es konnte keine Verbindung zum Server aufgebaut werden"
+        fehler: "Es konnte keine Verbindung zum Server hergestellt werden"
       };
     }
   }
@@ -325,7 +351,7 @@ export class ApiService {
     catch {
       if(!environment.production) groupSamples[1];
       return {
-        fehler: "Es konnte keine Verbindung zum Server aufgebaut werden"
+        fehler: "Es konnte keine Verbindung zum Server hergestellt werden"
       }
     }
   }
@@ -351,7 +377,7 @@ export class ApiService {
     catch {
       if(!environment.production) return [employeeSamples[0], employeeSamples];
       return {
-        fehler: "Es konnte keine Verbindung zum Server aufgebaut werden"
+        fehler: "Es konnte keine Verbindung zum Server hergestellt werden"
       };
     }
   }

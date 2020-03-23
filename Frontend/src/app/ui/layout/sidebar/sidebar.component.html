@@ -3,7 +3,6 @@
   <ng-container *ngFor="let current of sidebarLinks;let i = index">
     <clr-vertical-nav-group routerLinkActive="active" (clrVerticalNavGroupExpandedChange)="changeIcon(i, $event)">
 
-      <a hidden aria-hidden="true"></a>
       <clr-icon [attr.shape]="current.icon" clrVerticalNavIcon></clr-icon>
       {{current.title}}
 
@@ -18,13 +17,29 @@
 
   </ng-container>
 
+  <ng-container *ngIf="user">
+    <clr-vertical-nav-group routerLinkActive="active">
 
+      <clr-icon shape="employee-group" clrVerticalNavIcon></clr-icon>
+      Meine Gruppen
+      <clr-vertical-nav-group-children *clrIfExpanded="true">
+        <a clrVerticalNavLink routerLink="/group/{{g.arbeitsgruppenID}}" routerLinkActive="active" *ngFor="let g of groups">
+          {{g.bezeichnung}}
+        </a>
+      </clr-vertical-nav-group-children>
+
+    </clr-vertical-nav-group>
+  </ng-container>
+
+  <br />
 
   <a clrVerticalNavLink routerLinkActive="active" routerLink="/register"
-    *ngIf="['admin', 'root'].includes(data.rechteklasse)" [routerLinkActiveOptions]="{ exact: true }">
+    *ngIf="['admin', 'root'].includes(user?.rechteklasse)" [routerLinkActiveOptions]="{ exact: true }">
     <clr-icon shape="users" clrVerticalNavIcon></clr-icon>
     Benutzer hinzufügen
   </a>
+
+  <br />
 
   <a clrVerticalNavLink routerLinkActive="active" routerLink="/credits" [routerLinkActiveOptions]="{ exact: true }">
     <clr-icon shape="certificate" clrVerticalNavIcon></clr-icon>

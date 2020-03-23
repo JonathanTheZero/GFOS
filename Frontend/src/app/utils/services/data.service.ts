@@ -122,7 +122,7 @@ export class DataService{
   public isMobile(): Observable<boolean> {
     return this._mobile.asObservable()
   }
-
+  
   /*
    * private methods
    */

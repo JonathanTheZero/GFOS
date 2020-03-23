@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { routerLinks } from 'src/app/utils/interfaces/sidebar.model';
 import { DataService } from 'src/app/utils/services/data.service';
-import { Mitarbeiter } from 'src/app/utils/interfaces/default.model';
+import { Mitarbeiter, Arbeitsgruppe } from 'src/app/utils/interfaces/default.model';
+import { ApiService } from 'src/app/utils/services/api.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,7 +11,8 @@ import { Mitarbeiter } from 'src/app/utils/interfaces/default.model';
 })
 export class SidebarComponent implements OnInit {
 
-  data: Mitarbeiter;
+  user: Mitarbeiter;
+  groups: Arbeitsgruppe[];
 
   public sidebarLinks : Array<routerLinks> = [
     {
@@ -34,26 +36,19 @@ export class SidebarComponent implements OnInit {
           icon: "user"
         }
       ]
-    },
-    {
-      title: "Meine Gruppen",
-      icon: "",
-      links: [
-        {
-          link: "/group/x",
-          title: "..",
-          icon: ""
-        }
-      ]
     }
   ];
 
-  constructor(public dataService: DataService){
+  constructor(public dataService: DataService,
+    public api: ApiService){
 
   }
 
   ngOnInit() {
-    this.data = this.dataService.getUser();
+    this.dataService.getUser(true).subscribe(u => this.user = u);
+    if(this.user) 
+      this.api.getGroupsFromUser(this.user.personalnummer)
+        .then(g => this.groups = g as Arbeitsgruppe[]);
   }
 
   public changeIcon(index: number, toggle: boolean): void {
