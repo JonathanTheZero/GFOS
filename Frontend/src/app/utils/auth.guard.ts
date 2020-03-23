@@ -11,10 +11,10 @@ export class AuthGuard implements CanActivate {
     private dataService: DataService) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    //user is logged in
     if(!environment.production){
       return true;
     }
+    //user is logged in
     if (this.dataService.getUser()) {
       return true;
     }

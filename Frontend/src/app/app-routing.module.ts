@@ -51,6 +51,11 @@ const routes: Routes = [
         path: "Backend/api",
         redirectTo: "dashboard",
         pathMatch: "full"
+      },
+      {
+        path: "",
+        redirectTo: "/login",
+        pathMatch: "full"
       }
     ]
   },

@@ -9,15 +9,7 @@
     <clr-dg-cell>{{group.bezeichnung}}</clr-dg-cell>
     <clr-dg-cell>
       <ng-container *ngIf="groupMembers[i]">
-        <ul *ngFor="let inner of groupMembers[i]">
-          <li>
-            <a routerLink="/employee/{{inner.personalnummer}}">
-              {{inner | employeeName}}
-            </a>
-            <clr-icon shape="check" class="is-success" *ngIf="inner.erreichbar"></clr-icon>
-            <clr-icon shape="times" class="is-error" *ngIf="!inner.erreichbar"></clr-icon>
-          </li>
-        </ul>
+        {{groupMembers[i] | listEmployees}}
       </ng-container>
     </clr-dg-cell>
     <clr-dg-cell>

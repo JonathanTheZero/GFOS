@@ -42,7 +42,7 @@ export class HeaderComponent implements OnInit {
         Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + answer.fehler, "error");
       }
       this.router.navigate(['/login']);
-      setTimeout(_ => location.reload(), 5000);
+      setTimeout(location.reload, 5000);
     });
   }
 

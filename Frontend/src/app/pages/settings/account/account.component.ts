@@ -1,16 +1,11 @@
 import { Component, OnInit, Input, ViewChild } from "@angular/core";
-import {
-  FormGroup,
-  FormBuilder,
-  Validators,
-  AbstractControl,
-  NgForm,
-} from "@angular/forms";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { accountSettingsForm } from "src/app/utils/interfaces/settings.model";
 import { ApiService } from "src/app/utils/services/api.service";
 import { ClrForm } from '@clr/angular';
 import { apiAnswer } from 'src/app/utils/interfaces/default.model';
 import Swal from 'sweetalert2';
+import { passwordMatchers } from 'src/app/utils/validators';
 
 @Component({
   selector: "change-account-settings",
@@ -62,7 +57,7 @@ export class AccountComponent implements OnInit {
             "Es konnte keine Verbindung zum Server hergestellt werden!",
             "error"
           )
-        );
+          );
       }
       else if (this.onSubmit === "password") {
         this.api.changePassword(
@@ -74,7 +69,7 @@ export class AccountComponent implements OnInit {
             "Es konnte keine Verbindung zum Server hergestellt werden!",
             "error"
           )
-        );
+          );
       }
     }
   }
@@ -100,14 +95,4 @@ export class AccountComponent implements OnInit {
     this.form.setErrors(null);
   }
 
-}
-
-
-/**
- * custom validator in order to check wether the confirmation
- * equals the new password before sending it to the API 
- */
-export function passwordMatchers(f: AbstractControl) {
-  return f.get("newPassword").value === f.get("confirmNewPassword").value ?
-    null : { passwordsNotEqual: true };
 }

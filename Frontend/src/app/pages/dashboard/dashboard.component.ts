@@ -13,8 +13,8 @@ import Swal from 'sweetalert2';
   animations: [
     trigger(
       'inOutAnimation', [
-      state('enter', style({ height: 0, opacity: 0 })),
-      state('leave', style({ height: '100%', opacity: 1 })),
+      state('enter', style({ height: 0, opacity: 0, pointerEvents: "none" })),
+      state('leave', style({ height: '100%', opacity: 1, pointerEvents: "none" })),
       transition('enter => leave', animate('1500ms')),
       transition('leave => enter', animate('1000ms'))
     ])

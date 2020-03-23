@@ -349,7 +349,7 @@ export class ApiService {
         .toPromise();
     }
     catch {
-      if(!environment.production) groupSamples[1];
+      if(!environment.production) return groupSamples[1];
       return {
         fehler: "Es konnte keine Verbindung zum Server hergestellt werden"
       }
@@ -364,13 +364,18 @@ export class ApiService {
    */
   public async getAllUsersFromGroup(groupID: string): Promise<[Mitarbeiter, Array<Mitarbeiter>] | apiAnswer> {
     try {
-      let arr: [Mitarbeiter, Array<Mitarbeiter>] = [undefined, []];
-      const group: Arbeitsgruppe = await this.getGroupFromID(groupID) as Arbeitsgruppe;
+      //decclaring the tuple array
+      let arr: [Mitarbeiter, Array<Mitarbeiter>] = [undefined, []]; 
+      //requesting the grup
+      const group: Arbeitsgruppe = await this.getGroupFromID(groupID) as Arbeitsgruppe; 
+      //push the leader
       arr[0] = await this.getUser(group.leiter) as Mitarbeiter;
+      //promise array and pushing all user promises to it
       const promises: Array<Promise<Mitarbeiter>> = [];
       for(let m of group.mitglieder){
         promises.push(this.getUser(m) as Promise<Mitarbeiter>);
       }
+      //resolving all promises, applying to tuple, return
       arr[1] = await Promise.all(promises);
       return arr; 
     }
