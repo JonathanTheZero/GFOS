@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Mitarbeiter } from '../interfaces/default.model';
+import { Mitarbeiter, Arbeitsgruppe } from '../interfaces/default.model';
 import { environment } from 'src/environments/environment';
-import { employeeSamples } from '../mock.data';
+import { employeeSamples, groupSamples } from '../mock.data';
 import { Observable, of, Subject, BehaviorSubject, interval } from 'rxjs';
 
 @Injectable({
@@ -24,6 +24,8 @@ export class DataService{
   public timeoutCounter: BehaviorSubject<string> = new BehaviorSubject<string>(this.getTimeout());
   private _mobile: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.isMobileDevice());
   public userSubject: Subject<Mitarbeiter> = new Subject<Mitarbeiter>();
+  public groupSubject: Subject<Array<Arbeitsgruppe>> = new Subject<Arbeitsgruppe[]>();
+  public groups: Arbeitsgruppe[];
 
   constructor() { 
     /*
@@ -64,6 +66,30 @@ export class DataService{
     }
     if(!environment.production) return employeeSamples[0];
     return this.currentUser;
+  }
+
+  /**
+   * @param g The new User groups array the user holds
+   */
+  public setGroups(g: Arbeitsgruppe[]){
+    this.groupSubject.next(g);
+    this.groups = g;
+  }
+
+  /**
+   * @param asObservable whether the returned value should be only an Object array
+   *  or an Observable that holds the Array
+   * @returns the current user groups either as Observable or as Objectarray
+   */
+  public getGroups(asObservable: boolean): Observable<Arbeitsgruppe[]>;
+  public getGroups(): Array<Arbeitsgruppe>;
+  public getGroups(asObservable?: boolean): Observable<Arbeitsgruppe[]> | Arbeitsgruppe[] {
+    if(asObservable){
+      if(!environment.production) return of(groupSamples);
+      return this.groupSubject.asObservable();
+    }
+    if(!environment.production) return groupSamples;
+    return this.groups;
   }
 
   /**

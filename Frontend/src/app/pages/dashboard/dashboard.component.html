@@ -10,10 +10,12 @@
         <a routerLink="/employee/me">{{user | employeeName}}</a>
       </td>
       <td>
-        <button type="button" class="btn btn-icon btn-success" aria-label="done" *ngIf="user.erreichbar" (click)="alterErreichbar()">
+        <button type="button" class="btn btn-icon btn-success" aria-label="done" *ngIf="user.erreichbar"
+          (click)="alterErreichbar()">
           <clr-icon shape="check"></clr-icon>
         </button>
-        <button type="button" class="btn btn-icon btn-warning" aria-label="warning" *ngIf="!user.erreichbar" (click)="alterErreichbar()">
+        <button type="button" class="btn btn-icon btn-warning" aria-label="warning" *ngIf="!user.erreichbar"
+          (click)="alterErreichbar()">
           <clr-icon shape="times"></clr-icon>
         </button>
         <clr-signpost>
@@ -28,11 +30,11 @@
         <form clrForm (submit)="changeStatus()">
           <clr-datalist-container>
             <label>Status</label>
-            <input name="Option" clrDatalistInput [(ngModel)]="status" />
+            <input name="status" clrDatalistInput [(ngModel)]="status" />
             <datalist>
-              <option [value]="'Online'">Online</option>
-              <option [value]="'Abwesend'">Abwesend</option>
-              <option [value]="'Nicht stören'">Nicht stören</option>
+              <option [value]="'Online'"></option>
+              <option [value]="'Abwesend'"></option>
+              <option [value]="'Nicht stören'"></option>
             </datalist>
           </clr-datalist-container>
         </form>
@@ -44,7 +46,7 @@
   </table>
   <hr />
 
-  <div *ngIf="['admin', 'root', 'headOfDepartment'].includes(user.rechteklasse)">
+  <div *ngIf="['admin', 'root', 'personalabteilung'].includes(user.rechteklasse)">
     <button class="btn dashboard-right-button-desktop" (click)="toggleAllGroups()">Anzeigen</button>
     <h2>Alle Arbeitsgruppen</h2>
     <hr />
@@ -55,10 +57,8 @@
         <dashboard-add-group-wizard [(open)]="open"></dashboard-add-group-wizard>
       </ng-container>
 
-      <ng-container *ngIf="['admin', 'root', 'headOfDepartment'].includes(user.rechteklasse)">
-        <ng-container *ngIf="groups">
-          <dashboard-groups [groups]="groups"></dashboard-groups>
-        </ng-container>
+      <ng-container *ngIf="groups">
+        <dashboard-groups [groups]="groups"></dashboard-groups>
       </ng-container>
 
       <br />

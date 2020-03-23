@@ -87,6 +87,9 @@ export const groupSamples: Arbeitsgruppe[] = [
         mitglieder: [
             "00000000001",
             "00000000002",
+            "00000000001",
+            "00000000001",
+            "00000000001"
         ],
         leiter: "00000000001",
         bezeichnung: "Coole Gruppe",
@@ -96,8 +99,13 @@ export const groupSamples: Arbeitsgruppe[] = [
         mitglieder: [
             "00000000001",
             "00000000002",
+            "00000000001",
+            "00000000002",
+            "00000000001",
+            "00000000001",
+            "00000000001"
         ],
-        leiter: "02",
+        leiter: "00000000001",
         bezeichnung: "Coole Gruppe2",
         arbeitsgruppenID: "53123"
     },

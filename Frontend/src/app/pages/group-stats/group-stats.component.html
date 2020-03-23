@@ -1,21 +1,30 @@
-<div class="clr-row">
-  <div class="clr-col-lg-5 clr-col-md-8 clr-col-12">
-    <div class="card">
-      <div class="card-header">
-        {{group.bezeichnung}}
-      </div>
-      <div class="card-block">
-        <div class="card-title">
-          Allgemeine Daten
-        </div>
-        <div class="card-text">
-          <table>
-              
-          </table>
-        </div>
-      </div>
-      <div class="card-footer">
-      </div>
-    </div>
-  </div>
+<div id="group-stats">
+  <h2>
+      {{group.bezeichnung}}
+    </h2>
+
+
+  <clr-datagrid>
+    <clr-dg-column>Name</clr-dg-column>
+    <clr-dg-column>Erreichbar</clr-dg-column>
+    <clr-dg-column>Stauts</clr-dg-column>
+    <clr-dg-column>Personalnummer</clr-dg-column>
+
+    <clr-dg-row *ngFor="let m of members" [class.leader_row]="m.personalnummer === group.leiter">
+      <clr-dg-cell>
+        <a routerLink="/employee/{{m?.personalnummer}}">
+          {{m | employeeName}}
+        </a>
+      </clr-dg-cell>
+      <clr-dg-cell>
+        <clr-icon shape="check" class="is-success" *ngIf="m.erreichbar"></clr-icon>
+        <clr-icon shape="times" class="is-error" *ngIf="!m.erreichbar"></clr-icon>
+      </clr-dg-cell>
+      <clr-dg-cell>{{m?.status}}</clr-dg-cell>
+      <clr-dg-cell>{{m?.personalnummer}}</clr-dg-cell>
+    </clr-dg-row>
+
+    <clr-dg-footer>{{members?.length}} Mitglieder</clr-dg-footer>
+  </clr-datagrid>
+
 </div>

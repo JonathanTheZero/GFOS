@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/utils/services/data.service';
 import { Mitarbeiter, apiAnswer } from 'src/app/utils/interfaces/default.model';
 import { ApiService } from 'src/app/utils/services/api.service';
@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 })
 
 export class HeaderComponent implements OnInit {
+
   public readonly headerLinks = [
     {
       link: ['/', 'dashboard'],
@@ -35,14 +36,14 @@ export class HeaderComponent implements OnInit {
 
   public logout(): void {
     this.api.logout().then((answer: apiAnswer) => {
-      if(answer.erfolg){
+      if (answer.erfolg) {
         Swal.fire("", "Sie wurden erfolgreich ausgeloggt", "success");
       }
       else {
         Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + answer.fehler, "error");
       }
       this.router.navigate(['/login']);
-      setTimeout(location.reload, 5000);
+      setTimeout(window.location.reload.bind(window.location), 3000);
     });
   }
 

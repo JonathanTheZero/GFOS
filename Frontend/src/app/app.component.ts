@@ -70,11 +70,6 @@ export class AppComponent implements OnInit {
 
     this.idle.onTimeoutWarning.subscribe(countdown => console.log('You will time out in ' + countdown + ' seconds!'));
     this.reset();
-    
-    let res = this.api.logoutBeacon();
-    if(!res){
-      console.error("Could not schedule beacon");
-    }
   }
 
   private reset() {

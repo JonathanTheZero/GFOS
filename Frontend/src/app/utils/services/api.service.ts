@@ -91,8 +91,9 @@ export class ApiService {
         .get<apiAnswer>(`${this.url}/login:auth=${auth}&pn=${pn}&pw=${pw}`)
         .toPromise<apiAnswer>();
 
+      this.dataService.setGroups(await this.getGroupsFromUser((a.data as Mitarbeiter)?.personalnummer) as Arbeitsgruppe[]);
       this.dataService.setAuth(auth);
-      this.logoutBeacon();
+      this.logoutBeacon(); //schedule for later
       return a;
     }
     catch {
@@ -126,8 +127,10 @@ export class ApiService {
    * Schedules a beacon that should be fired when the user logs off
    * @returns whether the scheduling was successful or not
    */
-  public logoutBeacon(): boolean {
-    return navigator.sendBeacon(`${this.url}/logout:auth=${this.dataService.getAuth()}`, this.dataService.getAuth());
+  public logoutBeacon(): void {
+    window.addEventListener("unload", 
+      () => navigator.sendBeacon(`${this.url}/logout:auth=${this.dataService.getAuth()}`, this.dataService.getAuth())
+    );
   }
 
   /**
@@ -155,7 +158,7 @@ export class ApiService {
    * @param pn the ID of the user, if not given the one of the current user is used
    * @returns a Promise that holds the answer of the API
    */
-  public async alterReachable(r: boolean, pn=this.dataService.getUser().personalnummer): Promise<apiAnswer> {
+  public async alterReachable(r: boolean, pn = this.dataService.getUser().personalnummer): Promise<apiAnswer> {
     try {
       return await this.http
         .get<apiAnswer>(`${this.url}/mitarbeiter/alter:auth=${this.dataService.getAuth()}&pn=${pn}&er=${Number(r)}`)
@@ -218,7 +221,7 @@ export class ApiService {
         .toPromise();
     }
     catch {
-      if(!environment.production) return employeeSamples[Math.floor((employeeSamples.length - 1) * Math.random())];
+      if (!environment.production) return employeeSamples[Math.floor((employeeSamples.length - 1) * Math.random())];
       return {
         fehler: "Es konnte keine Verbindung zum Server hergestellt werden"
       };
@@ -238,7 +241,7 @@ export class ApiService {
         .toPromise();
     }
     catch {
-      if(!environment.production) return groupSamples[0];
+      if (!environment.production) return groupSamples[0];
       return {
         fehler: "Es konnte keine Verbindung zum Server hergestellt werden"
       }
@@ -295,7 +298,7 @@ export class ApiService {
         .toPromise();
     }
     catch {
-      if(!environment.production) return groupSamples[0];
+      if (!environment.production) return groupSamples[0];
       Swal.fire("Fehler", "Es konnte keine Verbindung zum Server hergestellt werden", "error");
       return undefined;
     }
@@ -312,7 +315,7 @@ export class ApiService {
         .toPromise();
     }
     catch {
-      if(!environment.production) return groupSamples;
+      if (!environment.production) return groupSamples;
       Swal.fire("Fehler", "Es konnte keine Verbindung zum Server hergestellt werden", "error");
       return undefined;
     }
@@ -323,14 +326,14 @@ export class ApiService {
    * @param pn the ID of the user whose groups should be requested
    * @returns a Promsie that holds an Array of all groups or an error
    */
-  public async getGroupsFromUser(pn=this.dataService.getUser().personalnummer): Promise<Array<Arbeitsgruppe> | apiAnswer> {
+  public async getGroupsFromUser(pn = this.dataService.getUser().personalnummer): Promise<Array<Arbeitsgruppe> | apiAnswer> {
     try {
       return await this.http
         .get<Arbeitsgruppe[]>(`${this.url}/arbeitsgruppen/getAllFromMitarbeiter:auth=${this.dataService.getAuth()}&pn=${pn}`)
         .toPromise();
     }
     catch {
-      if(!environment.production) return groupSamples;
+      if (!environment.production) return groupSamples;
       return {
         fehler: "Es konnte keine Verbindung zum Server hergestellt werden"
       };
@@ -349,7 +352,7 @@ export class ApiService {
         .toPromise();
     }
     catch {
-      if(!environment.production) return groupSamples[1];
+      if (!environment.production) return groupSamples[1];
       return {
         fehler: "Es konnte keine Verbindung zum Server hergestellt werden"
       }
@@ -365,22 +368,22 @@ export class ApiService {
   public async getAllUsersFromGroup(groupID: string): Promise<[Mitarbeiter, Array<Mitarbeiter>] | apiAnswer> {
     try {
       //decclaring the tuple array
-      let arr: [Mitarbeiter, Array<Mitarbeiter>] = [undefined, []]; 
+      let arr: [Mitarbeiter, Array<Mitarbeiter>] = [undefined, []];
       //requesting the grup
-      const group: Arbeitsgruppe = await this.getGroupFromID(groupID) as Arbeitsgruppe; 
+      const group: Arbeitsgruppe = await this.getGroupFromID(groupID) as Arbeitsgruppe;
       //push the leader
       arr[0] = await this.getUser(group.leiter) as Mitarbeiter;
       //promise array and pushing all user promises to it
       const promises: Array<Promise<Mitarbeiter>> = [];
-      for(let m of group.mitglieder){
+      for (let m of group.mitglieder) {
         promises.push(this.getUser(m) as Promise<Mitarbeiter>);
       }
       //resolving all promises, applying to tuple, return
       arr[1] = await Promise.all(promises);
-      return arr; 
+      return arr;
     }
     catch {
-      if(!environment.production) return [employeeSamples[0], employeeSamples];
+      if (!environment.production) return [employeeSamples[0], [...employeeSamples]];
       return {
         fehler: "Es konnte keine Verbindung zum Server hergestellt werden"
       };

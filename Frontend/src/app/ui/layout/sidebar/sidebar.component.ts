@@ -47,9 +47,7 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {
     this.dataService.getUser(true).subscribe(u => this.user = u);
-    if(this.user) 
-      this.api.getGroupsFromUser(this.user.personalnummer)
-        .then(g => this.groups = g as Arbeitsgruppe[]);
+    this.dataService.getGroups(true).subscribe(g => this.groups = g);
   }
 
   public changeIcon(index: number, toggle: boolean): void {
