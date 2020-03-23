@@ -9,21 +9,18 @@
 
 table {
   border: none;
-  width: 100%;
+  width: 50%;
 
   tr {
     text-align: left;
 
     td {
-      text-align: left;
-      width: 33%;
+      
+      align-content:left;
+      width: 10%;
 
       form {
         margin: 0;
-      }
-
-      &:last {
-          text-align: right;
       }
     }
   }
