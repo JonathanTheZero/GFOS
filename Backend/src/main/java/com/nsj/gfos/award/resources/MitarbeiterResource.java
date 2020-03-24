@@ -36,17 +36,17 @@ public class MitarbeiterResource {
 	 * Die Methode <i>getAllMitarbeiter</i> verwaltet die GET-Anfrage an /getAll und
 	 * gibt alle auf der Datenbank existierenden Mitarbeiter zurück.
 	 * 
-	 * @param param - Die Parameter der Anfrage bestehend aus der SessionID(auth)
+	 * @param entAuth - Die Parameter der Anfrage bestehend aus der SessionID(auth)
 	 * @return String - Im Falle eines Fehlers eine entsprechende Fehlermeldung und
 	 *         bei Erfolg die Mitarbeiter in einer Liste als JSON-Objekt formatiert.
 	 */
 	@GET
-	@Path("getAll{param}")
+	@Path("getAll:{auth}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getAllMitarbeiter(@PathParam("param") String param) {
-		if (param.split("=").length != 2)
+	public String getAllMitarbeiter(@PathParam("auth") String entAuth) {
+		if (entAuth.split("=").length != 2)
 			return JsonHandler.fehler("Parameter ist falsch formatiert.");
-		String auth = param.split("=")[1];
+		String auth = entAuth.split("=")[1];
 		if (!SessionHandler.checkSessionID(auth))
 			return JsonHandler.fehler("SessionID ist ungültig.");
 		if (!RightHandler.checkPermission(auth, "getAllMitarbeiter"))
@@ -80,34 +80,39 @@ public class MitarbeiterResource {
 	 * Die Methode <i>addMitarbeiter</i> verwaltet die GET-Anfrage an /add und fügt
 	 * einen neuen Mitarbeiter zur Datenbank hinzu.
 	 * 
-	 * @param param - Die Parameter der Anfrage bestehend aus SessionID(auth), Name,
-	 *              Vorname, Email, Passwort, Rechteklasse, Abteilung und Vertreter
+	 * @param entAuth - SessionID des Mitarbeiters
+	 * @param entN    - Nachname des Mitarbeiters
+	 * @param entVn   - Vorname des Mitarbeiters
+	 * @param entEm   - Email des Mitarbeiters
+	 * @param entPw   - Passwort des Mitarbeiters
+	 * @param entRk   - Rechteklasse des Mitarbeiter
+	 * @param entAb   - Abteilung des Mitarbeiters
+	 * @param entV    - Vertreter des Mitarbeiters
 	 * @return String - Im Falle eines Fehlers eine entsprechende Fehlermeldung und
 	 *         bei Erfolg die Meldung 'Der Mitarbeiter wurde erfolgreich
 	 *         hinzugefügt'.
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("add{attributes}")
-	public String addMitarbeiter(@PathParam("attributes") String query) {
-		query = query.substring(1);
-		String[] attributes = query.split("&");
-		if (attributes.length != 8)
-			return JsonHandler.fehler("Falsche Anzahl an Parametern.");
-		for (String attribute : attributes) {
-			if (attribute.split("=").length != 2)
-				return JsonHandler.fehler("Parameter sind falsch formatiert.");
-		}
-		String auth = attributes[0].split("=")[1];
+	@Path("add:{auth}&{name}&{vorname}&{email}&{passwort}&{rechteklasse}&{abteilung}&{vertreter}")
+	public String addMitarbeiter(@PathParam("auth") String entAuth, @PathParam("name") String entN,
+			@PathParam("vorname") String entVn, @PathParam("email") String entEm, @PathParam("passwort") String entPw,
+			@PathParam("rechteklasse") String entRk, @PathParam("abteilung") String entAb,
+			@PathParam("vertreter") String entV) {
+		if (entAuth.split("=").length != 2 || entN.split("=").length != 2 || entVn.split("=").length != 2
+				|| entEm.split("=").length != 2 || entPw.split("=").length != 2 || entRk.split("=").length != 2
+				|| entAb.split("=").length != 2 || entV.split("=").length != 2)
+			return JsonHandler.fehler("Parameter sind falsch formatiert.");
+		String auth = entAuth.split("=")[1];
 		if (!SessionHandler.checkSessionID(auth))
 			return JsonHandler.fehler("SessionID ist ungültig.");
-		String name = "\"" + attributes[1].split("=")[1] + "\"";
-		String vorname = "\"" + attributes[2].split("=")[1] + "\"";
-		String email = "\"" + attributes[3].split("=")[1] + "\"";
-		String passwort = "\"" + PasswordHandler.getHash(attributes[4].split("=")[1]) + "\"";
-		String rechteklasse = "\"" + attributes[5].split("=")[1] + "\"";
-		String abteilung = "\"" + attributes[6].split("=")[1] + "\"";
-		String vertreter = "\"" + attributes[7].split("=")[1] + "\"";
+		String name = "\"" + entN.split("=")[1] + "\"";
+		String vorname = "\"" + entVn.split("=")[1] + "\"";
+		String email = "\"" + entEm.split("=")[1] + "\"";
+		String passwort = "\"" + PasswordHandler.getHash(entPw.split("=")[1]) + "\"";
+		String rechteklasse = "\"" + entRk.split("=")[1] + "\"";
+		String abteilung = "\"" + entAb.split("=")[1] + "\"";
+		String vertreter = "\"" + entV.split("=")[1] + "\"";
 		String pn = Utils.createMitarbeiterID();
 		if (rechteklasse.equals("root"))
 			return JsonHandler.fehler("Root Account kann nicht erstellt werden.");
@@ -132,23 +137,19 @@ public class MitarbeiterResource {
 	 * Die Methode <i>getMitarbeiter</i> verwaltet die GET-Anfrage an /get und gibt
 	 * den angefragten Mitarbeiter zurück.
 	 * 
-	 * @param param - Die Parameter der Anfrage bestehend aus der SessionID(auth)
-	 *              und der Personalnummer des gesuchten Mitarbeiters
+	 * @param entAuth - SessionID der Anfrage
+	 * @param entPn   - Personalnummer des angefragten Mitarbeiters
 	 * @return String - Im Falle eines Fehlers eine entsprechende Fehlermeldung und
 	 *         bei Erfolg dem Mitarbeiter als JSON-Objekt formatiert.
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("get{params}")
-	public String getMitarbeiter(@PathParam("params") String query) {
-		query = query.substring(1);
-		String[] params = query.split("&");
-		if (params.length != 2)
-			return JsonHandler.fehler("Falsche Anzahl an Parametern.");
-		if (params[0].split("=").length != 2 || params[1].split("=").length != 2)
+	@Path("get:{auth}&{personalnummer}")
+	public String getMitarbeiter(@PathParam("auth") String entAuth, @PathParam("personalnummer") String entPn) {
+		if (entAuth.split("=").length != 2 || entPn.split("=").length != 2)
 			return JsonHandler.fehler("Falsche Formatierung der Parameter.");
-		String auth = params[0].split("=")[1];
-		String pn = params[1].split("=")[1];
+		String auth = entAuth.split("=")[1];
+		String pn = entPn.split("=")[1];
 		if (pn.length() != 12)
 			return JsonHandler.fehler("Ungültige Personalnummer.");
 		if (!Utils.checkIfMitarbeiterExists(pn))
@@ -175,24 +176,20 @@ public class MitarbeiterResource {
 	 * Die Methode <i>removeMitarbeiter</i> verwaltet die GET-Anfrage an /remove und
 	 * entfernt einen Mitarbeiter aus der Datenbank.
 	 * 
-	 * @param param - Die Parameter der Anfrage bestehend aus der SessionID(auth)
-	 *              und der Personalnummer des Mitarbeiters
+	 * @param entAuth - SessionID der Anfrage
+	 * @param entPn   - Personalnummer des angefragten Mitarbeiters
 	 * @return String - Im Falle eines Fehlers eine entsprechende Fehlermeldung und
 	 *         bei Erfolg die Erfolgsmeldung 'Mitarbeiter wurde erfolgreich
 	 *         gelöscht'.
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("remove{params}")
-	public String removeMitarbeiter(@PathParam("params") String query) {
-		query = query.substring(1);
-		String[] params = query.split("&");
-		if (params.length != 2)
-			return JsonHandler.fehler("Falsche Anzahl an Parametern.");
-		if (params[0].split("=").length != 2 || params[1].split("=").length != 2)
+	@Path("remove:{auth}&{personalnummer}")
+	public String removeMitarbeiter(@PathParam("auth") String entAuth, @PathParam("personalnummer") String entPn) {
+		if (entAuth.split("=").length != 2 || entPn.split("=").length != 2)
 			return JsonHandler.fehler("Falsche Formatierung der Parameter.");
-		String auth = params[0].split("=")[1];
-		String pn = params[1].split("=")[1];
+		String auth = entAuth.split("=")[1];
+		String pn = entPn.split("=")[1];
 		if (pn.length() != 12 || !Utils.checkIfMitarbeiterExists(pn))
 			return JsonHandler.fehler("Ungültige Personalnummer.");
 		if (RightHandler.getRightClassFromPersonalnummer(pn).equals("root"))
@@ -231,7 +228,7 @@ public class MitarbeiterResource {
 	 *         bei Erfolg die Erfolgsmeldung 'Werte wurden erfolgreich verändert'.
 	 */
 	@GET
-	@Path("alter{params}")
+	@Path("alter:{params}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String alterAttribute(@PathParam("params") String query) {
 		query = query.substring(1);
@@ -268,7 +265,7 @@ public class MitarbeiterResource {
 				return JsonHandler.fehler("Die Veränderungen konnten nicht durchgeführt werden.");
 			return JsonHandler.erfolg("Werte wurden erfolgreich verändert.");
 		} catch (SQLException e) {
-			return JsonHandler.fehler(e.toString()); 
+			return JsonHandler.fehler(e.toString());
 		}
 	}
 
@@ -276,26 +273,22 @@ public class MitarbeiterResource {
 	 * Die Methode <i>alterPassword</i> verwaltet die GET-Anfrage an /alterPassword
 	 * und verändert das Passwort eines Mitarbeiters.
 	 * 
-	 * @param param - Die Parameter der Anfrage bestehend aus der SessionID(auth),
-	 *              dem alten Passwort und dem neuen Passwort des Mitarbeiters
+	 * @param entAuth  - SessionID des Clients
+	 * @param entAltes - altes Passwort des Clients
+	 * @param entNeues - neues Passwort des Clients
 	 * @return String - Im Falle eines Fehlers eine entsprechende Fehlermeldung und
 	 *         bei Erfolg die Erfolgsmeldung 'Passwort wurde erfolgreich verändert'.
 	 */
 	@GET
-	@Path("alterPassword{params}")
+	@Path("alterPassword:{auth}&{altes}&{neues}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String alterPassword(@PathParam("params") String query) {
-		query = query.substring(1);
-		String[] params = query.split("&");
-		if (params.length != 3)
-			return JsonHandler.fehler("Falsche Anzahl an Parametern.");
-		for (String att : params) {
-			if (att.split("=").length != 2)
-				return JsonHandler.fehler("Parameter sind falsch formatiert.");
-		}
-		String auth = params[0].split("=")[1];
-		String oldPassword = params[1].split("=")[1];
-		String newPassword = params[2].split("=")[1];
+	public String alterPassword(@PathParam("auth") String entAuth, @PathParam("altes") String entAltes,
+			@PathParam("neues") String entNeues) {
+		if (entAuth.split("=").length != 2 || entAltes.split("=").length != 2 || entNeues.split("=").length != 2)
+			return JsonHandler.fehler("Parameter sind falsch formatiert.");
+		String auth = entAuth.split("=")[1];
+		String oldPassword = entAltes.split("=")[1];
+		String newPassword = entNeues.split("=")[1];
 		if (!SessionHandler.checkSessionID(auth))
 			return JsonHandler.fehler("Ungültige SessionID angegeben.");
 		String personalnummer = Utils.getPersonalnummerFromSessionID(auth);

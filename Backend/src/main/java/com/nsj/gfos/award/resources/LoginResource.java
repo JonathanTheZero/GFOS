@@ -27,8 +27,9 @@ public class LoginResource {
 	 * sie über den <i>SessionHandler</i> eine neue Session für den Mitarbeiter
 	 * erstellt.
 	 * 
-	 * @param param - Teil der URL nach 'login' also zum Beispiel
-	 *              ':auth=123456789012&em=e@e.de&pw=1234'
+	 * @param entAuth - der Teil der URl der die SessionID enthält
+	 * @param entEm - der Teil der URL der die Email enthält
+	 * @param entPw - der Teil der URL der das Passwort enthält
 	 * @return String - über den <i>JsonHandler</i> formatierter Fehler oder die
 	 *         Rückgabe von <i>SessionHandler.createSession(...)</i>
 	 */
