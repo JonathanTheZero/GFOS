@@ -453,7 +453,7 @@ public class Utils {
 	}
 
 	/**
-	 * Die Methode <i>getLeiter</i> gibt den Leiter der Arbeitsgruppe mit Hilde der
+	 * Die Methode <i>getLeiter</i> gibt den Leiter der Arbeitsgruppe mit Hilfe der
 	 * ArbeitsgruppenID zurück.
 	 * 
 	 * @param id - ArbeitsgruppenID
@@ -465,6 +465,25 @@ public class Utils {
 			ResultSet rs = QueryHandler.query(sqlStmt);
 			if (rs.next())
 				return rs.getString("Leiter");
+			return "";
+		} catch (SQLException e) {
+			return "";
+		}
+	}
+	
+	/**
+	 * Die Methode <i>getBezeichnung</i> gibt die Bezeichnung der Arbeitsgruppe mit Hilfe der
+	 * ArbeitsgruppenID zurück.
+	 * 
+	 * @param id - ArbeitsgruppenID
+	 * @return String - Bezeichnung der Arbeitsgruppe
+	 */
+	public static String getBezeichnung(String id) {
+		String sqlStmt = "SELECT Bezeichnung FROM gfos.arbeitsgruppe WHERE ArbeitsgruppenID = " + id + ";";
+		try {
+			ResultSet rs = QueryHandler.query(sqlStmt);
+			if (rs.next())
+				return rs.getString("Bezeichnung");
 			return "";
 		} catch (SQLException e) {
 			return "";
