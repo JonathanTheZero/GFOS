@@ -38,18 +38,12 @@ public class ArbeitsgruppenResource {
 	 * @return String - alle Arbeitsgruppen als Json
 	 */
 	@GET
-	@Path("getAll{attributes}")
+	@Path("getAll:{auth}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public static String getAllArbeitsgruppen(@PathParam("attributes") String query) {
-		query = query.substring(1);
-		String[] attributes = query.split("&");
-		if (attributes.length != 1)
-			return JsonHandler.fehler("Falsche Anzahl an Parametern.");
-		for (String attribute : attributes) {
-			if (attribute.split("=").length != 2)
-				return JsonHandler.fehler("Parameter sind falsch formatiert.");
-		}
-		String auth = attributes[0].split("=")[1];
+	public static String getAllArbeitsgruppen(@PathParam("auth") String entAuth) {
+		if (entAuth.split("=").length != 2)
+			return JsonHandler.fehler("Parameter ist falsch formatiert.");
+		String auth = entAuth.split("=")[1];
 		if (!SessionHandler.checkSessionID(auth))
 			return JsonHandler.fehler("SessionID ist ungültig.");
 		if (!RightHandler.checkPermission(auth, "getAllArbeitsgruppen"))
@@ -98,19 +92,14 @@ public class ArbeitsgruppenResource {
 	 * @return String - Arbeitsgruppen des Mitarbeiters als Json
 	 */
 	@GET
-	@Path("getAllFromMitarbeiter{attributes}")
+	@Path("getAllFromMitarbeiter:{auth}&{personalnummer}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public static String getArbeitsgruppenFromMitarbeiter(@PathParam("attributes") String query) {
-		query = query.substring(1);
-		String[] attributes = query.split("&");
-		if (attributes.length != 2)
-			return JsonHandler.fehler("Falsche Anzahl an Parametern.");
-		for (String attribute : attributes) {
-			if (attribute.split("=").length != 2)
-				return JsonHandler.fehler("Parameter sind falsch formatiert.");
-		}
-		String auth = attributes[0].split("=")[1];
-		String pn = attributes[1].split("=")[1];
+	public static String getArbeitsgruppenFromMitarbeiter(@PathParam("auth") String entAuth,
+			@PathParam("personalnummer") String entPn) {
+		if (entAuth.split("=").length != 2 || entPn.split("=").length != 2)
+			return JsonHandler.fehler("Parameter falsch formatiert.");
+		String auth = entAuth.split("=")[1];
+		String pn = entPn.split("=")[1];
 		if (pn.length() != 12)
 			return JsonHandler.fehler("Ungültige Personalnummer.");
 		if (!SessionHandler.checkSessionID(auth))
@@ -220,20 +209,15 @@ public class ArbeitsgruppenResource {
 	 * @return String - Erfolg oder Fehler als Rückgabe
 	 */
 	@GET
-	@Path("alterLeiter{attributes}")
+	@Path("alterLeiter:{auth}&{personalnummer}&{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public static String alterLeiter(@PathParam("attributes") String query) {
-		query = query.substring(1);
-		String[] attributes = query.split("&");
-		if (attributes.length != 3)
-			return JsonHandler.fehler("Falsche Anzahl an Parametern.");
-		for (String attribute : attributes) {
-			if (attribute.split("=").length != 2)
-				return JsonHandler.fehler("Parameter sind falsch formatiert.");
-		}
-		String auth = attributes[0].split("=")[1];
-		String pn = attributes[1].split("=")[1];
-		String id = attributes[2].split("=")[1];
+	public static String alterLeiter(@PathParam("auth") String entAuth, @PathParam("personalnummer") String entPn,
+			@PathParam("id") String entID) {
+		if (entAuth.split("=").length != 2 || entPn.split("=").length != 2 || entID.split("=").length != 2)
+			return JsonHandler.fehler("Parameter falsch formatiert.");
+		String auth = entAuth.split("=")[1];
+		String pn = entPn.split("=")[1];
+		String id = entID.split("=")[1];
 		if (pn.length() != 12)
 			return JsonHandler.fehler("Ungültige Personalnummer.");
 		if (id.length() != 12)
@@ -272,20 +256,15 @@ public class ArbeitsgruppenResource {
 	 * @return String - neu erstellte Arbeitsgruppe oder Fehler als Rückgabe
 	 */
 	@GET
-	@Path("add{attributes}")
+	@Path("add:{auth}&{bezeichnung}&{leiter}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public static String addArbeitsgruppe(@PathParam("attributes") String query) {
-		query = query.substring(1);
-		String[] attributes = query.split("&");
-		if (attributes.length != 3)
-			return JsonHandler.fehler("Falsche Anzahl an Parametern.");
-		for (String attribute : attributes) {
-			if (attribute.split("=").length != 2)
-				return JsonHandler.fehler("Parameter sind falsch formatiert.");
-		}
-		String auth = attributes[0].split("=")[1];
-		String bezeichnung = attributes[1].split("=")[1];
-		String leiter = attributes[2].split("=")[1];
+	public static String addArbeitsgruppe(@PathParam("auth") String entAuth, @PathParam("bezeichnung") String entBz,
+			@PathParam("leiter") String entL) {
+		if (entAuth.split("=").length != 2 || entBz.split("=").length != 2 || entL.split("=").length != 2)
+			return JsonHandler.fehler("Parameter falsch formatiert.");
+		String auth = entAuth.split("=")[1];
+		String bezeichnung = entBz.split("=")[1];
+		String leiter = entL.split("=")[1];
 		if (bezeichnung == "")
 			return JsonHandler.fehler("Die Bezeichnung der Arbeitsgruppe ist leer.");
 		if (Utils.checkIfArbeitsgruppeExistsFromBezeichnung(bezeichnung))
@@ -335,19 +314,13 @@ public class ArbeitsgruppenResource {
 	 * @return String - Erfolg oder Fehler als Rückgabe
 	 */
 	@GET
-	@Path("remove{attributes}")
+	@Path("remove:{auth}&{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public static String removeArbeitsgruppe(@PathParam("attributes") String query) {
-		query = query.substring(1);
-		String[] attributes = query.split("&");
-		if (attributes.length != 2)
-			return JsonHandler.fehler("Falsche Anzahl an Parametern.");
-		for (String attribute : attributes) {
-			if (attribute.split("=").length != 2)
-				return JsonHandler.fehler("Parameter sind falsch formatiert.");
-		}
-		String auth = attributes[0].split("=")[1];
-		String id = attributes[1].split("=")[1];
+	public static String removeArbeitsgruppe(@PathParam("auth") String entAuth, @PathParam("id") String entID) {
+		if (entAuth.split("=").length != 2 || entID.split("=").length != 2)
+			return JsonHandler.fehler("Parameter falsch formatiert.");
+		String auth = entAuth.split("=")[1];
+		String id = entID.split("=")[1];
 		if (id.length() != 12)
 			return JsonHandler.fehler("ID ist ungültig");
 		if (!SessionHandler.checkSessionID(auth))
@@ -390,20 +363,15 @@ public class ArbeitsgruppenResource {
 	 * @return String - Erfolg oder Fehler als Rückgabe
 	 */
 	@GET
-	@Path("removeMitarbeiter{attributes}")
+	@Path("removeMitarbeiter:{auth}&{personalnummer}&{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public static String removeMitarbeiter(@PathParam("attributes") String query) {
-		query = query.substring(1);
-		String[] attributes = query.split("&");
-		if (attributes.length != 3)
-			return JsonHandler.fehler("Falsche Anzahl an Parametern.");
-		for (String attribute : attributes) {
-			if (attribute.split("=").length != 2)
-				return JsonHandler.fehler("Parameter sind falsch formatiert.");
-		}
-		String auth = attributes[0].split("=")[1];
-		String pn = attributes[1].split("=")[1];
-		String id = attributes[2].split("=")[1];
+	public static String removeMitarbeiter(@PathParam("auth") String entAuth, @PathParam("personalnummer") String entPn,
+			@PathParam("id") String entID) {
+		if (entAuth.split("=").length != 2 || entPn.split("=").length != 2 || entID.split("=").length != 2)
+			return JsonHandler.fehler("Parameter falsch formatiert.");
+		String auth = entAuth.split("=")[1];
+		String pn = entPn.split("=")[1];
+		String id = entID.split("=")[1];
 		if (pn.length() != 12)
 			return JsonHandler.fehler("Ungültige Personalnummer.");
 		if (id.length() != 12)
@@ -442,20 +410,15 @@ public class ArbeitsgruppenResource {
 	 * @return String - Erfolg oder Fehler als Rückgabe
 	 */
 	@GET
-	@Path("addMitarbeiter{attributes}")
+	@Path("addMitarbeiter:{auth}&{personalnummer}&{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public static String addMitarbeiter(@PathParam("attributes") String query) {
-		query = query.substring(1);
-		String[] attributes = query.split("&");
-		if (attributes.length != 3)
-			return JsonHandler.fehler("Falsche Anzahl an Parametern.");
-		for (String attribute : attributes) {
-			if (attribute.split("=").length != 2)
-				return JsonHandler.fehler("Parameter sind falsch formatiert.");
-		}
-		String auth = attributes[0].split("=")[1];
-		String pn = attributes[1].split("=")[1];
-		String id = attributes[2].split("=")[1];
+	public static String addMitarbeiter(@PathParam("auth") String entAuth, @PathParam("personalnummer") String entPn,
+			@PathParam("id") String entID) {
+		if (entAuth.split("=").length != 2 || entPn.split("=").length != 2 || entID.split("=").length != 2)
+			return JsonHandler.fehler("Parameter falsch formatiert.");
+		String auth = entAuth.split("=")[1];
+		String pn = entPn.split("=")[1];
+		String id = entID.split("=")[1];
 		if (pn.length() != 12)
 			return JsonHandler.fehler("Ungültige Personalnummer.");
 		if (!SessionHandler.checkSessionID(auth))
@@ -493,19 +456,13 @@ public class ArbeitsgruppenResource {
 	 * @return String - Arbeitsgruppe als Json
 	 */
 	@GET
-	@Path("getFromID{attributes}")
+	@Path("getFromID:{auth}&{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public static String getArbeitsgruppeFromID(@PathParam("attributes") String query) {
-		query = query.substring(1);
-		String[] attributes = query.split("&");
-		if (attributes.length != 2)
-			return JsonHandler.fehler("Falsche Anzahl an Parametern.");
-		for (String attribute : attributes) {
-			if (attribute.split("=").length != 2)
-				return JsonHandler.fehler("Parameter sind falsch formatiert.");
-		}
-		String auth = attributes[0].split("=")[1];
-		String id = attributes[1].split("=")[1];
+	public static String getArbeitsgruppeFromID(@PathParam("auth") String entAuth, @PathParam("id") String entID) {
+		if (entAuth.split("=").length != 2 || entID.split("=").length != 2)
+			return JsonHandler.fehler("Parameter falsch formatiert.");
+		String auth = entAuth.split("=")[1];
+		String id = entID.split("=")[1];
 		if (id.length() != 12)
 			return JsonHandler.fehler("ID ist ungültig");
 		if (!SessionHandler.checkSessionID(auth))
@@ -545,19 +502,14 @@ public class ArbeitsgruppenResource {
 	 * @return String - Arbeitsgruppe als Json
 	 */
 	@GET
-	@Path("getFromBezeichnung{attributes}")
+	@Path("getFromBezeichnung:{auth}&{bezeichnung}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public static String getArbeitsgruppeFromBezeichnung(@PathParam("attributes") String query) {
-		query = query.substring(1);
-		String[] attributes = query.split("&");
-		if (attributes.length != 2)
-			return JsonHandler.fehler("Falsche Anzahl an Parametern.");
-		for (String attribute : attributes) {
-			if (attribute.split("=").length != 2)
-				return JsonHandler.fehler("Parameter sind falsch formatiert.");
-		}
-		String auth = attributes[0].split("=")[1];
-		String bezeichnung = attributes[1].split("=")[1];
+	public static String getArbeitsgruppeFromBezeichnung(@PathParam("auth") String entAuth,
+			@PathParam("bezeichnung") String entBz) {
+		if (entAuth.split("=").length != 2 || entBz.split("=").length != 2)
+			return JsonHandler.fehler("Parameter falsch formatiert.");
+		String auth = entAuth.split("=")[1];
+		String bezeichnung = entBz.split("=")[1];
 		if (bezeichnung.equals(""))
 			return JsonHandler.fehler("Bezeichnung ist leer.");
 		if (!SessionHandler.checkSessionID(auth))
@@ -590,5 +542,4 @@ public class ArbeitsgruppenResource {
 			return JsonHandler.fehler(e.toString());
 		}
 	}
-
 }
