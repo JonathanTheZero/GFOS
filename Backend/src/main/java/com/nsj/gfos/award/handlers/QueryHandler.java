@@ -6,6 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.sql.DataSource;
+
 import com.nsj.gfos.award.dataWrappers.Arbeitsgruppe;
 import com.nsj.gfos.award.dataWrappers.Mitarbeiter;
 
@@ -29,9 +33,11 @@ public class QueryHandler {
 		Statement myStmt = null;
 		ResultSet myRs = null;
 		try {
-
-			myConn = DriverManager.getConnection("jdbc:mysql://192.168.178.45/gfos?useSSL=false", "desktop",
-					"gfos2020");
+//            Context initContext = new InitialContext();
+//            DataSource ds = (DataSource) initContext.lookup("java:/comp/env/jdbc/gfosAward");
+//			myConn = ds.getConnection();
+                        myConn = DriverManager.getConnection("jdbc:mysql://192.168.178.45/gfos?useSSL=false", "desktop",
+                            "gfos2020");
 			myStmt = myConn.createStatement();
 			myRs = myStmt.executeQuery(stmt);
 		} catch (Exception e) {

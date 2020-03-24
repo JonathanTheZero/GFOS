@@ -83,14 +83,16 @@ export class ApiService {
     try {
       const auth: string = this.generateAuthToken();
       //keeping the user up-to-date
-      this.http
-        .get<apiAnswer>(`${this.url}/login:auth=${auth}&pn=${pn}&pw=${pw}`)
-        .subscribe(a => this.dataService.setUser(a.data as Mitarbeiter));
+      //this.http
+       // .get<apiAnswer>(`${this.url}/login:auth=${auth}&pn=${pn}&pw=${pw}`)
+        //.subscribe(a => this.dataService.setUser(a.data as Mitarbeiter));
 
       let a = await this.http
         .get<apiAnswer>(`${this.url}/login:auth=${auth}&pn=${pn}&pw=${pw}`)
         .toPromise<apiAnswer>();
 
+      this.dataService.setUser(a.data as Mitarbeiter);
+      console.log(this.dataService.getUser()); 
       this.dataService.setGroups(await this.getGroupsFromUser((a.data as Mitarbeiter)?.personalnummer) as Arbeitsgruppe[]);
       this.dataService.setAuth(auth);
       this.logoutBeacon(); //schedule for later
@@ -160,8 +162,9 @@ export class ApiService {
    */
   public async alterReachable(r: boolean, pn = this.dataService.getUser().personalnummer): Promise<apiAnswer> {
     try {
+      console.log((r) ? 1 : 0);
       return await this.http
-        .get<apiAnswer>(`${this.url}/mitarbeiter/alter:auth=${this.dataService.getAuth()}&pn=${pn}&er=${Number(r)}`)
+        .get<apiAnswer>(`${this.url}/mitarbeiter/alter:auth=${this.dataService.getAuth()}&pn=${pn}&er=${(r) ? 1 : 0}`)
         .toPromise();
     }
     catch {

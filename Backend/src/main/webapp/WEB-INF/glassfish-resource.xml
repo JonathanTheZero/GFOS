@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<glassfish-resource>
+    <jdbc-resource enabled="true" jndi-name="jdbc/MySQLPool" object-type="user" pool-name="MySQLPool"/>
+    <resource-ref>
+        <res-ref-name>jdbc/gfosAward</res-ref-name>
+        <jndi-name>jdbc/MySQLPool</jndi-name>
+    </resource-ref>  
+</glassfish-resource>

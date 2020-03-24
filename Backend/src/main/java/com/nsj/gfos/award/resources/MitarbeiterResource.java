@@ -261,14 +261,14 @@ public class MitarbeiterResource {
 					+ Utils.getFormattedValue(params[i].split("=")) + ", ";
 		}
 		String sqlStmt = "UPDATE gfos.mitarbeiter SET " + values.substring(0, values.length() - 2)
-				+ "WHERE Personalnummer = " + pn + ";";
+				+ " WHERE Personalnummer = \"" + pn + "\";";
 		try {
 			int rs = QueryHandler.update(sqlStmt);
 			if (rs == 0)
 				return JsonHandler.fehler("Die Veränderungen konnten nicht durchgeführt werden.");
 			return JsonHandler.erfolg("Werte wurden erfolgreich verändert.");
 		} catch (SQLException e) {
-			return JsonHandler.fehler(e.toString());
+			return JsonHandler.fehler(e.toString()); 
 		}
 	}
 
