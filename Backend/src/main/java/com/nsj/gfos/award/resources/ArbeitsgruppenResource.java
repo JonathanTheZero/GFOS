@@ -151,12 +151,13 @@ public class ArbeitsgruppenResource {
 			return JsonHandler.fehler(e.toString());
 		}
 	}
-	
+
 	/**
-	 * Die Methode <i>getGemeinsameGruppen</i> gibt die gemeinsamen Arbeitsgruppen des ausführenden und des in den Parametern eingetragenen Mitarbeiters zurück.
+	 * Die Methode <i>getGemeinsameGruppen</i> gibt die gemeinsamen Arbeitsgruppen
+	 * des ausfÃ¼hrenden und des in den Parametern eingetragenen Mitarbeiters zurÃ¼ck.
 	 * 
 	 * @param auth - SessionID des anfordernden Mitarbeiters
-	 * @param id2   - Personalnummer des anderen Mitarbeiters
+	 * @param id2  - Personalnummer des anderen Mitarbeiters
 	 * @return String - gemeinsame Arbeitsgruppen beider Mitarbeiter
 	 */
 	@GET
@@ -170,14 +171,17 @@ public class ArbeitsgruppenResource {
 			return JsonHandler.fehler("Falsche Parameter Syntax.");
 		if (auth[1].length() != 12)
 			return JsonHandler.fehler("Parameter sind falsch formatiert.");
-		if(Utils.checkIfMitarbeiterExists(id1) || Utils.checkIfMitarbeiterExists(id2[1]))
+		if (Utils.checkIfMitarbeiterExists(id1) || Utils.checkIfMitarbeiterExists(id2[1]))
 			return JsonHandler.fehler("Mindestens ein Mitarbeiter existiert nicht.");
-		String sqlStmt = "SELECT DISTINCT a.ArbeitsgruppenID FROM(SELECT * FROM gfos.arbeitsgruppenteilnahme WHERE gfos.arbeitsgruppenteilnahme.Mitarbeiter = \"" + id1 + "\") AS a INNER JOIN (SELECT * FROM gfos.arbeitsgruppenteilnahme WHERE gfos.arbeitsgruppenteilnahme.Mitarbeiter = \"" + id2[1] + "\") AS b ON a.ArbeitsgruppenID = b.ArbeitsgruppenID;";
+		String sqlStmt = "SELECT DISTINCT a.ArbeitsgruppenID FROM(SELECT * FROM gfos.arbeitsgruppenteilnahme WHERE gfos.arbeitsgruppenteilnahme.Mitarbeiter = \""
+				+ id1
+				+ "\") AS a INNER JOIN (SELECT * FROM gfos.arbeitsgruppenteilnahme WHERE gfos.arbeitsgruppenteilnahme.Mitarbeiter = \""
+				+ id2[1] + "\") AS b ON a.ArbeitsgruppenID = b.ArbeitsgruppenID;";
 		ObjectMapper om = new ObjectMapper();
 		ArrayList<Arbeitsgruppe> arbeitsgruppen = new ArrayList<Arbeitsgruppe>();
 		try {
 			ResultSet rs = QueryHandler.query(sqlStmt);
-			while(rs.next()) {
+			while (rs.next()) {
 				Arbeitsgruppe a = new Arbeitsgruppe();
 				a.setBezeichnung(Utils.getBezeichnung(rs.getString("ArbeitsgruppenID")));
 				a.setLeiter(Utils.getLeiter(rs.getString("ArbeitsgruppenID")));
