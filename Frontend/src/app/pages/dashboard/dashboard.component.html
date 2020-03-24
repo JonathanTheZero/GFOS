@@ -75,8 +75,7 @@
     <div [@inOutAnimation]="viewMyGroups">
       <ng-container *ngFor="let g of userGroups;let i = index">
         <h3>Mitarbeiter*innen der Gruppe {{g.bezeichnung}}</h3>
-        <ng-container
-          *ngIf="user.rechteklasse === 'headOfDepartment' || user.rechteklasse === 'admin' || user.rechteklasse === 'root'">
+        <ng-container *ngIf="['headOfDepartment', 'admin', 'root'].includes(user.rechteklasse)">
           <button class="btn" (click)="addUser(i)">Mitarbeiter*in hinzufügen</button>
           <button class="btn" (click)="removeUser(i)">Mitarbeiter*in entfernen</button>
 

@@ -27,14 +27,6 @@ export class GroupOverviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.dataService.getUser();
-    this.valid = this.user.rechteklasse === "admin" || this.user.rechteklasse === "root";
-    
-    /*if(!environment.production){
-      this.employees = employeeSamples;
-      this.leader = employeeSamples[0];
-      this.ready = true;
-      return;
-    }*/
 
     this.api.getAllUsersFromGroup(this.group).then((answer) => {
       if((answer as apiAnswer)?.fehler) return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + (answer as apiAnswer)?.fehler, "error");
