@@ -33,7 +33,7 @@
             <tr>
               <td>Arbeitsgruppen:</td>
               <td>
-                <ng-container *ngIf="groups">
+                <ng-container *ngIf="groups && groups.length">
                   <ul *ngFor="let g of groups">
                     <li>
                       <a routerLink="/group/{{g.arbeitsgruppenID}}">
@@ -42,7 +42,7 @@
                     </li>
                   </ul>
                 </ng-container>
-                <ng-container *ngIf="!groups">
+                <ng-container *ngIf="!groups.length">
                   Keine
                 </ng-container>
               </td>
