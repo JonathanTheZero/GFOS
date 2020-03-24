@@ -18,7 +18,7 @@ import com.nsj.gfos.award.handlers.SessionHandler;
  * 
  * @author Schnuels
  */
-@Path("login{params}")
+@Path("login:{auth}&{email}&{password}")
 public class LoginResource {
 
 	/**
@@ -34,14 +34,10 @@ public class LoginResource {
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public String login(@PathParam("params") String param) {
-		param = param.substring(1);
-		String[] params = param.split("&");
-		if (params.length != 3)
-			return JsonHandler.fehler("Falsche Anzahl an Parametern.");
-		String[] auth = params[0].split("=");
-		String[] em = params[1].split("=");
-		String[] pw = params[2].split("=");
+	public String login(@PathParam("auth") String entAuth, @PathParam("email") String entEm, @PathParam("password") String entPw) {
+		String[] auth = entAuth.split("=");
+		String[] em = entEm.split("=");
+		String[] pw = entPw.split("=");
 		if (auth.length != 2 || em.length != 2 || pw.length != 2)
 			return JsonHandler.fehler("Falsche Parameter Syntax.");
 		if (auth[1].length() != 12)
