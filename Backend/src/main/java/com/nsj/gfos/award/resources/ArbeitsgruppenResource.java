@@ -161,9 +161,10 @@ public class ArbeitsgruppenResource {
 	 * @return String - gemeinsame Arbeitsgruppen beider Mitarbeiter
 	 */
 	@GET
-	@Path("getGemeinsameGruppe{attributes}")
+	@Path("getGemeinsame:{auth}&{personalnummer}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public static String getGemeinsameGruppen(@PathParam("auth") String entAuth, @PathParam("id2") String entID) {
+	public static String getGemeinsameGruppen(@PathParam("auth") String entAuth,
+			@PathParam("personalnummer") String entID) {
 		String[] auth = entAuth.split("=");
 		String id1 = Utils.getPersonalnummerFromSessionID(auth[1]);
 		String[] id2 = entID.split("=");
@@ -171,7 +172,7 @@ public class ArbeitsgruppenResource {
 			return JsonHandler.fehler("Falsche Parameter Syntax.");
 		if (auth[1].length() != 12)
 			return JsonHandler.fehler("Parameter sind falsch formatiert.");
-		if (Utils.checkIfMitarbeiterExists(id1) || Utils.checkIfMitarbeiterExists(id2[1]))
+		if (!Utils.checkIfMitarbeiterExists(id1) || !Utils.checkIfMitarbeiterExists(id2[1]))
 			return JsonHandler.fehler("Mindestens ein Mitarbeiter existiert nicht.");
 		String sqlStmt = "SELECT DISTINCT a.ArbeitsgruppenID FROM(SELECT * FROM gfos.arbeitsgruppenteilnahme WHERE gfos.arbeitsgruppenteilnahme.Mitarbeiter = \""
 				+ id1
