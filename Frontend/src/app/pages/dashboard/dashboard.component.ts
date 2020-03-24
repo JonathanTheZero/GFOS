@@ -44,7 +44,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.titleService.setTitle("Dashboard");
     this.dataService.isMobile().subscribe(m => this.isMobile = m);
-    this.dataService.getUser(true).subscribe(u => this.user = u);
+    this.user = this.dataService.getUser();
     this.requestGroups();
   }
 
@@ -90,7 +90,7 @@ export class DashboardComponent implements OnInit {
   }
 
   public alterErreichbar(): void {
-    this.api.alterReachable(this.dataService.getUser().erreichbar).then(answer => {
+    this.api.alterReachable(!this.dataService.getUser().erreichbar).then(answer => {
       if (answer.fehler) return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + answer.fehler, "error");
       Swal.fire("", "Ihr Status wurde erfolgreich übernommen", "success");
       this.dataService.getUser().erreichbar = !this.dataService.getUser().erreichbar;
