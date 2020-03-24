@@ -187,6 +187,16 @@ public class ArbeitsgruppenResource {
 				a.setBezeichnung(Utils.getBezeichnung(rs.getString("ArbeitsgruppenID")));
 				a.setLeiter(Utils.getLeiter(rs.getString("ArbeitsgruppenID")));
 				a.setArbeitsgruppenID(rs.getString("ArbeitsgruppenID"));
+				String sql = "SELECT gfos.arbeitsgruppenteilnahme.Mitarbeiter FROM gfos.arbeitsgruppenteilnahme WHERE \""
+						+ a.getArbeitsgruppenID() + "\" = gfos.arbeitsgruppenteilnahme.ArbeitsgruppenID;";
+				try {
+					ResultSet mitarbeiter = QueryHandler.query(sql);
+					while (mitarbeiter.next()) {
+						a.addMitglied(mitarbeiter.getString("Mitarbeiter"));
+					}
+				} catch (SQLException e) {
+					return JsonHandler.fehler(e.toString());
+				}
 				arbeitsgruppen.add(a);
 			}
 		} catch (SQLException e) {
