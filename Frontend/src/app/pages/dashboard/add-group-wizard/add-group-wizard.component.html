@@ -1,0 +1,55 @@
+<clr-wizard #wizard [(clrWizardOpen)]="open" [clrWizardSize]="'md'" (clrWizardOnFinish)="send()"
+  (clrWizardOnCancel)="finish()">
+
+  <clr-wizard-title>
+    Neue Arbeitsgruppe erstellen
+  </clr-wizard-title>
+
+  <clr-wizard-button [type]="'cancel'">Abbrechen</clr-wizard-button>
+  <clr-wizard-button [type]="'previous'">Zurück</clr-wizard-button>
+  <clr-wizard-button [type]="'next'">Weiter</clr-wizard-button>
+  <clr-wizard-button [type]="'finish'" (click)="send()">Fertigstellen</clr-wizard-button>
+
+  <clr-wizard-page [clrWizardPageNextDisabled]="name.pristine || admin.pristine || !formPageOne.valid">
+    <ng-template clrPageTitle>Seite 1</ng-template>
+    <form clrForm #formPageOne="ngForm" clrLayout="vertical">
+
+      <clr-input-container>
+        <label>Wie soll die neue Arbeitsgruppe heißen?</label>
+        <input clrInput required placeholder="Name?" [(ngModel)]="model.name" name="name" #name="ngModel" />
+        <clr-control-error>Bitte geben Sie einen Namen an!</clr-control-error>
+      </clr-input-container>
+
+      <br />
+      <br />
+
+      <clr-input-container>
+        <label>Wer soll die neue Arbeitsgruppe leiten?</label>
+        <input clrInput required minlength="12" maxlength="12" placeholder="Leiter?" [(ngModel)]="model.admin" name="admin" #admin="ngModel"/>
+        <clr-control-error *clrIfError="'required'">Bitte geben Sie einen Leiter an!</clr-control-error>
+        <clr-control-error *clrIfError="'minlength' || 'maxlength'">Geben Sie die 12-stellige Personalnummer an!</clr-control-error>
+      </clr-input-container>
+    </form>
+  </clr-wizard-page>
+
+  <clr-wizard-page [clrWizardPageNextDisabled]="model.mitglieder.length == 0">
+    <ng-template clrPageTitle>Seite 2</ng-template>
+
+    <clr-input-container>
+      <label>Wer soll Mitglied der Arbeitsgruppe sein?</label>
+      <input clrInput minlength="12" maxlength="12" placeholder="Mitglieder?" name="members" #employees="ngModel" [(ngModel)]="current" />
+      
+      <clr-control-error *clrIfError="'minlength' || 'maxlength'">Geben Sie die 12-stellige Personalnummer an!</clr-control-error>
+    </clr-input-container>
+
+    <br />
+    <button class="btn" (click)="addToList()">Hinzufügen</button>
+    <ul *ngFor="let m of model.mitglieder;let i = index">
+      <li>
+        {{m}}
+        <clr-icon shape="times" (click)="removeEmployeeFromList(i)" style="float: right"></clr-icon>
+      </li>
+    </ul>
+  </clr-wizard-page>
+
+</clr-wizard>

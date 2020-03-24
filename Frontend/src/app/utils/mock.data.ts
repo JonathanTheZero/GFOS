@@ -9,7 +9,7 @@ export const employeeSamples: Mitarbeiter[] = [
         arbeitskonto: 0,
         email: "nils.sommerfeld@gmx.net",
         status: "abwesend",
-        rechteklasse: "admin",
+        rechteklasse: "headOfDepartment",
         abteilung: "IT-Sicherheit",
         vertreter: "000000000002",
         passwort: null,
