@@ -33,8 +33,9 @@ export class GroupsComponent implements OnInit {
 
       val.mitglieder.forEach((innerVal, i) => {
         if ((innerVal as apiAnswer)?.fehler) return;
-        if(!promises[index]) promises[index] = [];
-        promises[index].push(this.api.getUser(innerVal) as Promise<Mitarbeiter>);
+        if (!promises[index]) promises[index] = [];
+        if (!(val.leiter === innerVal))
+          promises[index].push(this.api.getUser(innerVal) as Promise<Mitarbeiter>);
       });
       try {
         leaderPromises.push(this.api.getUser(val.leiter) as Promise<Mitarbeiter>);

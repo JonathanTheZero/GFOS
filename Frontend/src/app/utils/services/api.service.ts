@@ -6,6 +6,7 @@ import { environment } from "src/environments/environment";
 import { DataService } from "./data.service";
 import { employeeSamples, groupSamples } from '../mock.data';
 import Swal from 'sweetalert2';
+import { ClrControlError } from '@clr/angular';
 
 @Injectable({
   providedIn: "root"
@@ -83,17 +84,17 @@ export class ApiService {
     try {
       const auth: string = this.generateAuthToken();
       //keeping the user up-to-date
-      //this.http
-       // .get<apiAnswer>(`${this.url}/login:auth=${auth}&pn=${pn}&pw=${pw}`)
-        //.subscribe(a => this.dataService.setUser(a.data as Mitarbeiter));
+      this.http
+        .get<apiAnswer>(`${this.url}/login:auth=${auth}&pn=${pn}&pw=${pw}`)
+        .subscribe(a => this.dataService.setUser(a.data as Mitarbeiter));
 
       let a = await this.http
         .get<apiAnswer>(`${this.url}/login:auth=${auth}&pn=${pn}&pw=${pw}`)
         .toPromise<apiAnswer>();
 
-      this.dataService.setUser(a.data as Mitarbeiter);
-      console.log(this.dataService.getUser()); 
-      this.dataService.setGroups(await this.getGroupsFromUser((a.data as Mitarbeiter)?.personalnummer) as Arbeitsgruppe[]);
+      //this.dataService.setUser(a.data as Mitarbeiter);
+      let b = await this.getGroupsFromUser((a.data as Mitarbeiter)?.personalnummer) as Arbeitsgruppe[];
+      this.dataService.setGroups(b);
       this.dataService.setAuth(auth);
       this.logoutBeacon(); //schedule for later
       return a;

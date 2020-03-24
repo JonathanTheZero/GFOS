@@ -1,16 +1,14 @@
 <clr-datagrid>
   <clr-dg-column>Name</clr-dg-column>
-  <clr-dg-column>ArbeitsgruppenID</clr-dg-column>
-  <clr-dg-column>Mitglieder</clr-dg-column>
   <clr-dg-column>Leiter</clr-dg-column>
+  <clr-dg-column>Mitglieder</clr-dg-column>
+  <clr-dg-column>ArbeitsgruppenID</clr-dg-column>
 
   <clr-dg-row *ngFor="let group of groups; let i = index">
-    <clr-dg-cell>{{group.bezeichnung}}</clr-dg-cell>
-    <clr-dg-cell>{{group.arbeitsgruppenID}}</clr-dg-cell>
     <clr-dg-cell>
-      <ng-container *ngIf="groupMembers[i]">
-        {{groupMembers[i] | listEmployees}}
-      </ng-container>
+      <a routerLink="/group/{{group.arbeitsgruppenID}}">
+        {{group.bezeichnung}}
+      </a>
     </clr-dg-cell>
     <clr-dg-cell>
       <ng-container *ngIf="leaders[i]">
@@ -21,6 +19,14 @@
         <clr-icon shape="times" class="is-error" *ngIf="!leaders[i].erreichbar"></clr-icon>
       </ng-container>
     </clr-dg-cell>
+    <clr-dg-cell>
+      <ng-container *ngIf="groupMembers[i]">       
+          <a routerLink="/employee/{{groupMembers[i]}}">
+            {{groupMembers[i] | listEmployees}}
+          </a>
+        </ng-container>
+    </clr-dg-cell>
+    <clr-dg-cell>{{group.arbeitsgruppenID}}</clr-dg-cell>
   </clr-dg-row>
 
   <clr-dg-footer>{{groups.length}} Gruppen</clr-dg-footer>

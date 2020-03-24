@@ -30,7 +30,7 @@
         <form clrForm (submit)="changeStatus()">
           <clr-datalist-container>
             <label>Status</label>
-            <input name="status" clrDatalistInput [(ngModel)]="status" />
+            <input name="status" value={{user.status}} clrDatalistInput [(ngModel)]="status"/>
             <datalist>
               <option [value]="'Online'"></option>
               <option [value]="'Abwesend'"></option>
