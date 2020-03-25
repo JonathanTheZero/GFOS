@@ -9,6 +9,7 @@ import javax.ws.rs.core.MediaType;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.nsj.gfos.award.handlers.JsonHandler;
+import com.nsj.gfos.award.handlers.PasswordHandler;
 import com.nsj.gfos.award.handlers.QueryHandler;
 import com.nsj.gfos.award.handlers.RightHandler;
 import com.nsj.gfos.award.handlers.SessionHandler;
@@ -309,22 +310,26 @@ public class ArbeitsgruppenResource {
 	 * ArbeitsgruppenID.
 	 * 
 	 * @param auth - SessionID des ausführenden Mitarbeiters
+	 * @param pw - Passwort des ausf�hrenden Mitarbeiters
 	 * @param id   - ArbeitsgruppenID von der Arbeitsgruppe, die gelöscht werden
 	 *             soll
 	 * @return String - Erfolg oder Fehler als Rückgabe
 	 */
 	@GET
-	@Path("remove:{auth}&{id}")
+	@Path("remove:{auth}&{pw}&{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public static String removeArbeitsgruppe(@PathParam("auth") String entAuth, @PathParam("id") String entID) {
+	public static String removeArbeitsgruppe(@PathParam("auth") String entAuth, @PathParam("pw") String entPw, @PathParam("id") String entID) {
 		if (entAuth.split("=").length != 2 || entID.split("=").length != 2)
 			return JsonHandler.fehler("Parameter falsch formatiert.");
 		String auth = entAuth.split("=")[1];
+		String pw = entPw.split("=")[1];
 		String id = entID.split("=")[1];
 		if (id.length() != 12)
 			return JsonHandler.fehler("ID ist ungültig");
 		if (!SessionHandler.checkSessionID(auth))
 			return JsonHandler.fehler("SessionID ist ungültig.");
+		if(!PasswordHandler.checkPassword(pw, Utils.getPersonalnummerFromSessionID(auth)))
+			return JsonHandler.fehler("Das Passwort ist falsch.");
 		if (!Utils.checkIfArbeitsgruppeExistsFromID(id))
 			return JsonHandler.fehler("Arbeitsgruppe existiert nicht.");
 		if (!((Utils.isInArbeitsgruppe(id, Utils.getPersonalnummerFromSessionID(auth))
