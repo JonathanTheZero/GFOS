@@ -11,6 +11,7 @@ import { PipesModule } from 'src/app/utils/pipes.module';
 import { GroupsComponent } from './groups/groups.component';
 import { AddGroupWizardComponent } from './groups/add-group-wizard/add-group-wizard.component';
 import { AddUserToGroupComponent } from './group-overview/add-user-to-group/add-user-to-group.component';
+import { RemoveGroupComponent } from './groups/remove-group/remove-group.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { AddUserToGroupComponent } from './group-overview/add-user-to-group/add-
     GroupOverviewComponent,
     GroupsComponent,
     AddGroupWizardComponent,
-    AddUserToGroupComponent
+    AddUserToGroupComponent,
+    RemoveGroupComponent
   ],
   imports: [
     CommonModule,

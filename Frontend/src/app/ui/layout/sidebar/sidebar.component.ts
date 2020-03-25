@@ -15,7 +15,7 @@ export class SidebarComponent implements OnInit {
   user: Mitarbeiter;
   groups: Arbeitsgruppe[];
 
-  public sidebarLinks : Array<routerLinks> = [
+  public sidebarLinks: Array<routerLinks> = [
     {
       title: "Allgemein",
       icon: "folder-open",
@@ -41,7 +41,7 @@ export class SidebarComponent implements OnInit {
   ];
 
   constructor(public dataService: DataService,
-    public api: ApiService){
+    public api: ApiService) {
 
   }
 
@@ -51,9 +51,19 @@ export class SidebarComponent implements OnInit {
   }
 
   public changeIcon(index: number, toggle: boolean): void {
-    if(!this.sidebarLinks[index].iconWhenClosed) return;
+    if (!this.sidebarLinks[index].iconWhenClosed) return;
     //swap the two values -> change of animation in the sidebar
-    [this.sidebarLinks[index].icon, this.sidebarLinks[index].iconWhenClosed] = 
+    [this.sidebarLinks[index].icon, this.sidebarLinks[index].iconWhenClosed] =
       [this.sidebarLinks[index].iconWhenClosed, this.sidebarLinks[index].icon];
+  }
+
+  test() {
+    /*this.dataService.setGroups([{
+      mitglieder: [],
+      leiter: "00000001",
+      bezeichnung: "sdjfhsdsdf",
+      arbeitsgruppenID: "01234132"
+    }])*/
+    this.user.email ="abc"
   }
 }

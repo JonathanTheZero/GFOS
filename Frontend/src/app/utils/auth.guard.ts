@@ -15,8 +15,16 @@ export class AuthGuard implements CanActivate {
       return true;
     }
     //user is logged in
-    if (this.dataService.getUser()) {
+    if (!this.dataService.getUser()) {
       return true;
+    }
+
+    if(this.router.url !== "/"){
+      Swal.fire(
+        "Fehler!",
+        "Sie sind nicht eingeloggt!",
+        "error"
+      );
     }
 
     // not logged in so redirect to login page with the return url
@@ -26,11 +34,6 @@ export class AuthGuard implements CanActivate {
       }
     });
 
-    Swal.fire(
-      "Fehler!",
-      "Sie sind nicht eingeloggt!",
-      "error"
-    );
     return false;
   }
 }

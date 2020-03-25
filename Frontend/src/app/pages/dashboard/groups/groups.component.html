@@ -3,6 +3,9 @@
   <clr-dg-column>Leiter</clr-dg-column>
   <clr-dg-column>Mitglieder</clr-dg-column>
   <clr-dg-column>ArbeitsgruppenID</clr-dg-column>
+  <clr-dg-column *ngIf="allowedToDelete">Löschen?</clr-dg-column>
+
+  <clr-dg-placeholder>Lädt...</clr-dg-placeholder>
 
   <clr-dg-row *ngFor="let group of groups; let i = index">
     <clr-dg-cell>
@@ -20,13 +23,18 @@
       </ng-container>
     </clr-dg-cell>
     <clr-dg-cell>
-      <ng-container *ngIf="groupMembers[i]">       
-          <a routerLink="/employee/{{groupMembers[i]}}">
-            {{groupMembers[i] | listEmployees}}
-          </a>
-        </ng-container>
+      <ng-container *ngIf="groupMembers[i]">
+        <a routerLink="/employee/{{groupMembers[i]}}">
+          {{groupMembers[i] | listEmployees}}
+        </a>
+      </ng-container>
     </clr-dg-cell>
     <clr-dg-cell>{{group.arbeitsgruppenID}}</clr-dg-cell>
+    <clr-dg-cell *ngIf="allowedToDelete">
+      <button class="btn btn-warning btn-sm" aria-label="löschen" (click)="deleteGroup(i)">
+        Löschen
+      </button>
+    </clr-dg-cell>
   </clr-dg-row>
 
   <clr-dg-footer>{{groups.length}} Gruppen</clr-dg-footer>

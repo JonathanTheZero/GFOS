@@ -10,6 +10,8 @@
     <clr-dg-column>Status</clr-dg-column>
     <clr-dg-column>Personalnummer</clr-dg-column>
 
+    <clr-dg-placeholder>Lädt...</clr-dg-placeholder>
+
     <clr-dg-row *ngFor="let m of members" [class.leader_row]="m.personalnummer === group.leiter">
       <clr-dg-cell>
         <a routerLink="/employee/{{m?.personalnummer}}">

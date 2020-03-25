@@ -13,10 +13,10 @@ import Swal from 'sweetalert2';
   animations: [
     trigger(
       'inOutAnimation', [
-      state('enter', style({ height: 0, opacity: 0, pointerEvents: "none" })),
-      state('leave', style({ height: '100%', opacity: 1, pointerEvents: "none" })),
-      transition('enter => leave', animate('1500ms')),
-      transition('leave => enter', animate('1000ms'))
+      state('invisible', style({ height: 0, opacity: 0, pointerEvents: "none" })),
+      state('visible', style({ height: '100%', opacity: 1})),
+      transition('invisible => visible', animate('1500ms')),
+      transition('visible => invisible', animate('1000ms'))
     ])
   ]
 })
@@ -31,8 +31,8 @@ export class DashboardComponent implements OnInit {
   public addToGroup: boolean[] = [];
   public removeFromGroup: boolean[] = [];
 
-  public viewMyGroups: "leave" | "enter" = "enter";
-  public viewAllGroups: "leave" | "enter" = "enter";
+  public viewMyGroups: "visible" | "invisible" = "invisible";
+  public viewAllGroups: "visible" | "invisible" = "invisible";
 
   public status: string;
 
@@ -74,11 +74,11 @@ export class DashboardComponent implements OnInit {
   }
 
   public toggleAllGroups(): void {
-    this.viewAllGroups = this.viewAllGroups === 'leave' ? 'enter' : 'leave';
+    this.viewAllGroups = this.viewAllGroups === 'visible' ? 'invisible' : 'visible';
   }
 
   public toggleMyGroups(): void {
-    this.viewMyGroups = this.viewMyGroups === 'leave' ? 'enter' : 'leave';
+    this.viewMyGroups = this.viewMyGroups === 'visible' ? 'invisible' : 'visible';
   }
 
   public changeStatus(): void {

@@ -17,13 +17,14 @@
 
   </ng-container>
 
-  <ng-container *ngIf="user">
+  <ng-container *ngIf="user && groups">
     <clr-vertical-nav-group routerLinkActive="active">
 
       <clr-icon shape="employee-group" clrVerticalNavIcon></clr-icon>
       Meine Gruppen
       <clr-vertical-nav-group-children *clrIfExpanded="true">
-        <a clrVerticalNavLink routerLink="/group/{{g.arbeitsgruppenID}}" routerLinkActive="active" *ngFor="let g of groups">
+        <a clrVerticalNavLink routerLink="/group/{{g.arbeitsgruppenID}}" routerLinkActive="active"
+          *ngFor="let g of groups">
           {{g.bezeichnung}}
         </a>
       </clr-vertical-nav-group-children>
@@ -34,14 +35,20 @@
   <br />
 
   <a clrVerticalNavLink routerLinkActive="active" routerLink="/register"
-    *ngIf="['admin', 'root'].includes(user?.rechteklasse)" [routerLinkActiveOptions]="{ exact: true }">
+    *ngIf="['admin', 'root'].includes(user?.rechteklasse)">
+    <clr-icon shape="users" clrVerticalNavIcon></clr-icon>
+    Benutzer hinzufügen
+  </a>
+
+  <a clrVerticalNavLink routerLinkActive="active" routerLink="/register"
+    *ngIf="['admin', 'root'].includes(user?.rechteklasse)">
     <clr-icon shape="users" clrVerticalNavIcon></clr-icon>
     Benutzer hinzufügen
   </a>
 
   <br />
 
-  <a clrVerticalNavLink routerLinkActive="active" routerLink="/credits" [routerLinkActiveOptions]="{ exact: true }">
+  <a clrVerticalNavLink routerLinkActive="active" routerLink="/credits">
     <clr-icon shape="certificate" clrVerticalNavIcon></clr-icon>
     Credit
   </a>

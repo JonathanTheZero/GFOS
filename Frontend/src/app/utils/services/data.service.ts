@@ -18,6 +18,7 @@ export class DataService{
 
   private currentUser: Mitarbeiter;
   private auth: string;
+  private groups: Arbeitsgruppe[];
 
   //initialize subjects using the already stored values
   public idleCounter: BehaviorSubject<string> = new BehaviorSubject<string>(this.getIdle());
@@ -25,7 +26,6 @@ export class DataService{
   private _mobile: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.isMobileDevice());
   public userSubject: Subject<Mitarbeiter> = new Subject<Mitarbeiter>();
   public groupSubject: Subject<Array<Arbeitsgruppe>> = new Subject<Arbeitsgruppe[]>();
-  public groups: Arbeitsgruppe[];
 
   constructor() { 
     /*
@@ -69,7 +69,7 @@ export class DataService{
   }
 
   /**
-   * @param g The new User groups array the user holds
+   * @param g The new User groups array the Subject holds
    */
   public setGroups(g: Arbeitsgruppe[]){
     this.groupSubject.next(g);
@@ -81,7 +81,7 @@ export class DataService{
    *  or an Observable that holds the Array
    * @returns the current user groups either as Observable or as Objectarray
    */
-  public getGroups(asObservable: boolean): Observable<Arbeitsgruppe[]>;
+  public getGroups(asObservable: boolean): Observable<Array<Arbeitsgruppe>>;
   public getGroups(): Array<Arbeitsgruppe>;
   public getGroups(asObservable?: boolean): Observable<Arbeitsgruppe[]> | Arbeitsgruppe[] {
     if(asObservable){

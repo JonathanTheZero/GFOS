@@ -31,7 +31,9 @@
               <td>{{user.arbeitskonto}} Stunden</td>
             </tr>
             <tr>
-              <td>Arbeitsgruppen:</td>
+              <td>
+                {{groupText || "Arbeitsgruppen:"}}
+              </td>
               <td>
                 <ng-container *ngIf="groups && groups.length">
                   <ul *ngFor="let g of groups">
@@ -42,7 +44,7 @@
                     </li>
                   </ul>
                 </ng-container>
-                <ng-container *ngIf="!groups.length">
+                <ng-container *ngIf="!groups?.length">
                   Keine
                 </ng-container>
               </td>

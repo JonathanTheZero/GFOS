@@ -92,9 +92,8 @@ export class ApiService {
         .get<apiAnswer>(`${this.url}/login:auth=${auth}&pn=${pn}&pw=${pw}`)
         .toPromise<apiAnswer>();
 
-      //this.dataService.setUser(a.data as Mitarbeiter);
-      let b = await this.getGroupsFromUser((a.data as Mitarbeiter)?.personalnummer) as Arbeitsgruppe[];
-      this.dataService.setGroups(b);
+      this.dataService.setUser(a.data as Mitarbeiter);
+      this.dataService.setGroups(await this.getGroupsFromUser(this.dataService.getUser().personalnummer) as Arbeitsgruppe[]);
       this.dataService.setAuth(auth);
       this.logoutBeacon(); //schedule for later
       return a;
@@ -390,6 +389,25 @@ export class ApiService {
       if (!environment.production) return [employeeSamples[0], [...employeeSamples]];
       return {
         fehler: "Es konnte keine Verbindung zum Server hergestellt werden"
+      };
+    }
+  }
+
+  /**
+   * sends a request to get the groups the currently logged in user shares with another user
+   * @param pn the ID of the seconds user (whose groups shared with should be returned)
+   * @returns a Promise that either holds the group-object array or an error-object
+   */
+  public async getSharedGroups(pn: string): Promise<apiAnswer | Arbeitsgruppe[]> {
+    try {
+      return await this.http
+        .get<Arbeitsgruppe[] | apiAnswer>(`${this.url}/arbeitsgruppen/getGemeinsame:auth=${this.dataService.getAuth()}&pn=${pn}`)
+        .toPromise();
+    }
+    catch {
+      if(!environment.production) return groupSamples;
+      return {
+        fehler: "Es konnte keine Verbindung zum Server hergestellt werde"
       };
     }
   }
