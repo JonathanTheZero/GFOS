@@ -472,13 +472,13 @@ public class Utils {
 	}
 	
 	/**
-	 * Die Methode <i>getBezeichnung</i> gibt die Bezeichnung der Arbeitsgruppe mit Hilfe der
+	 * Die Methode <i>getBezeichnungFromID</i> gibt die Bezeichnung der Arbeitsgruppe mit Hilfe der
 	 * ArbeitsgruppenID zurück.
 	 * 
 	 * @param id - ArbeitsgruppenID
 	 * @return String - Bezeichnung der Arbeitsgruppe
 	 */
-	public static String getBezeichnung(String id) {
+	public static String getBezeichnungFromID(String id) {
 		String sqlStmt = "SELECT Bezeichnung FROM gfos.arbeitsgruppe WHERE ArbeitsgruppenID = " + id + ";";
 		try {
 			ResultSet rs = QueryHandler.query(sqlStmt);

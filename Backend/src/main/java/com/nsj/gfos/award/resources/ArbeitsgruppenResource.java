@@ -174,7 +174,7 @@ public class ArbeitsgruppenResource {
 			ResultSet rs = QueryHandler.query(sqlStmt);
 			while (rs.next()) {
 				Arbeitsgruppe a = new Arbeitsgruppe();
-				a.setBezeichnung(Utils.getBezeichnung(rs.getString("ArbeitsgruppenID")));
+				a.setBezeichnung(Utils.getBezeichnungFromID(rs.getString("ArbeitsgruppenID")));
 				a.setLeiter(Utils.getLeiter(rs.getString("ArbeitsgruppenID")));
 				a.setArbeitsgruppenID(rs.getString("ArbeitsgruppenID"));
 				String sql = "SELECT gfos.arbeitsgruppenteilnahme.Mitarbeiter FROM gfos.arbeitsgruppenteilnahme WHERE \""
@@ -310,7 +310,7 @@ public class ArbeitsgruppenResource {
 	 * ArbeitsgruppenID.
 	 * 
 	 * @param auth - SessionID des ausführenden Mitarbeiters
-	 * @param pw - Passwort des ausf�hrenden Mitarbeiters
+	 * @param pw - Passwort des ausf�hrenden Mitarbeiters
 	 * @param id   - ArbeitsgruppenID von der Arbeitsgruppe, die gelöscht werden
 	 *             soll
 	 * @return String - Erfolg oder Fehler als Rückgabe
