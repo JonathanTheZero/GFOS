@@ -1,21 +1,21 @@
 <div class="login-wrapper">
   <form class="login" (ngSubmit)="submit()">
-      <section class="title">
-          <h3 class="welcome">Willkommen beim</h3>
-          NSJ Dashboard
-          <h5 class="hint">Benutzer Sie Ihre E-Mail Adresse, um sich einzuloggen.</h5>
-      </section>
-      <div class="login-group">
-          <clr-input-container>
-              <label class="clr-sr-only">E-Mail Adresse</label>
-              <input type="text" name="username" clrInput placeholder="Username" [(ngModel)]="form.username"/>
-          </clr-input-container>
-          <clr-password-container>
-              <label class="clr-sr-only">Passwort</label>
-              <input type="password" name="password" clrPassword placeholder="Password" [(ngModel)]="form.password"/>
-          </clr-password-container>
-          <form-error [error]="err"></form-error>
-          <button type="submit" class="btn btn-primary">Abschicken</button>
-      </div>
+    <section class="title">
+      <h3 class="welcome">Willkommen beim</h3>
+      NSJ Dashboard
+      <h5 class="hint">Benutzen Sie Ihre E-Mail Adresse, um sich einzuloggen.</h5>
+    </section>
+    <div class="login-group">
+      <clr-input-container>
+        <label class="clr-sr-only">E-Mail Adresse</label>
+        <input type="text" name="username" clrInput placeholder="Username" [(ngModel)]="form.username" />
+      </clr-input-container>
+      <clr-password-container>
+        <label class="clr-sr-only">Passwort</label>
+        <input type="password" name="password" clrPassword placeholder="Password" [(ngModel)]="form.password" />
+      </clr-password-container>
+      <form-error [error]="err"></form-error>
+      <button type="submit" class="btn btn-primary">Abschicken</button>
+    </div>
   </form>
 </div>

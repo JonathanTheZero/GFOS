@@ -21,7 +21,8 @@
         <clr-signpost>
           <clr-signpost-content *clrIfOpen>
             Klicken Sie auf
-            {{user.erreichbar ? "den Haken, um als abwesend" : "das Kreuz, um als anwesend"}}
+            <span [innerHTML]='user.erreichbar ? "den Haken, <br />um als abwesend" : "das Kreuz, <br />um als anwesend"'></span>
+            <br *ngIf="isMobile" />
             angezeigt zu werden
           </clr-signpost-content>
         </clr-signpost>
@@ -49,6 +50,7 @@
   <div *ngIf="['admin', 'root', 'personalabteilung'].includes(user.rechteklasse)">
     <button class="btn dashboard-right-button-desktop" (click)="toggleAllGroups()">Anzeigen</button>
     <h2>Alle Arbeitsgruppen</h2>
+    <button class="btn dashboard-right-button-mobile" (click)="toggleAllGroups()">Anzeigen</button>
     <hr />
 
     <div [@inOutAnimation]="viewAllGroups">
@@ -70,6 +72,7 @@
   <div id="myGroups">
     <button class="btn dashboard-right-button-desktop" (click)="toggleMyGroups()">Anzeigen</button>
     <h2>Meine Arbeitsgruppen</h2>
+    <button class="btn dashboard-right-button-mobile" (click)="toggleMyGroups()">Anzeigen</button>
     <hr />
 
     <div [@inOutAnimation]="viewMyGroups">
@@ -92,5 +95,7 @@
       </ng-container>
     </div>
   </div>
-
+  <br />
+  <br />
+  <br />
 </div>

@@ -23,7 +23,7 @@ export class GroupStatsComponent implements OnInit {
     public api: ApiService,
     public dataService: DataService,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(async params => {
@@ -39,16 +39,26 @@ export class GroupStatsComponent implements OnInit {
         this.group = res as Arbeitsgruppe;
       });
 
-      this.api.getAllUsersFromGroup(id).then(res => {
-        if ((res as apiAnswer)?.fehler)
-          return Swal.fire(
-            "Fehler",
-            "Es ist folgender Fehler aufgetreten: " + (res as apiAnswer).fehler,
-            "error"
-          );
-        this.leader = res[0] as Mitarbeiter;
-        this.members = res[1] as Mitarbeiter[];
-      });
+      this.api
+        .getAllUsersFromGroup(id)
+        .then(res => {
+          if ((res as apiAnswer)?.fehler)
+            return Swal.fire(
+              "Fehler",
+              "Es ist folgender Fehler aufgetreten: " +
+                (res as apiAnswer).fehler,
+              "error"
+            );
+          this.leader = res[0] as Mitarbeiter;
+          this.members = res[1] as Mitarbeiter[];
+        })
+        .then(this.removeLeaderFromUsers);
     });
+  }
+
+  private removeLeaderFromUsers(): void {
+    this.members = this.members.filter(
+      m => m.personalnummer != this.leader.personalnummer
+    );
   }
 }

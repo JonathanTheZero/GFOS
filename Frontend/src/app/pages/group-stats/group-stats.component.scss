@@ -1,3 +1,49 @@
 .leader_row {
-    background-color: #d8e3e9;
+  background-color: #d8e3e9;
+}
+
+.wrapper {
+  overflow: hidden;
+
+  .left {
+    float: left;
+  }
+
+  .right {
+    float: right;
+    width: 50%;
+  }
+}
+
+table {
+  border: none;
+  width: 50%;
+
+  tr {
+    text-align: left;
+
+    td {
+      align-content: left;
+      width: 10%;
+
+      form {
+        margin: 0;
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .wrapper {
+    overflow: initial;
+
+    .left {
+      float: initial;
+    }
+
+    .right {
+      float: initial;
+      width: initial;
+    }
+  }
 }

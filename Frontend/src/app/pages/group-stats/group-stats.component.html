@@ -1,8 +1,49 @@
 <div id="group-stats">
-  <h2>
-      {{group.bezeichnung}}
-    </h2>
-
+  <div class="wrapper">
+    <div class="left">
+      <h2>
+        {{group.bezeichnung}}
+      </h2>
+    </div>
+    <div class="right">
+      <div class="clr-row">
+        <div class="clr-col-lg-5 clr-col-md-8 clr-col-12">
+          <div class="card">
+            <div class="card-header">
+              <a routerLink="/employee/{{leader.personalnummer}}">
+                Leiter: {{leader | employeeName}}
+              </a>
+            </div>
+            <div class="card-block">
+              <div class="card-title">
+              </div>
+              <div class="card-text">
+                <table>
+                  <tr>
+                    <td>
+                      Erreichbar:
+                    </td>
+                    <td>
+                      <clr-icon shape="check" class="is-success" *ngIf="leader.erreichbar"></clr-icon>
+                      <clr-icon shape="times" class="is-error" *ngIf="!leader.erreichbar"></clr-icon>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Status:
+                    </td>
+                    <td>
+                      {{leader.status}}
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <clr-datagrid>
     <clr-dg-column>Name</clr-dg-column>
@@ -26,7 +67,7 @@
       <clr-dg-cell>{{m?.personalnummer}}</clr-dg-cell>
     </clr-dg-row>
 
-    <clr-dg-footer>{{members?.length}} Mitglieder</clr-dg-footer>
+    <clr-dg-footer>{{members?.length || 0}} Mitglieder</clr-dg-footer>
   </clr-datagrid>
 
 </div>

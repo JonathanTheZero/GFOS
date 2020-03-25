@@ -11,7 +11,7 @@
   <clr-wizard-button [type]="'finish'">Fertigstellen</clr-wizard-button>
 
   <clr-wizard-page [clrWizardPageNextDisabled]="name.pristine || admin.pristine || !formPageOne.valid">
-    <ng-template clrPageTitle>Seite 1</ng-template>
+    <ng-template clrPageTitle></ng-template>
     <form clrForm #formPageOne="ngForm" clrLayout="vertical">
 
       <clr-input-container>
@@ -33,7 +33,7 @@
   </clr-wizard-page>
 
   <clr-wizard-page [clrWizardPageNextDisabled]="model.mitglieder.length == 0">
-    <ng-template clrPageTitle>Seite 2</ng-template>
+    <ng-template clrPageTitle></ng-template>
 
     <clr-input-container>
       <label>Wer soll Mitglied der Arbeitsgruppe sein?</label>

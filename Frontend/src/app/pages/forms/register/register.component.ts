@@ -2,15 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { registerForm, errorObj } from 'src/app/utils/interfaces/register.model';
 import { ApiService } from 'src/app/utils/services/api.service';
 import { Title } from '@angular/platform-browser';
-import { apiAnswer } from 'src/app/utils/interfaces/default.model';
+import { apiAnswer, Mitarbeiter } from 'src/app/utils/interfaces/default.model';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
+import { DataService } from 'src/app/utils/services/data.service';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
+
 export class RegisterComponent implements OnInit {
 
   public form: registerForm = {
@@ -27,13 +29,17 @@ export class RegisterComponent implements OnInit {
     reason: ""
   };
 
+  public user: Mitarbeiter;
+
   constructor(public api: ApiService,
     private titleService: Title,
-    private router: Router) {
+    private router: Router,
+    public dataService: DataService) {
   }
 
   ngOnInit(): void {
     this.titleService.setTitle("Registrierung");
+    this.dataService.getUser(true).subscribe(u => this.user = u);
   }
 
   /**

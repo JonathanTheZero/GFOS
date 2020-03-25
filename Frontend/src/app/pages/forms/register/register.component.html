@@ -1,46 +1,54 @@
 <div class="login-wrapper">
-    <form class="login" (ngSubmit)="validate()">
-        <section class="title">
-            NSJ
-            <h3 class="welcome">Mitarbeiter hinzufügen</h3>          
-            <h5 class="hint">Bitte alle Felder ausfüllen und überprüfen</h5>
-        </section>
-        <div class="login-group">
-            <clr-input-container>
-                <label class="clr-sr-only">Vorname</label>
-                <input type="text" name="username" clrInput placeholder="Vorname" [(ngModel)]="form.lastName"/>
-            </clr-input-container>
-            <clr-input-container>
-                <label class="clr-sr-only">Nachname</label>
-                <input type="text" name="username" clrInput placeholder="Nachname" [(ngModel)]="form.name"/>
-            </clr-input-container>
-            <clr-input-container>
-                <label class="clr-sr-only">E-Mail</label>
-                <input type="text" name="username" clrInput placeholder="E-Mail" [(ngModel)]="form.email"/>
-            </clr-input-container>
-            <clr-password-container>
-                <label class="clr-sr-only">Passwort</label>
-                <input type="password" name="password" clrPassword placeholder="Passwort" [(ngModel)]="form.password"/>
-            </clr-password-container>
-            <clr-input-container>
-                <label class="clr-sr-only">Abteilung</label>
-                <input type="text" name="username" clrInput placeholder="Abteilung" [(ngModel)]="form.district"/>
-            </clr-input-container>
-            <clr-select-container>
-                <label class="clr-sr-only">Rechteklasse</label>
-                <select clrSelect name="type" [(ngModel)]="form.accessLevel" placeholder="Rechteklasse">
-                    <option value="user">Benutzer</option>
-                    <option value="admin">Administrator</option>
-                    <option value="personalabteilung">Personalabteilung</option>
-                    <option value="gruppenleiter">Gruppenleiter</option>
-                </select>
-            </clr-select-container>
-            <clr-input-container>
-                <label class="clr-sr-only">Vertreter</label>
-                <input type="text" name="username" clrInput placeholder="Vertreter" [(ngModel)]="form.agent"/>
-            </clr-input-container>
-            <form-error [error]="err"></form-error>
-            <button type="submit" class="btn btn-primary">Hinzufügen</button>
-        </div>
-    </form>
+  <form class="login" (ngSubmit)="validate()">
+    <section class="title">
+      NSJ
+      <h3 class="welcome">Mitarbeiter hinzufügen</h3>
+      <h5 class="hint">Bitte alle Felder ausfüllen und überprüfen</h5>
+    </section>
+    <div class="login-group">
+      <clr-input-container>
+        <label class="clr-sr-only">Vorname</label>
+        <input type="text" name="username" clrInput placeholder="Vorname" [(ngModel)]="form.lastName" />
+      </clr-input-container>
+      <clr-input-container>
+        <label class="clr-sr-only">Nachname</label>
+        <input type="text" name="username" clrInput placeholder="Nachname" [(ngModel)]="form.name" />
+      </clr-input-container>
+      <clr-input-container>
+        <label class="clr-sr-only">E-Mail</label>
+        <input type="text" name="username" clrInput placeholder="E-Mail" [(ngModel)]="form.email" />
+      </clr-input-container>
+      <clr-password-container>
+        <label class="clr-sr-only">Passwort</label>
+        <input type="password" name="password" clrPassword placeholder="Passwort" [(ngModel)]="form.password" />
+      </clr-password-container>
+      <clr-input-container>
+        <label class="clr-sr-only">Abteilung</label>
+        <input type="text" name="username" clrInput placeholder="Abteilung" [(ngModel)]="form.district" />
+      </clr-input-container>
+      <clr-select-container>
+        <label class="clr-sr-only">Rechteklasse</label>
+        <select clrSelect name="type" [(ngModel)]="form.accessLevel">
+          <option value="user" [ngValue]="'user'" [selected]="true" selected>
+            Benutzer
+          </option>
+          <option value="headOfDepartment" [ngValue]="'headOfDepartment'">
+            Gruppenleiter
+          </option>
+          <option value="personalabteilung" [ngValue]="'personalabteilung'" *ngIf="user.rechteklasse === 'admin'">
+            Personalabteilung
+          </option>
+          <option value="admin" [ngValue]="'admin'" *ngIf="user.rechteklasse === 'admin'">
+            Administrator
+          </option>
+        </select>
+      </clr-select-container>
+      <clr-input-container>
+        <label class="clr-sr-only">Vertreter</label>
+        <input type="text" name="username" clrInput placeholder="Vertreter" [(ngModel)]="form.agent" />
+      </clr-input-container>
+      <form-error [error]="err"></form-error>
+      <button type="submit" class="btn btn-primary">Hinzufügen</button>
+    </div>
+  </form>
 </div>
