@@ -407,7 +407,26 @@ export class ApiService {
     catch {
       if(!environment.production) return groupSamples;
       return {
-        fehler: "Es konnte keine Verbindung zum Server hergestellt werde"
+        fehler: "Es konnte keine Verbindung zum Server hergestellt werden"
+      };
+    }
+  }
+
+  /**
+   * sends a request to delete a group
+   * @param pw the password of the admin who deletes the group
+   * @param id the group ID
+   * @returns a Promise that holds the answer of the API
+   */
+  public async deleteGroup(pw: string, id: string): Promise<apiAnswer> {
+    try {
+      return await this.http
+        .get<apiAnswer>(`${this.url}/arbeitsgruppen/remove:auth=${this.dataService.getAuth()}&pw=${pw}&id=${id}`)
+        .toPromise();
+    }
+    catch {
+      return {
+        fehler: "Es konnte keine Verbindung zum Server hergestellt werden"
       };
     }
   }
@@ -422,9 +441,8 @@ export class ApiService {
    */
   private generateAuthToken(): string {
     const dec2hex = (dec: number) => ("0" + dec.toString(16)).substr(-2); //convert decimal to hexadecimal
-    var arr = new Uint8Array(24); //makes a length 12 auth token
+    var arr = new Uint8Array(24);
     window.crypto.getRandomValues(arr);
-    let x = Array.from(arr, dec2hex).join("");
-    return x.substr(0, 12);
+    return Array.from(arr, dec2hex).join("").substr(0, 12);
   }
 }

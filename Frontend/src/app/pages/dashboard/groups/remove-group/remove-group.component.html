@@ -1,1 +1,17 @@
-<p>remove-group works!</p>
+<clr-modal [(clrModalOpen)]="opened">
+  <h3 class="modal-title">Gruppe löschen</h3>
+  <div class="modal-body">
+    <form clrForm>
+      <clr-password-container>
+        <label>Passwort</label>
+        <input clrPassword placeholder="Passwort" name="password" required [(ngModel)]="password" />
+        <clr-control-helper>Bitte geben Sie Ihr Passwort zur Bestätigung ein</clr-control-helper>
+        <clr-control-error>Bitte geben Sie Ihr Passwort zur Bestätigung ein</clr-control-error>
+      </clr-password-container>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="close()">Abbrechen</button>
+    <button type="button" class="btn btn-warning" (click)="closeAndSend()" [disabled]="!password && password.length === 0">Löschen</button>
+  </div>
+</clr-modal>

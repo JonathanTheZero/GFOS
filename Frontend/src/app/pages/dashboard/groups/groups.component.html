@@ -3,12 +3,17 @@
   <clr-dg-column>Leiter</clr-dg-column>
   <clr-dg-column>Mitglieder</clr-dg-column>
   <clr-dg-column>ArbeitsgruppenID</clr-dg-column>
-  <clr-dg-column *ngIf="allowedToDelete">Löschen?</clr-dg-column>
 
   <clr-dg-placeholder>Lädt...</clr-dg-placeholder>
 
   <clr-dg-row *ngFor="let group of groups; let i = index">
     <clr-dg-cell>
+      <div class="signpost-item" *ngIf="allowedToDelete" style="display: inline-block;">
+        <clr-signpost (click)="deleteGroup(i)">
+          <clr-icon shape="trash" class="is-danger has-badge-info" clrSignpostTrigger></clr-icon>
+        </clr-signpost>
+        <dashboard-remove-group [(opened)]="openModal[i]" [groupID]="group.arbeitsgruppenID"></dashboard-remove-group>
+      </div>
       <a routerLink="/group/{{group.arbeitsgruppenID}}">
         {{group.bezeichnung}}
       </a>
@@ -30,11 +35,6 @@
       </ng-container>
     </clr-dg-cell>
     <clr-dg-cell>{{group.arbeitsgruppenID}}</clr-dg-cell>
-    <clr-dg-cell *ngIf="allowedToDelete">
-      <button class="btn btn-warning btn-sm" aria-label="löschen" (click)="deleteGroup(i)">
-        Löschen
-      </button>
-    </clr-dg-cell>
   </clr-dg-row>
 
   <clr-dg-footer>{{groups.length}} Gruppen</clr-dg-footer>

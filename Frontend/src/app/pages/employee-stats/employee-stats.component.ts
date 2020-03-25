@@ -30,7 +30,7 @@ export class EmployeeStatsComponent implements OnInit {
       if (params.get("id") === "me") {
         this.user = this.dataService.getUser();
         this.groupText = "Meine Arbeitsgruppen:";
-        //this.groups = this.dataService.getGroups();
+        this.groups = this.dataService.getGroups();
         this.titleService.setTitle(`Übersicht für ${this.user?.vorname} ${this.user?.name}`);
       } else {
 

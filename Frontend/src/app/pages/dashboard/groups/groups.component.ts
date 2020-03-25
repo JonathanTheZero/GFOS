@@ -19,18 +19,22 @@ export class GroupsComponent implements OnInit {
   public leaders: Array<Mitarbeiter> = [];
   public user: Mitarbeiter;
   public allowedToDelete: boolean;
+  public password: string;
+  public openModal: boolean[] = [];
 
   constructor(private api: ApiService,
     public dataService: DataService) { }
 
   ngOnInit(): void {
     this.groups = this.groups.sort((a, b) => a.arbeitsgruppenID > b.arbeitsgruppenID ? 1 : -1);
+    this.openModal.fill(false, 0, this.groups.length)
 
     this.dataService.getUser(true).subscribe(u => this.user = u);
     this.allowedToDelete = ['root', 'admin'].includes(this.user.rechteklasse);
 
     const promises: Array<Array<Promise<Mitarbeiter>>> = [];
     const leaderPromises: Array<Promise<Mitarbeiter>> = [];
+
     this.groups.forEach((val, index) => {
 
       val.mitglieder.forEach((innerVal, i) => {
@@ -54,7 +58,7 @@ export class GroupsComponent implements OnInit {
   }
 
   public deleteGroup(index: number){
-    
+    this.openModal[index] = true;
   }
 
 }

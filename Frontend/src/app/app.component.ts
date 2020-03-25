@@ -55,7 +55,7 @@ export class AppComponent implements OnInit {
         "Inaktivität",
         "Aufgrund von Inaktivität wurden Sie automatisch ausgeloggt. Sie werden nun zur Login-Seite weitergeleitet",
         "info"
-      );
+      ).then(() => setTimeout(window.location.reload.bind(window.location), 3000));
       this.router.navigate(['/login']);
     });
 
