@@ -7,13 +7,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from "./login/login.component";
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ErrorComponent } from './error/error.component';
+import { DeleteComponent } from './delete/delete.component';
 
 
 @NgModule({
   declarations: [
     RegisterComponent,
     LoginComponent,
-    ErrorComponent
+    ErrorComponent,
+    DeleteComponent
   ],
   imports: [
     CommonModule,
@@ -25,7 +27,8 @@ import { ErrorComponent } from './error/error.component';
   ],
   exports: [
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    DeleteComponent
   ]
 })
 export class CustomFormsModule { }

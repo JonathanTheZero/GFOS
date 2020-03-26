@@ -56,7 +56,7 @@
     <div [@inOutAnimation]="viewAllGroups">
       <ng-container *ngIf="['admin', 'root'].includes(user.rechteklasse)">
         <button class="btn" (click)="openWizard()">Arbeitsgruppe hinzufügen</button>
-        <dashboard-add-group-wizard [(open)]="open"></dashboard-add-group-wizard>
+        <dashboard-add-group-wizard [(open)]="open" [mobile]="isMobile"></dashboard-add-group-wizard>
       </ng-container>
 
       <ng-container *ngIf="groups">

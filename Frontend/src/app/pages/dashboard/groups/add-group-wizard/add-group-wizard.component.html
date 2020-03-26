@@ -1,5 +1,5 @@
 <clr-wizard #wizard [(clrWizardOpen)]="open" [clrWizardSize]="'md'" (clrWizardOnFinish)="send()"
-  (clrWizardOnCancel)="finish()">
+  (clrWizardOnCancel)="finish()" id="wizard-selector">
 
   <clr-wizard-title>
     Neue Arbeitsgruppe erstellen
@@ -11,7 +11,7 @@
   <clr-wizard-button [type]="'finish'">Fertigstellen</clr-wizard-button>
 
   <clr-wizard-page [clrWizardPageNextDisabled]="name.pristine || admin.pristine || !formPageOne.valid">
-    <ng-template clrPageTitle></ng-template>
+    <ng-template clrPageTitle>Seite 1</ng-template>
     <form clrForm #formPageOne="ngForm" clrLayout="vertical">
 
       <clr-input-container>
@@ -25,21 +25,25 @@
 
       <clr-input-container>
         <label>Wer soll die neue Arbeitsgruppe leiten?</label>
-        <input clrInput required minlength="12" maxlength="12" placeholder="Leiter?" [(ngModel)]="model.admin" name="admin" #admin="ngModel"/>
+        <input clrInput required minlength="12" maxlength="12" placeholder="Leiter?" [(ngModel)]="model.admin"
+          name="admin" #admin="ngModel" />
         <clr-control-error *clrIfError="'required'">Bitte geben Sie einen Leiter an!</clr-control-error>
-        <clr-control-error *clrIfError="'minlength' || 'maxlength'">Geben Sie die 12-stellige Personalnummer an!</clr-control-error>
+        <clr-control-error *clrIfError="'minlength' || 'maxlength'">Geben Sie die 12-stellige Personalnummer an!
+        </clr-control-error>
       </clr-input-container>
     </form>
   </clr-wizard-page>
 
   <clr-wizard-page [clrWizardPageNextDisabled]="model.mitglieder.length == 0">
-    <ng-template clrPageTitle></ng-template>
+    <ng-template clrPageTitle>Seite 2</ng-template>
 
     <clr-input-container>
       <label>Wer soll Mitglied der Arbeitsgruppe sein?</label>
-      <input clrInput minlength="12" maxlength="12" placeholder="Mitglieder?" name="members" #employees="ngModel" [(ngModel)]="current" />
-      
-      <clr-control-error *clrIfError="'minlength' || 'maxlength'">Geben Sie die 12-stellige Personalnummer an!</clr-control-error>
+      <input clrInput minlength="12" maxlength="12" placeholder="Mitglieder?" name="members" #employees="ngModel"
+        [(ngModel)]="current" />
+
+      <clr-control-error *clrIfError="'minlength' || 'maxlength'">Geben Sie die 12-stellige Personalnummer an!
+      </clr-control-error>
     </clr-input-container>
 
     <br />

@@ -232,6 +232,25 @@ export class ApiService {
   }
 
   /**
+   * sends a request to delete a user
+   * @param pw the password of the admin who wants to delete the user
+   * @param pn the id of the user who should get deleted
+   * @returns a Promsie that holds the Answer of the API
+   */
+  public async deleteUser(pw: string, pn: string): Promise<apiAnswer> {
+    try {
+      return await this.http
+        .get<apiAnswer>(`${this.url}/mitarbeiter/remove:auth=${this.dataService.getAuth()}&pw=${pw}&pn=${pn}`)
+        .toPromise();
+    }
+    catch {
+      return {
+        fehler: "Es konnte keine Verbindung zum Server aufgebaut werden"
+      };
+    }
+  }
+
+  /**
    * Sends a request to create a new group
    * @param name Name of the new Group
    * @param pn optional parameter who should be the admin, if no is giving the current user is used
