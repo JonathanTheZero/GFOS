@@ -92,9 +92,9 @@ export class ApiService {
         .get<apiAnswer>(`${this.url}/login:auth=${auth}&pn=${pn}&pw=${pw}`)
         .toPromise<apiAnswer>();
 
+      this.dataService.setAuth(auth);
       this.dataService.setUser(a.data as Mitarbeiter);
       this.dataService.setGroups(await this.getGroupsFromUser(this.dataService.getUser().personalnummer) as Arbeitsgruppe[]);
-      this.dataService.setAuth(auth);
       this.logoutBeacon(); //schedule for later
       return a;
     }
@@ -227,6 +227,25 @@ export class ApiService {
       if (!environment.production) return employeeSamples[Math.floor((employeeSamples.length - 1) * Math.random())];
       return {
         fehler: "Es konnte keine Verbindung zum Server hergestellt werden"
+      };
+    }
+  }
+
+  /**
+   * sends a request to delete a user
+   * @param pw the password of the admin who wants to delete the user
+   * @param pn the id of the user who should get deleted
+   * @returns a Promsie that holds the Answer of the API
+   */
+  public async deleteUser(pw: string, pn: string): Promise<apiAnswer> {
+    try {
+      return await this.http
+        .get<apiAnswer>(`${this.url}/mitarbeiter/remove:auth=${this.dataService.getAuth()}&pw=${pw}&pn=${pn}`)
+        .toPromise();
+    }
+    catch {
+      return {
+        fehler: "Es konnte keine Verbindung zum Server aufgebaut werden"
       };
     }
   }

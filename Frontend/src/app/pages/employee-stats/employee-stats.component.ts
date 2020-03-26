@@ -5,7 +5,6 @@ import { ActivatedRoute } from "@angular/router";
 import { DataService } from 'src/app/utils/services/data.service';
 import { Title } from '@angular/platform-browser';
 import Swal from 'sweetalert2';
-import { groupSamples, employeeSamples } from 'src/app/utils/mock.data';
 
 @Component({
   selector: "employee-stats",
@@ -32,6 +31,12 @@ export class EmployeeStatsComponent implements OnInit {
         this.groupText = "Meine Arbeitsgruppen:";
         this.groups = this.dataService.getGroups();
         this.titleService.setTitle(`Übersicht für ${this.user?.vorname} ${this.user?.name}`);
+
+        let res = await this.api.getUser(this.user.vertreter);
+        if ((res as apiAnswer)?.fehler)
+          return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + (res as apiAnswer)?.fehler, "error");
+        this.vertreter = res as Mitarbeiter;
+
       } else {
 
         var res: any = await this.api.getUser(params.get("id"));
@@ -57,6 +62,7 @@ export class EmployeeStatsComponent implements OnInit {
           return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + (res as apiAnswer)?.fehler, "error");
         this.vertreter = res as Mitarbeiter;
       }
+
     });
   }
 }

@@ -10,6 +10,8 @@ import { LoginComponent } from "./pages/forms/login/login.component";
 import { EmployeeStatsComponent } from './pages/employee-stats/employee-stats.component';
 import { CreditsComponent } from './pages/credits/credits.component';
 import { GroupStatsComponent } from './pages/group-stats/group-stats.component';
+import { DeleteComponent } from './pages/forms/delete/delete.component';
+
 
 const routes: Routes = [
   {
@@ -38,6 +40,10 @@ const routes: Routes = [
       {
         path: "register",
         component: RegisterComponent
+      },
+      {
+        path: "delete",
+        component: DeleteComponent
       },
       {
         path: "employee/:id",

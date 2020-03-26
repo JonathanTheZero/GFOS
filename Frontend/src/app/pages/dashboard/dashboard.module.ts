@@ -21,7 +21,7 @@ import { RemoveGroupComponent } from './groups/remove-group/remove-group.compone
     GroupsComponent,
     AddGroupWizardComponent,
     AddUserToGroupComponent,
-    RemoveGroupComponent
+    RemoveGroupComponent,
   ],
   imports: [
     CommonModule,

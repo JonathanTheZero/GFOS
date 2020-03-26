@@ -1,0 +1,20 @@
+<div class="login-wrapper">
+  <form class="login" (ngSubmit)="send()">
+    <section class="title">
+      <h3 class="welcome">Benutzer löschen</h3>
+      <h5 class="hint">Bitte geben Sie die Daten des Benutzers, den Sie löschen wollen ein!</h5>
+    </section>
+    <div class="login-group">
+      <clr-input-container>
+        <label class="clr-sr-only">Personalnummer</label>
+        <input type="text" name="username" clrInput placeholder="Personalnummer" [(ngModel)]="form.username" />
+      </clr-input-container>
+      <clr-password-container>
+        <label class="clr-sr-only">Passwort</label>
+        <input type="password" name="password" clrPassword placeholder="Passwort" [(ngModel)]="form.password" />
+      </clr-password-container>
+      <form-error [error]="err"></form-error>
+      <button type="submit" class="btn btn-danger">Löschen</button>
+    </div>
+  </form>
+</div>
