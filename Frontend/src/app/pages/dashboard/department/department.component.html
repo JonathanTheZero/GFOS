@@ -1,0 +1,30 @@
+<ng-container *ngIf="employees && employees.length !== 0">
+    <clr-datagrid [clrDgLoading]="!ready">
+      <clr-dg-column [clrDgField]="'name'" [clrDgSortOrder]="descSort">Name</clr-dg-column>
+      <clr-dg-column>Erreichbar</clr-dg-column>
+      <clr-dg-column>Status</clr-dg-column>
+      <clr-dg-column>Rechteklasse</clr-dg-column>
+      <clr-dg-column [clrDgColType]="'number'">Personalnummer</clr-dg-column>
+  
+      <clr-dg-placeholder>Lädt...</clr-dg-placeholder>
+  
+      <clr-dg-row *clrDgItems="let employee of employees">
+        <clr-dg-cell>
+          <a routerLink="/employee/{{employee.personalnummer}}">
+            {{employee | employeeName}}
+          </a>
+        </clr-dg-cell>
+        <clr-dg-cell>
+          <clr-icon shape="check" class="is-success" *ngIf="employee.erreichbar"></clr-icon>
+          <clr-icon shape="times" class="is-error" *ngIf="!employee.erreichbar"></clr-icon>
+        </clr-dg-cell>
+        <clr-dg-cell>{{employee.status}}</clr-dg-cell>
+        <clr-dg-cell>{{employee.rechteklasse}}</clr-dg-cell>
+        <clr-dg-cell>{{employee.personalnummer}}</clr-dg-cell>
+      </clr-dg-row>
+      <clr-dg-footer>
+        {{employees?.length}} Mitglieder insgesamt
+      </clr-dg-footer>
+    </clr-datagrid>
+  </ng-container>
+  

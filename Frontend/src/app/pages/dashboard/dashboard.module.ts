@@ -12,6 +12,9 @@ import { GroupsComponent } from './groups/groups.component';
 import { AddGroupWizardComponent } from './groups/add-group-wizard/add-group-wizard.component';
 import { AddUserToGroupComponent } from './group-overview/add-user-to-group/add-user-to-group.component';
 import { RemoveGroupComponent } from './groups/remove-group/remove-group.component';
+import { DepartmentComponent } from './department/department.component';
+import { AddGroupMobileComponent } from './groups/add-group-mobile/add-group-mobile.component';
+import { MobileComponent } from './department/mobile/mobile.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +25,9 @@ import { RemoveGroupComponent } from './groups/remove-group/remove-group.compone
     AddGroupWizardComponent,
     AddUserToGroupComponent,
     RemoveGroupComponent,
+    DepartmentComponent,
+    AddGroupMobileComponent,
+    MobileComponent,
   ],
   imports: [
     CommonModule,

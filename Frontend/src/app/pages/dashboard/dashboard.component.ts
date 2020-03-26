@@ -30,9 +30,11 @@ export class DashboardComponent implements OnInit {
   public userGroups: Array<Arbeitsgruppe>;
   public addToGroup: boolean[] = [];
   public removeFromGroup: boolean[] = [];
+  public departmentUsers: Mitarbeiter[] = [];
 
   public viewMyGroups: "visible" | "invisible" = "invisible";
   public viewAllGroups: "visible" | "invisible" = "invisible";
+  public viewDepartment: "visible" | "invisible" = "invisible";
 
   public status: string;
 
@@ -64,6 +66,13 @@ export class DashboardComponent implements OnInit {
       this.addToGroup.fill(false, 0, this.userGroups.length);
       this.removeFromGroup.fill(false, 0, this.userGroups.length);
     });
+
+    
+    this.api.getUsersFromDepartment().then((answer) => {
+      if ((answer as apiAnswer)?.fehler)
+        return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + (answer as apiAnswer)?.fehler, "error");
+      this.departmentUsers = answer as Mitarbeiter[];
+    });
   }
 
   public addUser(index: number): void {
@@ -80,6 +89,10 @@ export class DashboardComponent implements OnInit {
 
   public toggleMyGroups(): void {
     this.viewMyGroups = this.viewMyGroups === 'visible' ? 'invisible' : 'visible';
+  }
+
+  public toggleDepartment(): void {
+    this.viewDepartment = this.viewDepartment === 'visible' ? 'invisible' : 'visible';
   }
 
   public changeStatus(): void {

@@ -1,0 +1,11 @@
+<clr-modal [(clrModalOpen)]="open" [clrModalSize]="'lg'">
+  <h3>Neue Arbeitsgruppe erstellen</h3>
+  <form clrForm (ngSubmit)="send()" [formGroup]="createNewGroup">
+    <clr-input-container>
+      <label>Name</label>
+      <input placeholder="Name" formControlName="name" clrInput name="name" required />
+      <clr-control-error>Bitte geben Sie einen Namen an!</clr-control-error>
+    </clr-input-container>
+    <button class="btn" type="submit">Senden</button>
+  </form>
+</clr-modal>

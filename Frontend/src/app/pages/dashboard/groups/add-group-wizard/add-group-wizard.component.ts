@@ -13,7 +13,6 @@ import { apiAnswer, Arbeitsgruppe } from 'src/app/utils/interfaces/default.model
 export class AddGroupWizardComponent implements OnInit {
 
   @ViewChild("wizard") wizard: ClrWizard;
-  @Input() mobile: boolean;
   @Input() open: boolean;
   @Output() openChange = new EventEmitter<boolean>();
   public model: any = {
