@@ -231,13 +231,12 @@ public class MitarbeiterResource {
 	@Path("alter:{params}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String alterAttribute(@PathParam("params") String query) {
-		query = query.substring(1);
 		String[] params = query.split("&");
 		String[] validParams = { "n", "vn", "er", "em", "ak", "s", "rk", "gda", "ab", "ve" };
 		if (params.length < 3)
 			return JsonHandler.fehler("Zu wenige Parameter.");
 		if (params[0].split("=").length != 2 || !params[0].split("=")[0].equals("auth"))
-			return JsonHandler.fehler("SessionID benötigt.");
+			return JsonHandler.fehler("Session ID benötigt.");
 		if (!SessionHandler.checkSessionID(params[0].split("=")[1]))
 			return JsonHandler.fehler("Ungültige SessionID.");
 		if (params[1].split("=").length != 2 || !params[1].split("=")[0].equals("pn"))
@@ -303,6 +302,49 @@ public class MitarbeiterResource {
 			if (result == 0)
 				return JsonHandler.fehler("Die Veränderung konnte aufgrund eines Fehlers nicht ausgeführt werden.");
 			return JsonHandler.erfolg("Passwort wurde erfolgreich verändert.");
+		} catch (SQLException e) {
+			return JsonHandler.fehler(e.toString());
+		}
+	}
+
+	/**
+	 * 
+	 * @param entAuth - SessionID des Clients
+	 * @return String - Eine Liste aller Mitarbeiter der Abteilung des Clients.
+	 */
+	@GET
+	@Path("getAbteilung:{auth}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getMitarbeiterFromAbteilung(@PathParam("auth") String entAuth) {
+		if (entAuth.split("=").length != 2)
+			return JsonHandler.fehler("Parameter ist falsch formatiert.");
+		String auth = entAuth.split("=")[1];
+		if (!SessionHandler.checkSessionID(auth))
+			return JsonHandler.fehler("SessionID ist ungültig.");
+		String pn = Utils.getPersonalnummerFromSessionID(auth);
+		String ab = Utils.getAbteilungFromPersonalnummer(pn);
+		String sqlStmt = "SELECT * FROM gfos.mitarbeiter WHERE Abteilung = \"" + ab + "\";"; 
+		ArrayList<Mitarbeiter> mitarbeiter = new ArrayList<Mitarbeiter>();
+		try {
+			ResultSet rs = QueryHandler.query(sqlStmt);
+			ObjectMapper om = new ObjectMapper();
+			while (rs.next()) {
+				try {
+					if(!rs.getString("Personalnummer").equals(pn)) {
+						Mitarbeiter m = QueryHandler.createMitarbeiterFromQuery(rs,
+							new String[] { "Personalnummer", "Name", "Vorname", "erreichbar", "Arbeitskonto", "EMail",
+									"Status", "Rechteklasse", "Abteilung", "Vertreter", "gda" });
+						mitarbeiter.add(m);
+					}
+				} catch (Exception e) {
+					return JsonHandler.fehler(e.toString());
+				}
+			}
+			try {
+				return om.writeValueAsString(mitarbeiter);
+			} catch (Exception e) {
+				return JsonHandler.fehler(e.toString());
+			}
 		} catch (SQLException e) {
 			return JsonHandler.fehler(e.toString());
 		}
