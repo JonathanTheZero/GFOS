@@ -47,7 +47,7 @@
   </table>
   <hr />
 
-  <div *ngIf="['admin', 'root', 'personalabteilung'].includes(user.rechteklasse)">
+  <div *ngIf="['admin', 'root', 'personnelDepartment'].includes(user.rechteklasse)">
     <button class="btn dashboard-right-button-desktop" (click)="toggleAllGroups()">Anzeigen</button>
     <h2>Alle Arbeitsgruppen</h2>
     <button class="btn dashboard-right-button-mobile" (click)="toggleAllGroups()">Anzeigen</button>

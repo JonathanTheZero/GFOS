@@ -6,7 +6,7 @@ export interface Mitarbeiter {
     arbeitskonto: number;
     email: string | null;
     status: string | null;
-    rechteklasse: "admin" | "personalabteilung" | "headOfDepartment" | "user" | "root";
+    rechteklasse: "admin" | "personnelDepartment" | "headOfDepartment" | "user" | "root";
     abteilung: string | null;
     vertreter: string | null;
     passwort?: string | null;

@@ -39,7 +39,7 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.titleService.setTitle("Registrierung");
-    this.dataService.getUser(true).subscribe(u => this.user = u);
+    this.user = this.dataService.getUser();    
   }
 
   /**

@@ -4,7 +4,7 @@ export interface registerForm {
     password: string;
     email: string;
     district: string;
-    accessLevel: "admin" | "personalabteilung" | "headOfDepartment" | "user" | null;
+    accessLevel: "admin" | "personnelDepartment" | "headOfDepartment" | "user" | null;
     agent: string;
 }
 

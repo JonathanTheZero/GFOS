@@ -35,10 +35,10 @@
           <option value="headOfDepartment" [ngValue]="'headOfDepartment'">
             Gruppenleiter
           </option>
-          <option value="personalabteilung" [ngValue]="'personalabteilung'" *ngIf="user.rechteklasse === 'admin'">
+          <option value="personnelDepartment" [ngValue]="'personnelDepartment'">
             Personalabteilung
           </option>
-          <option value="admin" [ngValue]="'admin'" *ngIf="user.rechteklasse === 'admin'">
+          <option value="admin" [ngValue]="'admin'" *ngIf="user.rechteklasse === 'admin' || user.rechteklasse === 'root'">
             Administrator
           </option>
         </select>
