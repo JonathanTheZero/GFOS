@@ -1,6 +1,6 @@
 <ng-container *ngIf="employees && employees.length !== 0">
-  <clr-datagrid *ngIf="ready">
-    <clr-dg-column>Name</clr-dg-column>
+  <clr-datagrid [clrDgLoading]="!ready">
+    <clr-dg-column [clrDgField]="'name'" [clrDgSortOrder]="descSort">Name</clr-dg-column>
     <clr-dg-column>Erreichbar</clr-dg-column>
     <clr-dg-column>Status</clr-dg-column>
     <clr-dg-column>Rechteklasse</clr-dg-column>

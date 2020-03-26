@@ -13,6 +13,7 @@ import { EmployeeStatsComponent } from './employee-stats/employee-stats.componen
 import { CreditsComponent } from './credits/credits.component';
 import { PipesModule } from '../utils/pipes.module';
 import { GroupStatsComponent } from './group-stats/group-stats.component';
+import { ViewAllEmployeesComponent } from './view-all-employees/view-all-employees.component';
 
 
 const components = [
@@ -37,6 +38,7 @@ const components = [
   declarations: [
     ...components,
     GroupStatsComponent,
+    ViewAllEmployeesComponent,
   ],
   exports: [
     ...components,

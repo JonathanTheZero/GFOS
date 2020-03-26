@@ -231,6 +231,20 @@ export class ApiService {
     }
   }
 
+  public async getAllUsers(): Promise<Mitarbeiter[] | apiAnswer>{
+    try {
+      return await this.http
+        .get<Mitarbeiter[]>(`${this.url}/mitarbeiter/getAll:auth=${this.dataService.getAuth()}`)
+        .toPromise();
+    }
+    catch {
+      if(!environment.production) return employeeSamples;
+      return {
+        fehler: "Es konnte keine Verbindung zum Server hergestellt werden"
+      };
+    }
+  }
+
   /**
    * sends a request to delete a user
    * @param pw the password of the admin who wants to delete the user

@@ -1,0 +1,24 @@
+<clr-datagrid [clrDgLoading]="loading">
+  <clr-dg-column [clrDgField]="'name'" [clrDgSortOrder]="descSort">Name</clr-dg-column>
+  <clr-dg-column>Status</clr-dg-column>
+  <clr-dg-column [clrDgField]="'creation'">Rechteklasse</clr-dg-column>
+  <clr-dg-column [clrDgField]="'abteilung'">Abteilung</clr-dg-column>
+  <clr-dg-column>Erreichbar</clr-dg-column>
+  <clr-dg-column>Personalnummer</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of users">
+    <clr-dg-cell>{{user | employeeName}}</clr-dg-cell>
+    <clr-dg-cell>{{user.status}}</clr-dg-cell>
+    <clr-dg-cell>{{user.rechteklasse}}</clr-dg-cell>
+    <clr-dg-cell>{{user.abteilung}}</clr-dg-cell>
+    <clr-dg-cell>
+      <clr-icon shape="check" class="is-success" *ngIf="user.erreichbar"></clr-icon>
+      <clr-icon shape="times" class="is-error" *ngIf="!user.erreichbar"></clr-icon>
+    </clr-dg-cell>
+    <clr-dg-cell>{{user.personalnummer}}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>
+    Insgesamt {{users?.length}} Benutzer
+  </clr-dg-footer>
+</clr-datagrid>

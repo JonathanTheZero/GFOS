@@ -11,6 +11,7 @@ import { EmployeeStatsComponent } from './pages/employee-stats/employee-stats.co
 import { CreditsComponent } from './pages/credits/credits.component';
 import { GroupStatsComponent } from './pages/group-stats/group-stats.component';
 import { DeleteComponent } from './pages/forms/delete/delete.component';
+import { ViewAllEmployeesComponent } from './pages/view-all-employees/view-all-employees.component';
 
 
 const routes: Routes = [
@@ -44,6 +45,10 @@ const routes: Routes = [
       {
         path: "delete",
         component: DeleteComponent
+      },
+      {
+        path: "view-all",
+        component: ViewAllEmployeesComponent
       },
       {
         path: "employee/:id",

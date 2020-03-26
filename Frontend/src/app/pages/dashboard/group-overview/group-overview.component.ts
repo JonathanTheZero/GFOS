@@ -5,6 +5,7 @@ import { DataService } from 'src/app/utils/services/data.service';
 import Swal from 'sweetalert2';
 import { employeeSamples } from 'src/app/utils/mock.data';
 import { environment } from 'src/environments/environment';
+import { ClrDatagridSortOrder } from '@clr/angular';
 
 @Component({
   selector: 'dashboard-group-overview',
@@ -20,6 +21,7 @@ export class GroupOverviewComponent implements OnInit {
   public user: Mitarbeiter;
   public valid: boolean;
   public ready: boolean = false;
+  public descSort = ClrDatagridSortOrder.DESC;
 
   constructor(public api: ApiService,
     public dataService: DataService, ) {

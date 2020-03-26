@@ -56,7 +56,8 @@ export class DashboardComponent implements OnInit {
     this.api.getAllGroups().then(g => this.groups = g);
 
     this.api.getGroupsFromUser().then((answer) => {
-      if ((answer as apiAnswer)?.fehler) return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + (answer as apiAnswer)?.fehler, "error");
+      if ((answer as apiAnswer)?.fehler) 
+        return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + (answer as apiAnswer)?.fehler, "error");
       this.userGroups = answer as Arbeitsgruppe[];
 
       //fill the binding for the modals

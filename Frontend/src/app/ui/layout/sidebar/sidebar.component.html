@@ -6,7 +6,7 @@
       <clr-icon [attr.shape]="current.icon" clrVerticalNavIcon></clr-icon>
       {{current.title}}
 
-      <clr-vertical-nav-group-children *clrIfExpanded="current === sidebarLinks[0]">
+      <clr-vertical-nav-group-children *clrIfExpanded="true">
         <a clrVerticalNavLink routerLink="{{sub.link}}" routerLinkActive="active" *ngFor="let sub of current.links">
           <clr-icon [attr.shape]="sub.icon"></clr-icon>
           {{sub.title}}
@@ -31,20 +31,6 @@
 
     </clr-vertical-nav-group>
   </ng-container>
-
-  <br />
-
-  <a clrVerticalNavLink routerLinkActive="active" routerLink="/register"
-    *ngIf="['admin', 'root'].includes(user?.rechteklasse)">
-    <clr-icon shape="users" clrVerticalNavIcon></clr-icon>
-    Benutzer hinzufügen
-  </a>
-
-  <a clrVerticalNavLink routerLinkActive="active" routerLink="/delete"
-    *ngIf="['admin', 'root'].includes(user?.rechteklasse)">
-    <clr-icon shape="users" clrVerticalNavIcon></clr-icon>
-    Benutzer löschen
-  </a>
 
   <br />
 
