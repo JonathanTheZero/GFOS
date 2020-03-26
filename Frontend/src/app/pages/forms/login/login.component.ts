@@ -48,9 +48,9 @@ export class LoginComponent implements OnInit {
         // if the user successfully logged in redirect him after either 5 seconds or when he closes the pop-up
         // whatever comes first
         Swal.fire("", "Sie sind nun eingeloggt", "success").then(() =>
-          this.router.navigate([this.url || "dashboard"])
+          this.router.navigate(["/dashboard"])
         );
-        setTimeout(() => this.router.navigate([this.url || "/dashboard"]), 5000);
+        setTimeout(() => this.router.navigate(["/dashboard"]), 5000);
       } else {
         this.err.reason = answer.fehler;
       }
