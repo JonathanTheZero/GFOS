@@ -177,6 +177,7 @@ public class MitarbeiterResource {
 	 * entfernt einen Mitarbeiter aus der Datenbank.
 	 * 
 	 * @param entAuth - SessionID der Anfrage
+	 * @param entPw   - Passwort des angefragten Mitarbeiters
 	 * @param entPn   - Personalnummer des angefragten Mitarbeiters
 	 * @return String - Im Falle eines Fehlers eine entsprechende Fehlermeldung und
 	 *         bei Erfolg die Erfolgsmeldung 'Mitarbeiter wurde erfolgreich
@@ -184,14 +185,17 @@ public class MitarbeiterResource {
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("remove:{auth}&{personalnummer}")
-	public String removeMitarbeiter(@PathParam("auth") String entAuth, @PathParam("personalnummer") String entPn) {
+	@Path("remove:{auth}&{password}&{personalnummer}")
+	public String removeMitarbeiter(@PathParam("auth") String entAuth, @PathParam("password") String entPw, @PathParam("personalnummer") String entPn) {
 		if (entAuth.split("=").length != 2 || entPn.split("=").length != 2)
 			return JsonHandler.fehler("Falsche Formatierung der Parameter.");
 		String auth = entAuth.split("=")[1];
+		String pw = entPw.split("=")[1];
 		String pn = entPn.split("=")[1];
 		if (pn.length() != 12 || !Utils.checkIfMitarbeiterExists(pn))
 			return JsonHandler.fehler("Ungültige Personalnummer.");
+		if(!PasswordHandler.checkPassword(pw, Utils.getPersonalnummerFromSessionID(auth)))
+			return JsonHandler.fehler("Das Passwort ist falsch.");
 		if (RightHandler.getRightClassFromPersonalnummer(pn).equals("root"))
 			return JsonHandler.fehler("Root Account kann nicht entfernt werden.");
 		if (!SessionHandler.checkSessionID(auth))
@@ -231,13 +235,12 @@ public class MitarbeiterResource {
 	@Path("alter:{params}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public String alterAttribute(@PathParam("params") String query) {
-		query = query.substring(1);
 		String[] params = query.split("&");
 		String[] validParams = { "n", "vn", "er", "em", "ak", "s", "rk", "gda", "ab", "ve" };
 		if (params.length < 3)
 			return JsonHandler.fehler("Zu wenige Parameter.");
 		if (params[0].split("=").length != 2 || !params[0].split("=")[0].equals("auth"))
-			return JsonHandler.fehler("SessionID benötigt.");
+			return JsonHandler.fehler("Session ID benötigt.");
 		if (!SessionHandler.checkSessionID(params[0].split("=")[1]))
 			return JsonHandler.fehler("Ungültige SessionID.");
 		if (params[1].split("=").length != 2 || !params[1].split("=")[0].equals("pn"))
@@ -303,6 +306,49 @@ public class MitarbeiterResource {
 			if (result == 0)
 				return JsonHandler.fehler("Die Veränderung konnte aufgrund eines Fehlers nicht ausgeführt werden.");
 			return JsonHandler.erfolg("Passwort wurde erfolgreich verändert.");
+		} catch (SQLException e) {
+			return JsonHandler.fehler(e.toString());
+		}
+	}
+
+	/**
+	 * 
+	 * @param entAuth - SessionID des Clients
+	 * @return String - Eine Liste aller Mitarbeiter der Abteilung des Clients.
+	 */
+	@GET
+	@Path("getAbteilung:{auth}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public String getMitarbeiterFromAbteilung(@PathParam("auth") String entAuth) {
+		if (entAuth.split("=").length != 2)
+			return JsonHandler.fehler("Parameter ist falsch formatiert.");
+		String auth = entAuth.split("=")[1];
+		if (!SessionHandler.checkSessionID(auth))
+			return JsonHandler.fehler("SessionID ist ungültig.");
+		String pn = Utils.getPersonalnummerFromSessionID(auth);
+		String ab = Utils.getAbteilungFromPersonalnummer(pn);
+		String sqlStmt = "SELECT * FROM gfos.mitarbeiter WHERE Abteilung = \"" + ab + "\";"; 
+		ArrayList<Mitarbeiter> mitarbeiter = new ArrayList<Mitarbeiter>();
+		try {
+			ResultSet rs = QueryHandler.query(sqlStmt);
+			ObjectMapper om = new ObjectMapper();
+			while (rs.next()) {
+				try {
+					if(!rs.getString("Personalnummer").equals(pn)) {
+						Mitarbeiter m = QueryHandler.createMitarbeiterFromQuery(rs,
+							new String[] { "Personalnummer", "Name", "Vorname", "erreichbar", "Arbeitskonto", "EMail",
+									"Status", "Rechteklasse", "Abteilung", "Vertreter", "gda" });
+						mitarbeiter.add(m);
+					}
+				} catch (Exception e) {
+					return JsonHandler.fehler(e.toString());
+				}
+			}
+			try {
+				return om.writeValueAsString(mitarbeiter);
+			} catch (Exception e) {
+				return JsonHandler.fehler(e.toString());
+			}
 		} catch (SQLException e) {
 			return JsonHandler.fehler(e.toString());
 		}

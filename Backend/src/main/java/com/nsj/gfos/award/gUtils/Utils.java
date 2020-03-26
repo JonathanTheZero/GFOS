@@ -434,6 +434,25 @@ public class Utils {
 	}
 
 	/**
+	 * Die Methode <i>getAbteilungFromPersonalnummer</i> gibt die Abteilung des
+	 * Mitarbeiter mit Hilfe seiner Personalnummer zurück.
+	 * 
+	 * @param pn - Personalnummer des Clients
+	 * @return String - Abteilung des Mitarbeiters
+	 */
+	public static String getAbteilungFromPersonalnummer(String pn) {
+		String sqlStmt = "SELECT Abteilung FROM gfos.mitarbeiter WHERE Personalnummer = \"" + pn + "\";";
+		try {
+			ResultSet rs = QueryHandler.query(sqlStmt);
+			if (rs.next())
+				return rs.getString("Abteilung");
+			return "";
+		} catch (SQLException e) {
+			return "";
+		}
+	}
+
+	/**
 	 * Die Methode <i>getPersonalnummerFromEmail</i> gibt die Personalnummer eines
 	 * Mitarbeiters mit Hilfe der Email zurück.
 	 * 
