@@ -9,7 +9,7 @@
     <clr-dg-placeholder>Lädt...</clr-dg-placeholder>
 
     <clr-dg-row *clrDgItems="let employee of employees"
-      [class.leader_row]="employee.personalnummer === leader.personalnummer">
+      [class.leader_row]="employee.personalnummer === leader?.personalnummer">
       <clr-dg-cell>
         <a routerLink="/employee/{{employee.personalnummer}}">
           {{employee | employeeName}}
@@ -20,15 +20,11 @@
         <clr-icon shape="times" class="is-error" *ngIf="!employee.erreichbar"></clr-icon>
       </clr-dg-cell>
       <clr-dg-cell>{{employee.status}}</clr-dg-cell>
-      <clr-dg-cell>{{employee.rechteklasse}}</clr-dg-cell>
+      <clr-dg-cell>{{employee.rechteklasse | accessRights}}</clr-dg-cell>
       <clr-dg-cell>{{employee.personalnummer}}</clr-dg-cell>
     </clr-dg-row>
     <clr-dg-footer>
-      <clr-dg-pagination #pagination [clrDgPageSize]="10">
-        <clr-dg-page-size [clrPageSizeOptions]="[10,20,50,100]">Benutzer pro Seite</clr-dg-page-size>
-        {{pagination.firstItem + 1}} - {{pagination.lastItem + 1}}
-        von {{pagination.totalItems}} Angestellten insgesamt
-      </clr-dg-pagination>
+      {{employees.length}} Benutzer insgesamt
     </clr-dg-footer>
   </clr-datagrid>
 </ng-container>

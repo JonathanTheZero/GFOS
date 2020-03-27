@@ -9,6 +9,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   templateUrl: './add-group-mobile.component.html',
   styleUrls: ['./add-group-mobile.component.scss']
 })
+
 export class AddGroupMobileComponent implements OnInit {
 
   @Input() mobile: boolean;
