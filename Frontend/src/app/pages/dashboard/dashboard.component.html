@@ -83,6 +83,7 @@
     <div [@inOutAnimation]="viewMyGroups">
       <ng-container *ngFor="let g of userGroups;let i = index">
         <h3>Mitarbeiter*innen der Gruppe {{g.bezeichnung}}</h3>
+
         <ng-container *ngIf="['headOfDepartment', 'admin', 'root'].includes(user.rechteklasse)">
           <button class="btn" (click)="addUser(i)">Mitarbeiter*in hinzufügen</button>
           <button class="btn" (click)="removeUser(i)">Mitarbeiter*in entfernen</button>
@@ -93,7 +94,7 @@
           </dashboard-add-user-to-group>
         </ng-container>
 
-        <dashboard-employee-datagrid *ngIf="!isMobile" [group]="g.arbeitsgruppenID"></dashboard-employee-datagrid>
+        <dashboard-employee-datagrid *ngIf="!isMobile" [group]="g.arbeitsgruppenID" [mode]="'group'"></dashboard-employee-datagrid>
         <dashboard-mobile-panels *ngIf="isMobile" [group]="g.arbeitsgruppenID"></dashboard-mobile-panels>
         <hr />
 
@@ -108,7 +109,7 @@
     <hr />
 
     <div [@inOutAnimation]="viewDepartment">
-      <dashboard-employee-datagrid [employees]="departmentUsers" *ngIf="!isMobile"></dashboard-employee-datagrid>
+      <dashboard-employee-datagrid [employees]="departmentUsers" [mode]="'department'" *ngIf="!isMobile"></dashboard-employee-datagrid>
       <dashboard-mobile-panels [employees]="departmentUsers" *ngIf="isMobile"></dashboard-mobile-panels>
     </div>
 
