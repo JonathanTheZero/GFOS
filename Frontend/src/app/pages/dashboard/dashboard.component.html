@@ -49,6 +49,19 @@
   <hr />
   <br />
 
+  <div id="department">
+    <button class="btn dashboard-right-button-desktop" (click)="toggleDepartment()">Anzeigen</button>
+    <h2>Meine Abteilung: {{user.abteilung}}</h2>
+    <button class="btn dashboard-right-button-mobile" (click)="toggleDepartment()">Anzeigen</button>
+    <hr />
+
+    <div [@inOutAnimation]="viewDepartment">
+      <dashboard-employee-datagrid [employees]="departmentUsers" *ngIf="!isMobile"></dashboard-employee-datagrid>
+      <dashboard-mobile-panels [employees]="departmentUsers" *ngIf="isMobile"></dashboard-mobile-panels>
+    </div>
+
+  </div>
+
   <div *ngIf="['admin', 'root', 'personnelDepartment'].includes(user.rechteklasse)">
     <button class="btn dashboard-right-button-desktop" (click)="toggleAllGroups()">Anzeigen</button>
     <h2>Alle Arbeitsgruppen</h2>
@@ -63,6 +76,7 @@
       </ng-container>
 
       <ng-container *ngIf="groups">
+        <h1>{{groups}}</h1>
         <dashboard-groups [groups]="groups"></dashboard-groups>
       </ng-container>
 
@@ -70,7 +84,7 @@
       <hr />
       <br />
     </div>
-  </div>
+  </div>s
 
   <br />
 
@@ -101,18 +115,6 @@
     </div>
   </div>
 
-  <div id="department">
-    <button class="btn dashboard-right-button-desktop" (click)="toggleDepartment()">Anzeigen</button>
-    <h2>Meine Abteilung: {{user.abteilung}}</h2>
-    <button class="btn dashboard-right-button-mobile" (click)="toggleDepartment()">Anzeigen</button>
-    <hr />
-
-    <div [@inOutAnimation]="viewDepartment">
-      <dashboard-employee-datagrid [employees]="departmentUsers" *ngIf="!isMobile"></dashboard-employee-datagrid>
-      <dashboard-mobile-panels [employees]="departmentUsers" *ngIf="isMobile"></dashboard-mobile-panels>
-    </div>
-
-  </div>
   <br />
   <br />
   <br />
