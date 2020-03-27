@@ -5,29 +5,25 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ClarityModule } from '@clr/angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { PanelComponent } from './group-overview/panel/panel.component';
-import { GroupOverviewComponent } from './group-overview/group-overview.component';
 import { PipesModule } from 'src/app/utils/pipes.module';
 import { GroupsComponent } from './groups/groups.component';
 import { AddGroupWizardComponent } from './groups/add-group-wizard/add-group-wizard.component';
-import { AddUserToGroupComponent } from './group-overview/add-user-to-group/add-user-to-group.component';
+import { AddUserToGroupComponent } from './groups/add-user-to-group/add-user-to-group.component';
 import { RemoveGroupComponent } from './groups/remove-group/remove-group.component';
-import { DepartmentComponent } from './department/department.component';
-import { AddGroupMobileComponent } from './groups/add-group-mobile/add-group-mobile.component';
-import { MobileComponent } from './department/mobile/mobile.component';
+import { AddGroupMobileComponent } from './mobile/add-group-mobile/add-group-mobile.component';
+import { PanelsComponent } from './mobile/panels/panels.component';
+import { EmployeeDatagridComponent } from './employee-datagrid/employee-datagrid.component';
 
 @NgModule({
   declarations: [
-    DashboardComponent, 
-    PanelComponent,
-    GroupOverviewComponent,
+    DashboardComponent,
     GroupsComponent,
     AddGroupWizardComponent,
     AddUserToGroupComponent,
     RemoveGroupComponent,
-    DepartmentComponent,
     AddGroupMobileComponent,
-    MobileComponent,
+    PanelsComponent,
+    EmployeeDatagridComponent,
   ],
   imports: [
     CommonModule,
@@ -42,4 +38,7 @@ import { MobileComponent } from './department/mobile/mobile.component';
     DashboardComponent
   ]
 })
-export class DashboardModule { }
+
+export class DashboardModule {
+
+}

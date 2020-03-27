@@ -9,7 +9,7 @@
   <clr-dg-row *clrDgItems="let user of users">
     <clr-dg-cell>{{user | employeeName}}</clr-dg-cell>
     <clr-dg-cell>{{user.status}}</clr-dg-cell>
-    <clr-dg-cell>{{user.rechteklasse}}</clr-dg-cell>
+    <clr-dg-cell>{{user.rechteklasse | accessRights}}</clr-dg-cell>
     <clr-dg-cell>{{user.abteilung}}</clr-dg-cell>
     <clr-dg-cell>
       <clr-icon shape="check" class="is-success" *ngIf="user.erreichbar"></clr-icon>

@@ -21,7 +21,8 @@
         <clr-signpost>
           <clr-signpost-content *clrIfOpen>
             Klicken Sie auf
-            <span [innerHTML]='user.erreichbar ? "den Haken, <br />um als abwesend" : "das Kreuz, <br />um als anwesend"'></span>
+            <span
+              [innerHTML]='user.erreichbar ? "den Haken, <br />um als abwesend" : "das Kreuz, <br />um als anwesend"'></span>
             <br *ngIf="isMobile" />
             angezeigt zu werden
           </clr-signpost-content>
@@ -31,7 +32,7 @@
         <form clrForm (submit)="changeStatus()">
           <clr-datalist-container>
             <label>Status</label>
-            <input name="status" value={{user.status}} clrDatalistInput [(ngModel)]="status"/>
+            <input name="status" value={{user.status}} clrDatalistInput [(ngModel)]="status" />
             <datalist>
               <option [value]="'Online'"></option>
               <option [value]="'Abwesend'"></option>
@@ -92,8 +93,8 @@
           </dashboard-add-user-to-group>
         </ng-container>
 
-        <dashboard-group-overview *ngIf="!isMobile" [group]="g.arbeitsgruppenID"></dashboard-group-overview>
-        <dashboard-groups-panel *ngIf="isMobile" [group]="g.arbeitsgruppenID"></dashboard-groups-panel>
+        <dashboard-employee-datagrid *ngIf="!isMobile" [group]="g.arbeitsgruppenID"></dashboard-employee-datagrid>
+        <dashboard-mobile-panels *ngIf="isMobile" [group]="g.arbeitsgruppenID"></dashboard-mobile-panels>
         <hr />
 
       </ng-container>
@@ -107,12 +108,13 @@
     <hr />
 
     <div [@inOutAnimation]="viewDepartment">
-      <dashboard-department [employees]="departmentUsers" *ngIf="!isMobile"></dashboard-department>
-      <dashboard-department-mobile [employees]="departmentUsers" *ngIf="isMobile"></dashboard-department-mobile>
+      <dashboard-employee-datagrid [employees]="departmentUsers" *ngIf="!isMobile"></dashboard-employee-datagrid>
+      <dashboard-mobile-panels [employees]="departmentUsers" *ngIf="isMobile"></dashboard-mobile-panels>
     </div>
 
   </div>
   <br />
   <br />
   <br />
+  
 </div>
