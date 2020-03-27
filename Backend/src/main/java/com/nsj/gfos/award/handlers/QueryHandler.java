@@ -23,7 +23,7 @@ public class QueryHandler {
 
 	private static Connection connection = null;
 
-	public static void openConnection() {
+	private static void openConnection() {
 		try {
 			/* Context initContext = new InitialContext();
             DataSource ds = (DataSource) initContext.lookup("java:/comp/env/jdbc/jdbc/gfos");
