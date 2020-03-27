@@ -187,8 +187,8 @@ public class MitarbeiterResource {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("remove:{auth}&{password}&{personalnummer}")
 	public String removeMitarbeiter(@PathParam("auth") String entAuth, @PathParam("password") String entPw, @PathParam("personalnummer") String entPn) {
-		if (entAuth.split("=").length != 2 || entPn.split("=").length != 2)
-			return JsonHandler.fehler("Falsche Formatierung der Parameter.");
+		if (entAuth.split("=").length != 2 || entPn.split("=").length != 2 || entPw.split("=").length != 2)
+			return JsonHandler.fehler("Die Parameter sind falsch formatiert.");
 		String auth = entAuth.split("=")[1];
 		String pw = entPw.split("=")[1];
 		String pn = entPn.split("=")[1];
