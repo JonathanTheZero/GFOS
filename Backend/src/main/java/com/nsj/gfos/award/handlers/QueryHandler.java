@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.annotation.Resource;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
@@ -17,7 +18,22 @@ import com.nsj.gfos.award.dataWrappers.Mitarbeiter;
  * Die Klasse <i>QueryHandler</i> stellt Methoden bereit, um SQL-Statements auf
  * der Datenbank auszuführen author Schnuels
  */
+//@Resource(name="jdbc/gfos", type=javax.sql.DataSource.class)
 public class QueryHandler {
+
+	private static Connection connection = null;
+
+	public static void openConnection() {
+		try {
+			/* Context initContext = new InitialContext();
+            DataSource ds = (DataSource) initContext.lookup("java:/comp/env/jdbc/jdbc/gfos");
+			connection = ds.getConnection(); */
+			connection = DriverManager.getConnection("jdbc:mysql://192.168.178.45/gfos?useSSL=false", "desktop",
+					"gfos2020");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Die Methode <i>query</i> führt ein SQL-Statement durch und gibt die
@@ -29,16 +45,12 @@ public class QueryHandler {
 	 */
 	public static ResultSet query(String stmt) throws SQLException {
 
-		Connection myConn = null;
 		Statement myStmt = null;
 		ResultSet myRs = null;
+
 		try {
-//            Context initContext = new InitialContext();
-//            DataSource ds = (DataSource) initContext.lookup("java:/comp/env/jdbc/gfosAward");
-//			myConn = ds.getConnection();
-                        myConn = DriverManager.getConnection("jdbc:mysql://192.168.178.45/gfos?useSSL=false", "desktop",
-                            "gfos2020");
-			myStmt = myConn.createStatement();
+			openConnection();
+			myStmt = connection.createStatement();
 			myRs = myStmt.executeQuery(stmt);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -58,14 +70,12 @@ public class QueryHandler {
 	 */
 	public static int update(String stmt) throws SQLException {
 
-		Connection myConn = null;
 		Statement myStmt = null;
 		int myRs = -1;
-		try {
 
-			myConn = DriverManager.getConnection("jdbc:mysql://192.168.178.45/gfos?useSSL=false", "desktop",
-					"gfos2020");
-			myStmt = myConn.createStatement();
+		try {
+			openConnection();
+			myStmt = connection.createStatement();
 			myRs = myStmt.executeUpdate(stmt);
 
 		} catch (Exception e) {
