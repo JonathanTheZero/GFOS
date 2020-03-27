@@ -68,7 +68,7 @@ export class DashboardComponent implements OnInit {
     });
 
     
-    this.api.getUsersFromDepartment().then((answer) => {
+    this.api.getDepartment().then((answer) => {
       if ((answer as apiAnswer)?.fehler)
         return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + (answer as apiAnswer)?.fehler, "error");
       this.departmentUsers = answer as Mitarbeiter[];

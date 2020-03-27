@@ -4,48 +4,50 @@
   <h1>Dashboard</h1>
   <button class="btn dashboard-right-button-mobile" (click)="requestGroups()">Dashboard aktualisieren</button>
   <hr />
-  <table>
-    <tr>
-      <td>
-        <a routerLink="/employee/me">{{user | employeeName}}</a>
-      </td>
-      <td>
-        <button type="button" class="btn btn-icon btn-success" aria-label="done" *ngIf="user.erreichbar"
-          (click)="alterErreichbar()">
-          <clr-icon shape="check"></clr-icon>
-        </button>
-        <button type="button" class="btn btn-icon btn-warning" aria-label="warning" *ngIf="!user.erreichbar"
-          (click)="alterErreichbar()">
-          <clr-icon shape="times"></clr-icon>
-        </button>
-        <clr-signpost>
-          <clr-signpost-content *clrIfOpen>
-            Klicken Sie auf
-            <span
-              [innerHTML]='user.erreichbar ? "den Haken, <br />um als abwesend" : "das Kreuz, <br />um als anwesend"'></span>
-            <br *ngIf="isMobile" />
-            angezeigt zu werden
-          </clr-signpost-content>
-        </clr-signpost>
-      </td>
-      <td>
-        <form clrForm (submit)="changeStatus()">
-          <clr-datalist-container>
-            <label>Status</label>
-            <input name="status" value={{user.status}} clrDatalistInput [(ngModel)]="status" />
-            <datalist>
-              <option [value]="'Online'"></option>
-              <option [value]="'Abwesend'"></option>
-              <option [value]="'Nicht stören'"></option>
-            </datalist>
-          </clr-datalist-container>
-        </form>
-      </td>
-      <td>
-        <a routerLink="/employee/{{user.vertreter}}">Vertreter</a>
-      </td>
-    </tr>
-  </table>
+  <div id="dashboard-header">
+    <table>
+      <tr>
+        <td>
+          <a routerLink="/employee/me">{{user | employeeName}}</a>
+        </td>
+        <td>
+          <button type="button" class="btn btn-icon btn-success" aria-label="done" *ngIf="user.erreichbar"
+            (click)="alterErreichbar()">
+            <clr-icon shape="check"></clr-icon>
+          </button>
+          <button type="button" class="btn btn-icon btn-warning" aria-label="warning" *ngIf="!user.erreichbar"
+            (click)="alterErreichbar()">
+            <clr-icon shape="times"></clr-icon>
+          </button>
+          <clr-signpost>
+            <clr-signpost-content *clrIfOpen>
+              Klicken Sie auf
+              <span
+                [innerHTML]='user.erreichbar ? "den Haken, <br />um als abwesend" : "das Kreuz, <br />um als anwesend"'></span>
+              <br *ngIf="isMobile" />
+              angezeigt zu werden
+            </clr-signpost-content>
+          </clr-signpost>
+        </td>
+        <td>
+          <form clrForm (submit)="changeStatus()">
+            <clr-datalist-container>
+              <label>Status</label>
+              <input name="status" value={{user.status}} clrDatalistInput [(ngModel)]="status" />
+              <datalist>
+                <option [value]="'Online'"></option>
+                <option [value]="'Abwesend'"></option>
+                <option [value]="'Nicht stören'"></option>
+              </datalist>
+            </clr-datalist-container>
+          </form>
+        </td>
+        <td>
+          <a routerLink="/employee/{{user.vertreter}}">Vertreter</a>
+        </td>
+      </tr>
+    </table>
+  </div>
   <hr />
   <br />
 
@@ -56,7 +58,8 @@
     <hr />
 
     <div [@inOutAnimation]="viewDepartment">
-      <dashboard-employee-datagrid [employees]="departmentUsers" [mode]="'department'" *ngIf="!isMobile"></dashboard-employee-datagrid>
+      <dashboard-employee-datagrid [employees]="departmentUsers" [mode]="'department'" *ngIf="!isMobile">
+      </dashboard-employee-datagrid>
       <dashboard-mobile-panels [employees]="departmentUsers" *ngIf="isMobile"></dashboard-mobile-panels>
     </div>
 
@@ -76,7 +79,6 @@
       </ng-container>
 
       <ng-container *ngIf="groups">
-        <h1>{{groups}}</h1>
         <dashboard-groups [groups]="groups"></dashboard-groups>
       </ng-container>
 
@@ -108,7 +110,8 @@
           </dashboard-add-user-to-group>
         </ng-container>
 
-        <dashboard-employee-datagrid *ngIf="!isMobile" [group]="g.arbeitsgruppenID" [mode]="'group'"></dashboard-employee-datagrid>
+        <dashboard-employee-datagrid *ngIf="!isMobile" [group]="g.arbeitsgruppenID" [mode]="'group'">
+        </dashboard-employee-datagrid>
         <dashboard-mobile-panels *ngIf="isMobile" [group]="g.arbeitsgruppenID"></dashboard-mobile-panels>
         <hr />
 
@@ -119,5 +122,5 @@
   <br />
   <br />
   <br />
-  
+
 </div>

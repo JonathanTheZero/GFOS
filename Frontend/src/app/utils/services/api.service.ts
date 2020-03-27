@@ -268,33 +268,11 @@ export class ApiService {
    * requests the data of the users department
    * @returns a Promise that holds a string array which consists of the users ids
    */
-  public async getDepartment(): Promise<string[] | apiAnswer>{
+  public async getDepartment(): Promise<Mitarbeiter[] | apiAnswer>{
     try {
       return await this.http
-        .get<string[]>(`${this.url}/mitarbeiter/getAbteilung:auth=${this.dataService.getAuth()}`)
+        .get<Mitarbeiter[]>(`${this.url}/mitarbeiter/getAbteilung:auth=${this.dataService.getAuth()}`)
         .toPromise()
-    }
-    catch {
-      if(!environment.production) return ["000000000001", "000000000002", "000000000003"];
-      return {
-        fehler: "Es konnte keine Verbindung zum Server hergestellt werden"
-      };
-    }
-  }
-
-  /**
-   * return all users from an department
-   * @returns an Promise that holds an array consisting of all users form an department
-   */
-  public async getUsersFromDepartment(): Promise<Mitarbeiter[] | apiAnswer> {
-    try {
-      let users = await this.getDepartment();
-      if((users as apiAnswer).fehler) return users as apiAnswer;
-      const promises: Array<Promise<Mitarbeiter>> = [];
-      for(let u of users as string[]){
-        promises.push(this.getUser(u) as Promise<Mitarbeiter>);
-      }
-      return await Promise.all(promises);
     }
     catch {
       if(!environment.production) return employeeSamples;
