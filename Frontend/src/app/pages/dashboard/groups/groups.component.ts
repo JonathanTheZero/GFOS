@@ -29,38 +29,24 @@ export class GroupsComponent implements OnInit {
     public dataService: DataService) { }
 
   ngOnInit(): void {
-    this.groups = this.groups.sort((a, b) => a.arbeitsgruppenID > b.arbeitsgruppenID ? 1 : -1);
     this.openModal.fill(false, 0, this.groups.length)
 
     this.dataService.getUser(true).subscribe(u => this.user = u);
     this.allowedToDelete = ['root', 'admin'].includes(this.user.rechteklasse);
 
-    const promises: Array<Array<Promise<Mitarbeiter>>> = [];
-    const leaderPromises: Array<Promise<Mitarbeiter>> = [];
-
-    this.groups.forEach((val, index) => {
-
-      val.mitglieder.forEach((innerVal, i) => {
-        if ((innerVal as apiAnswer)?.fehler) return;
-        if (!promises[index]) promises[index] = [];
-        if (!(val.leiter === innerVal))
-          promises[index].push(this.api.getUser(innerVal) as Promise<Mitarbeiter>);
+    for(let g of this.groups){
+      this.api.getAllUsersFromGroup(g.arbeitsgruppenID).then(answer => {
+        if((answer as apiAnswer)?.fehler) 
+          return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + (answer as apiAnswer).fehler, "error");
+        this.groupMembers.push(answer[1] as Mitarbeiter[]);
+        this.leaders.push(answer[0] as Mitarbeiter);
+        this.loading = false;
       });
-      try {
-        leaderPromises.push(this.api.getUser(val.leiter) as Promise<Mitarbeiter>);
-      }
-      catch {
-        Swal.fire("Fehler", "Es ist ein Fehler aufgetreten", "error");
-      }
-    });
+    }
 
-    Promise.all(leaderPromises).then(arr => this.leaders = arr);
-    Promise.all(promises.map(Promise.all)).then(
-      (arr: Mitarbeiter[][]) => this.groupMembers = arr
-    ).then(_ => this.loading = false);
   }
 
-  public deleteGroup(index: number){
+  public deleteGroup(index: number) {
     this.openModal[index] = true;
   }
 

@@ -1,30 +1,28 @@
-<ng-container *ngIf="employees && employees.length !== 0">
-  <clr-datagrid [clrDgLoading]="!ready">
-    <clr-dg-column [clrDgField]="'name'" [clrDgSortOrder]="descSort">Name</clr-dg-column>
-    <clr-dg-column>Erreichbar</clr-dg-column>
-    <clr-dg-column>Status</clr-dg-column>
-    <clr-dg-column>Rechteklasse</clr-dg-column>
-    <clr-dg-column [clrDgColType]="'number'">Personalnummer</clr-dg-column>
+<clr-datagrid [clrDgLoading]="!ready">
+  <clr-dg-column [clrDgField]="'name'" [clrDgSortOrder]="descSort">Name</clr-dg-column>
+  <clr-dg-column>Erreichbar</clr-dg-column>
+  <clr-dg-column>Status</clr-dg-column>
+  <clr-dg-column>Rechteklasse</clr-dg-column>
+  <clr-dg-column [clrDgColType]="'number'">Personalnummer</clr-dg-column>
 
-    <clr-dg-placeholder>Lädt...</clr-dg-placeholder>
+  <clr-dg-placeholder>Lädt...</clr-dg-placeholder>
 
-    <clr-dg-row *clrDgItems="let employee of employees"
-      [class.leader_row]="employee.personalnummer === leader?.personalnummer">
-      <clr-dg-cell>
-        <a routerLink="/employee/{{employee.personalnummer}}">
-          {{employee | employeeName}}
-        </a>
-      </clr-dg-cell>
-      <clr-dg-cell>
-        <clr-icon shape="check" class="is-success" *ngIf="employee.erreichbar"></clr-icon>
-        <clr-icon shape="times" class="is-error" *ngIf="!employee.erreichbar"></clr-icon>
-      </clr-dg-cell>
-      <clr-dg-cell>{{employee.status}}</clr-dg-cell>
-      <clr-dg-cell>{{employee.rechteklasse | accessRights}}</clr-dg-cell>
-      <clr-dg-cell>{{employee.personalnummer}}</clr-dg-cell>
-    </clr-dg-row>
-    <clr-dg-footer>
-      {{employees.length}} Benutzer insgesamt
-    </clr-dg-footer>
-  </clr-datagrid>
-</ng-container>
+  <clr-dg-row *clrDgItems="let e of employees">
+    <clr-dg-cell>
+      <a routerLink="/employee/{{e.personalnummer}}">
+        {{e | employeeName}}
+      </a>
+    </clr-dg-cell>
+    <clr-dg-cell>
+      <clr-icon shape="check" class="is-success" *ngIf="e.erreichbar"></clr-icon>
+      <clr-icon shape="times" class="is-error" *ngIf="!e.erreichbar"></clr-icon>
+    </clr-dg-cell>
+    <clr-dg-cell>{{e.status}}</clr-dg-cell>
+    <clr-dg-cell>{{e.rechteklasse | accessRights}}</clr-dg-cell>
+    <clr-dg-cell>{{e.personalnummer}}</clr-dg-cell>
+  </clr-dg-row>
+  <clr-dg-footer>
+    {{employees?.length}} Benutzer insgesamt
+  </clr-dg-footer>
+  
+</clr-datagrid>

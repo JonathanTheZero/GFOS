@@ -15,6 +15,7 @@ export class EmployeeDatagridComponent implements OnInit {
 
   @Input() group?: string;
   @Input() employees?: Mitarbeiter[];
+  @Input() mode: "group" | "department";
   public leader: Mitarbeiter;
   public user: Mitarbeiter;
   public valid: boolean;
@@ -28,15 +29,17 @@ export class EmployeeDatagridComponent implements OnInit {
   ngOnInit(): void {
     this.user = this.dataService.getUser();
 
-    if(this.employees) this.ready = true;
+    if(this.mode === "group"){
 
-    if (this.group && !this.employees) {
       this.api.getAllUsersFromGroup(this.group).then((answer) => {
         if ((answer as apiAnswer)?.fehler) return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + (answer as apiAnswer)?.fehler, "error");
         this.leader = answer[0];
         this.employees = answer[1];
         this.ready = true;
       });
+
+    } else if(this.mode === "department"){
+      this.ready = true;
     }
 
   }
