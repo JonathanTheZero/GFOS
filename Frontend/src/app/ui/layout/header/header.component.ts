@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 
 export class HeaderComponent implements OnInit {
 
+  //links allowing dynamic binding
   public readonly headerLinks = [
     {
       link: ['/', 'dashboard'],
@@ -34,6 +35,7 @@ export class HeaderComponent implements OnInit {
     this.dataService.getUser(true).subscribe(u => this.user = u);
   }
 
+  //log out for the user...
   public logout(): void {
     this.api.logout().then((answer: apiAnswer) => {
       if (answer.erfolg) {

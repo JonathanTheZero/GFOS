@@ -12,7 +12,8 @@
         <clr-signpost (click)="deleteGroup(i)">
           <clr-icon shape="trash" class="is-danger has-badge-info" clrSignpostTrigger></clr-icon>
         </clr-signpost>
-        <dashboard-remove-group [(opened)]="openModal[i]" [groupID]="group.arbeitsgruppenID" (refresh)="refresh.emit($event)"></dashboard-remove-group>
+        <dashboard-remove-group [(opened)]="openModal[i]" [groupID]="group.arbeitsgruppenID"
+          (refresh)="refresh.emit($event)"></dashboard-remove-group>
       </div>
       <a routerLink="/group/{{group.arbeitsgruppenID}}">
         {{group.bezeichnung}}
@@ -29,9 +30,7 @@
     </clr-dg-cell>
     <clr-dg-cell>
       <ng-container *ngIf="groupMembers[i]">
-        <a routerLink="/employee/{{groupMembers[i]}}">
-          {{groupMembers[i] | listEmployees}}
-        </a>
+         {{groupMembers[i] | listEmployees}}
       </ng-container>
     </clr-dg-cell>
     <clr-dg-cell>{{group.arbeitsgruppenID}}</clr-dg-cell>

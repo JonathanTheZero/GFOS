@@ -85,10 +85,10 @@ export class DataService {
   public getGroups(): Array<Arbeitsgruppe>;
   public getGroups(asObservable?: boolean): Observable<Arbeitsgruppe[]> | Arbeitsgruppe[] {
     if (asObservable) {
-      if (!environment.production) return of(undefined);
+      if (!environment.production) return of(groupSamples);
       return this.groupSubject.asObservable();
     }
-    if (!environment.production) return undefined;
+    if (!environment.production) return groupSamples;
     return this.groups;
   }
 

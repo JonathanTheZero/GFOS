@@ -91,6 +91,8 @@ export class SidebarComponent implements OnInit {
 
   //workaround for conditions since subscribing won't work if object isn't initialized at start
   //which isn't the case because the user isn't logged in at the beginning
+  //so the condition are passed as string and evaluated at runtime providing live updates
+  //could probably be better but idk, it's late night and this works
   public parseCondition(str: string){
     return eval(str);
   }
