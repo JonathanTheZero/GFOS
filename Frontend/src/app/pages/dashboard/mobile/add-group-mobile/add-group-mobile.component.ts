@@ -17,8 +17,9 @@ export class AddGroupMobileComponent implements OnInit {
   @Output() openChange = new EventEmitter<boolean>();
 
   public createNewGroup: FormGroup;
+  public members: string[] = [];
 
-  public current: string;
+  public current: string = "";
 
   constructor(public api: ApiService,
     private formBuilder: FormBuilder) { }
@@ -26,8 +27,7 @@ export class AddGroupMobileComponent implements OnInit {
   ngOnInit(): void {
     this.createNewGroup = this.formBuilder.group({
       name: ["", Validators.required],
-      leader: ["", Validators.required],
-      mitglieder: [[], Validators.required]
+      leader: ["", Validators.required]
     });
   }
 
@@ -43,7 +43,7 @@ export class AddGroupMobileComponent implements OnInit {
 
       let group: Arbeitsgruppe = answer as Arbeitsgruppe;
       const promises: Array<Promise<apiAnswer>> = [];
-      this.createNewGroup.value.mitglieder.forEach(val => promises.push(this.api.addToGroup(val, group.arbeitsgruppenID)));
+      this.members.forEach(val => promises.push(this.api.addToGroup(val, group.arbeitsgruppenID)));
 
       const res: Array<apiAnswer> = await Promise.all(promises);
       for (let r of res) {
@@ -51,6 +51,18 @@ export class AddGroupMobileComponent implements OnInit {
       }
       return Swal.fire("", "Die Arbeitsgruppe wurde erfolgreich erstellt", "success");
     });
+  }
+
+  close(): void {
+    this.openChange.emit(false);
+  }
+
+  public removeEmployeeFromList(i: number) {
+    this.members.splice(i, 1);
+  }
+
+  public addToList() {
+    this.members.push(this.current);
   }
 
 }

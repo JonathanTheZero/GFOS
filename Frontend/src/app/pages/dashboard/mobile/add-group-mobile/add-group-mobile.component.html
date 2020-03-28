@@ -1,11 +1,52 @@
 <clr-modal [(clrModalOpen)]="open" [clrModalSize]="'lg'">
-  <h3>Neue Arbeitsgruppe erstellen</h3>
-  <form clrForm (ngSubmit)="send()" [formGroup]="createNewGroup">
-    <clr-input-container>
-      <label>Name</label>
-      <input placeholder="Name" formControlName="name" clrInput name="name" required />
-      <clr-control-error>Bitte geben Sie einen Namen an!</clr-control-error>
+  <h3 class="modal-title">Neue Arbeitsgruppe erstellen</h3>
+  <div class="modal-body">
+    <form clrForm (ngSubmit)="send()" [formGroup]="createNewGroup">
+
+      <clr-input-container>
+        <label>Name</label>
+        <input placeholder="Name" formControlName="name" clrInput name="name" required />
+        <clr-control-error>Bitte geben Sie einen Namen an!</clr-control-error>
+      </clr-input-container>
+
+      <clr-input-container>
+        <label>Wer soll die Gruppe leiten?</label>
+        <input clrInput minlength="12" maxlength="12" placeholder="Personalnummer" formControlName="leader" clrInput
+          name="leader" required />
+        <clr-control-error *clrIfError="'required'">
+          Bitte geben Sie einen Leiter an!
+        </clr-control-error>
+        <clr-control-error *clrIfError="'minlength' || 'maxlength'">
+          Geben Sie die 12-stellige Personalnummer an!
+        </clr-control-error>
+      </clr-input-container>
+    </form>
+
+    <clr-input-container style="display: inline-block;">
+      <label>Wer soll Mitglied der Arbeitsgruppe sein?</label>
+      <input clrInput minlength="12" maxlength="12" placeholder="Mitglieder?" [(ngModel)]="current" />
+
+      <clr-control-error *clrIfError="'minlength' || 'maxlength'">
+        Geben Sie die 12-stellige Personalnummer an!
+      </clr-control-error>
     </clr-input-container>
-    <button class="btn" type="submit">Senden</button>
-  </form>
+
+    <button class="btn" (click)="addToList()" [disabled]="current.length != 12">Hinzufügen</button>
+    <ul *ngFor="let m of createNewGroup.value.mitglieder;let i = index">
+      <li>
+        {{m}}
+        <clr-icon shape="times" (click)="removeEmployeeFromList(i)" style="float: right"></clr-icon>
+      </li>
+    </ul>
+  </div>
+
+  <div class="modal-footer">
+    <button type="button" class="btn" (click)="close()">
+      Abbrechen
+    </button>
+    <button type="button" class="btn btn-success-outline" (click)="send()"
+      [disabled]="!createNewGroup.valid && members.length === 0">
+      Erstellen
+    </button>
+  </div>
 </clr-modal>
