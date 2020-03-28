@@ -12,7 +12,7 @@ public class ConfigHandler {
     private static JSONObject getConfig() {
         JSONParser parser = new JSONParser();
         JSONObject jsonObject = null;
-        try(FileReader reader = new FileReader("config/database.config.json")) {
+        try(FileReader reader = new FileReader("C:/Users/LoL/GFOS/Backend/config/database.config.json")) {
             Object obj = parser.parse(reader);
             jsonObject = (JSONObject) obj;
         } catch(Exception e) {

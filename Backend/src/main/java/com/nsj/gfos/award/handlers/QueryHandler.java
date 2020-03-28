@@ -20,8 +20,10 @@ public class QueryHandler {
 
 	private static void openConnection() {
 		try {
-			connection = DriverManager.getConnection("jdbc:mysql://" + ConfigHandler.getHost() + "/gfos?useSSL=false",
-					ConfigHandler.getUser(), ConfigHandler.getPassword());
+			//connection = DriverManager.getConnection("jdbc:mysql://" + ConfigHandler.getHost() + "/gfos?useSSL=false",
+					//ConfigHandler.getUser(), ConfigHandler.getPassword());
+			connection = DriverManager.getConnection("jdbc:mysql://localhost/gfos?useSSL=false",
+				"award", "gfos");		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
