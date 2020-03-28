@@ -23,7 +23,7 @@
                 <label>Rechtklasse ändern</label>
                 <select clrSelect name="options" [(ngModel)]="models[i]">
                   <ng-container *ngFor="let o of opts">
-                    <option [value]="o" [selected]="o === user.rechteklasse">{{o}}</option>
+                    <option [value]="o" [selected]="o === user.rechteklasse">{{o | accessRights}}</option>
                   </ng-container>
                 </select>
               </clr-select-container>

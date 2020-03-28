@@ -51,6 +51,9 @@
       <ng-container *ngIf="groups">
         <dashboard-groups [groups]="groups" (refresh)="reload($event)"></dashboard-groups>
       </ng-container>
+      <span *ngIf="!groups?.length">
+        <h3>Keine Arbeitsgruppen</h3>
+      </span>
 
       <br />
       <hr />
