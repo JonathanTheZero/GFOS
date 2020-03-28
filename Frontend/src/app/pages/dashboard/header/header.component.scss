@@ -1,0 +1,21 @@
+table {
+  border: none;
+  width: 100%;
+
+  tr {
+    text-align: left;
+    width: 100%;
+
+    td {
+      width: 20%;
+
+      form {
+        margin: 0;
+      }
+    }
+  }
+}
+
+.datagrid-input {
+  white-space: nowrap;
+}

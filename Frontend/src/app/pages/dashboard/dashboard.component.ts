@@ -36,8 +36,6 @@ export class DashboardComponent implements OnInit {
   public viewAllGroups: "visible" | "invisible" = "invisible";
   public viewDepartment: "visible" | "invisible" = "invisible";
 
-  public status: string;
-
   constructor(private titleService: Title,
     public api: ApiService,
     public dataService: DataService) { }
@@ -93,22 +91,6 @@ export class DashboardComponent implements OnInit {
 
   public toggleDepartment(): void {
     this.viewDepartment = this.viewDepartment === 'visible' ? 'invisible' : 'visible';
-  }
-
-  public changeStatus(): void {
-    this.api.alterStatus(this.status).then(answer => {
-      if (answer.fehler) return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + answer.fehler, "error");
-      Swal.fire("", "Ihr Status wurde erfolgreich übernommen", "success");
-      this.dataService.getUser().status = this.status;
-    });
-  }
-
-  public alterErreichbar(): void {
-    this.api.alterReachable(!this.dataService.getUser().erreichbar).then(answer => {
-      if (answer.fehler) return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + answer.fehler, "error");
-      Swal.fire("", "Ihr Status wurde erfolgreich übernommen", "success");
-      this.dataService.getUser().erreichbar = !this.dataService.getUser().erreichbar;
-    });
   }
 
 }

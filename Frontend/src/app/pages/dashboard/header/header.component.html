@@ -1,0 +1,62 @@
+<div id="dashboard-header">
+  <table>
+    <tr>
+      <td>
+        <a routerLink="/employee/me">{{user | employeeName}}</a>
+      </td>
+      <td>
+        <button type="button" class="btn btn-icon btn-success" aria-label="done" *ngIf="user.erreichbar"
+          (click)="alterErreichbar()">
+          <clr-icon shape="check"></clr-icon>
+        </button>
+        <button type="button" class="btn btn-icon btn-warning" aria-label="warning" *ngIf="!user.erreichbar"
+          (click)="alterErreichbar()">
+          <clr-icon shape="times"></clr-icon>
+        </button>
+        <clr-signpost>
+          <clr-signpost-content *clrIfOpen>
+            Klicken Sie auf
+            <span
+              [innerHTML]='user.erreichbar ? "den Haken, <br />um als abwesend" : "das Kreuz, <br />um als anwesend"'></span>
+            <br *ngIf="isMobile" />
+            angezeigt zu werden
+          </clr-signpost-content>
+        </clr-signpost>
+      </td>
+      <td *ngIf="!user.erreichbar"> 
+        <form clrForm (submit)="changeReason()" clrLayout="vertical">
+            <clr-datalist-container>
+              <label class="datagrid-input">Grund der Abwesenheit</label>
+              <input name="reason" placeholder={{user.grundDAbw}} clrDatalistInput [(ngModel)]="reason" />
+              <datalist>
+                <option [value]="'Feierabend'"></option>
+                <option [value]="'Besprechung'"></option>
+              </datalist>
+              <clr-control-helper>
+                  Ändern Sie Ihren Grund der Abwesenheit
+              </clr-control-helper>
+            </clr-datalist-container>
+          </form>
+      </td>
+      <td>
+        <form clrForm (submit)="changeStatus()" clrLayout="vertical">
+          <clr-datalist-container>
+            <label>Status</label>
+            <input name="status" placeholder={{user.status}} clrDatalistInput [(ngModel)]="status" />
+            <datalist>
+              <option [value]="'Online'"></option>
+              <option [value]="'Abwesend'"></option>
+              <option [value]="'Nicht stören'"></option>
+            </datalist>
+            <clr-control-helper>
+                Ändern Sie Ihren Status                      <span></span>
+            </clr-control-helper>
+          </clr-datalist-container>
+        </form>
+      </td>
+      <td>
+        <a routerLink="/employee/{{user.vertreter}}">Vertreter</a>
+      </td>
+    </tr>
+  </table>
+</div>

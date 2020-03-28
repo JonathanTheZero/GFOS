@@ -6,16 +6,48 @@
   <clr-dg-column>Erreichbar</clr-dg-column>
   <clr-dg-column>Personalnummer</clr-dg-column>
 
-  <clr-dg-row *clrDgItems="let user of users">
-    <clr-dg-cell>{{user | employeeName}}</clr-dg-cell>
-    <clr-dg-cell>{{user.status}}</clr-dg-cell>
-    <clr-dg-cell>{{user.rechteklasse | accessRights}}</clr-dg-cell>
-    <clr-dg-cell>{{user.abteilung}}</clr-dg-cell>
+  <clr-dg-row *clrDgItems="let u of users; let i = index">
+    <clr-dg-cell>{{u | employeeName}}</clr-dg-cell>
+    <clr-dg-cell>{{u.status}}</clr-dg-cell>
     <clr-dg-cell>
-      <clr-icon shape="check" class="is-success" *ngIf="user.erreichbar"></clr-icon>
-      <clr-icon shape="times" class="is-error" *ngIf="!user.erreichbar"></clr-icon>
+
+      <div class="signpost-item" *ngIf="['root', 'admin'].includes(user.rechteklasse)" style="display: inline-block;">
+        <clr-signpost (click)="openModal(i)">
+          <clr-icon shape="pencil" class="is-highlight" clrSignpostTrigger></clr-icon>
+        </clr-signpost>
+        <clr-modal [(clrModalOpen)]="opened[i]">
+          <h3 class="modal-title">Rechteklasse ändern</h3>
+          <div class="modal-body">
+            <form clrForm clrLayout="vertical">
+              <clr-select-container>
+                <label>Rechtklasse ändern</label>
+                <select clrSelect name="options" [(ngModel)]="models[i]">
+                  <ng-container *ngFor="let o of opts">
+                    <option [value]="o" [selected]="o === user.rechteklasse">{{o}}</option>
+                  </ng-container>
+                </select>
+              </clr-select-container>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline" (click)="close(i)">Abbrechen</button>
+            <button type="button" class="btn btn-success-outline" (click)="closeAndSend(i)" [disabled]="!models[i]">Ändern</button>
+          </div>
+        </clr-modal>
+      </div>
+
+      {{u.rechteklasse | accessRights}}
+
     </clr-dg-cell>
-    <clr-dg-cell>{{user.personalnummer}}</clr-dg-cell>
+    <clr-dg-cell>{{u.abteilung}}</clr-dg-cell>
+    <clr-dg-cell>
+      <clr-icon shape="check" class="is-success" *ngIf="u.erreichbar"></clr-icon>
+      <span *ngIf="!u.erreichbar">
+        <clr-icon shape="times" class="is-error"></clr-icon>
+        {{u.grundDAbw}}
+      </span>
+    </clr-dg-cell>
+    <clr-dg-cell>{{u.personalnummer}}</clr-dg-cell>
   </clr-dg-row>
 
   <clr-dg-footer>

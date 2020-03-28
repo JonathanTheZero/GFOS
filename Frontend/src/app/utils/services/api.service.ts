@@ -156,6 +156,25 @@ export class ApiService {
   }
 
   /**
+   * Sends a request to set a new status for a user
+   * @param newReason the new reason
+   * @param pn the id of the user, if not given the one of the current user is used
+   * @returns a Promise that the holds the answer of the API
+   */
+  public async alterReason(newReason: string, pn=this.dataService.getUser().personalnummer): Promise<apiAnswer> {
+    try {
+      return await this.http
+        .get<apiAnswer>(`${this.url}/mitarbeiter/alter:auth=${this.dataService.getAuth()}&pn=${pn}&gda=${newReason}`)
+        .toPromise();
+    }
+    catch {
+      return {
+        fehler: "Es konnte keine Verbindung zum Server hergestellt werden"
+      };
+    }
+  }
+
+  /**
    * Sends a request to change the reachable status of a user
    * @param r the new reachable value
    * @param pn the ID of the user, if not given the one of the current user is used
@@ -173,6 +192,26 @@ export class ApiService {
       };
     }
   }
+
+  /**
+   * Sends a request to change the access level of a user
+   * @param newLevel the new level of the user
+   * @param pn the ID of the user, if not given the one of the current user is used
+   * @returns a Promise that holds the API reponse
+   */
+  public async alterAccess(newLevel: "admin" | "root" | "personnelDepartment" | "headOfDepartment" | "user",
+    pn=this.dataService.getUser().personalnummer): Promise<apiAnswer> {
+      try {
+        return await this.http
+          .get<apiAnswer>(`${this.url}/mitarbeiter/alter:auth=${this.dataService.getAuth()}&pn=${pn}&rk=${newLevel}`)
+          .toPromise();
+      }
+      catch {
+        return {
+          fehler: "Es konnte keine Verbindung zum Server hergestellt werden"
+        };
+      }
+    }
 
   /**
    * sends a request to changte the email of the user

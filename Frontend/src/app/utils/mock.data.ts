@@ -5,7 +5,7 @@ export const employeeSamples: Mitarbeiter[] = [
         personalnummer: "000000000001",
         name: "Somafehlt",
         vorname: "Nils",
-        erreichbar: true,
+        erreichbar: false,
         arbeitskonto: 0,
         email: "nils.sommerfeld@gmx.net",
         status: "abwesend",
@@ -70,14 +70,14 @@ export const employeeSamples: Mitarbeiter[] = [
         personalnummer: "02",
         name: "Hmmmm",
         vorname: "Müller",
-        erreichbar: true,
+        erreichbar: false,
         arbeitskonto: 0,
         email: "x@example.org",
         status: "string",
         rechteklasse: "user",
         abteilung: "string",
         vertreter: "string",
-        grundDAbw: "-"
+        grundDAbw: "Hab zu tun"
     }
 ];
 
