@@ -95,7 +95,7 @@ export class ApiService {
 
       this.dataService.setUser(a.data as Mitarbeiter); 
       console.log(this.dataService.getUser());    
-      this.dataService.setGroups(await this.getGroupsFromUser(this.dataService.getUser().personalnummer) as Arbeitsgruppe[]);      
+      this.dataService.setGroups(await this.getGroupsFromUser() as Arbeitsgruppe[]);      
       this.logoutBeacon(); //schedule for later
       return a;
     }

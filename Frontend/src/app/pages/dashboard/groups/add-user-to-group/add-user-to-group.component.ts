@@ -15,6 +15,7 @@ export class AddUserToGroupComponent implements OnInit {
   @Input() mode: "add" | "remove";
   @Input() opened: boolean;
   @Output() openedChange = new EventEmitter<boolean>();
+  @Output() refresh = new EventEmitter<boolean>();
   public id: string;
 
   constructor(public api: ApiService) { }
@@ -32,13 +33,13 @@ export class AddUserToGroupComponent implements OnInit {
       this.api.addToGroup(this.id, this.group.arbeitsgruppenID).then((answer) => {
         if (answer?.fehler) return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + answer?.fehler, "error");
         Swal.fire("", "Der Mitarbeiter wurde erfolgreich hinzugefügt", "success");
-      });
+      }).then(() => this.refresh.emit(true));
     }
     else if (this.mode === "remove") {
       this.api.removeFromGroup(this.id, this.group.arbeitsgruppenID).then((answer) => {
         if (answer?.fehler) return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + answer?.fehler, "error");
         Swal.fire("", "Der Mitarbeiter wurde erfolgreich entfernt", "success");
-      });
+      }).then(() => this.refresh.emit(true));
     }
   }
 

@@ -1,0 +1,63 @@
+<clr-accordion [clrAccordionMultiPanel]="true">
+  <clr-accordion-panel>
+    <clr-accordion-title>{{user | employeeName}}</clr-accordion-title>
+
+    <clr-accordion-content *clrIfExpanded>
+      <a routerLink="/employee/me">Mein Profil</a>
+      <div style="float: right">
+        <button type="button" class="btn btn-icon btn-success" aria-label="done" *ngIf="user.erreichbar"
+          (click)="alterErreichbar()">
+          <clr-icon shape="check"></clr-icon>
+        </button>
+        <button type="button" class="btn btn-icon btn-warning" aria-label="warning" *ngIf="!user.erreichbar"
+          (click)="alterErreichbar()">
+          <clr-icon shape="times"></clr-icon>
+        </button>
+        <clr-signpost>
+          <clr-signpost-content *clrIfOpen [clrPosition]="'left-middle'">
+            Klicken Sie auf
+            <span
+              [innerHTML]='user.erreichbar ? "den Haken, <br />um als abwesend" : "das Kreuz, <br />um als anwesend"'></span>
+            <br />
+            angezeigt zu werden
+          </clr-signpost-content>
+        </clr-signpost>
+      </div>
+      <br />
+      <a routerLink="/employee/{{user?.vertreter}}">
+        Vertreter
+      </a>
+    </clr-accordion-content>
+  </clr-accordion-panel>
+
+  <clr-accordion-panel>
+    <clr-accordion-title>Grund der Abwesenheit ändern</clr-accordion-title>
+    <clr-accordion-content *clrIfExpanded clrLayout="compact">
+      <form clrForm (submit)="changeReason()">
+        <clr-datalist-container>
+          <input name="reason" placeholder={{user.grundDAbw}} clrDatalistInput [(ngModel)]="reason" />
+          <datalist>
+            <option [value]="'Feierabend'"></option>
+            <option [value]="'Besprechung'"></option>
+          </datalist>
+        </clr-datalist-container>
+      </form>
+    </clr-accordion-content>
+  </clr-accordion-panel>
+
+  <clr-accordion-panel>
+    <clr-accordion-title>Status ändern</clr-accordion-title>
+    <clr-accordion-content *clrIfExpanded>
+      <form clrForm (submit)="changeStatus()" clrLayout="compact">
+        <clr-datalist-container>
+          <input name="status" placeholder={{user.status}} clrDatalistInput [(ngModel)]="status" />
+          <datalist>
+            <option [value]="'Online'"></option>
+            <option [value]="'Abwesend'"></option>
+            <option [value]="'Nicht stören'"></option>
+          </datalist>
+        </clr-datalist-container>
+      </form>
+    </clr-accordion-content>
+  </clr-accordion-panel>
+</clr-accordion>

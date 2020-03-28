@@ -12,7 +12,7 @@
         <clr-signpost (click)="deleteGroup(i)">
           <clr-icon shape="trash" class="is-danger has-badge-info" clrSignpostTrigger></clr-icon>
         </clr-signpost>
-        <dashboard-remove-group [(opened)]="openModal[i]" [groupID]="group.arbeitsgruppenID"></dashboard-remove-group>
+        <dashboard-remove-group [(opened)]="openModal[i]" [groupID]="group.arbeitsgruppenID" (refresh)="refresh.emit($event)"></dashboard-remove-group>
       </div>
       <a routerLink="/group/{{group.arbeitsgruppenID}}">
         {{group.bezeichnung}}

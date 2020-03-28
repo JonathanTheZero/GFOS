@@ -4,14 +4,21 @@
   <h1>Dashboard</h1>
   <button class="btn dashboard-right-button-mobile" (click)="requestGroups()">Dashboard aktualisieren</button>
   <hr />
-  <dashboard-header></dashboard-header>
+  <dashboard-header (refresh)="reload($event)" *ngIf="!isMobile"></dashboard-header>
+  <dashboard-header-mobile (refresh)="reload($event)" *ngIf="isMobile"></dashboard-header-mobile>
   <hr />
   <br />
 
   <div id="department">
-    <button class="btn dashboard-right-button-desktop" (click)="toggleDepartment()">Anzeigen</button>
+    <button class="btn dashboard-right-button-desktop" (click)="toggleDepartment()"
+      [class.btn-primary]="viewDepartment === 'visible'">
+      Anzeigen
+    </button>
     <h2>Meine Abteilung: {{user.abteilung}}</h2>
-    <button class="btn dashboard-right-button-mobile" (click)="toggleDepartment()">Anzeigen</button>
+    <button class="btn dashboard-right-button-mobile" (click)="toggleDepartment()"
+      [class.btn-primary]="viewDepartment === 'visible'">
+      Anzeigen
+    </button>
     <hr />
 
     <div [@inOutAnimation]="viewDepartment">
@@ -23,9 +30,15 @@
   </div>
 
   <div *ngIf="['admin', 'root', 'personnelDepartment'].includes(user.rechteklasse)">
-    <button class="btn dashboard-right-button-desktop" (click)="toggleAllGroups()">Anzeigen</button>
+    <button class="btn dashboard-right-button-desktop" (click)="toggleAllGroups()"
+      [class.btn-primary]="viewAllGroups === 'visible'">
+      Anzeigen
+    </button>
     <h2>Alle Arbeitsgruppen</h2>
-    <button class="btn dashboard-right-button-mobile" (click)="toggleAllGroups()">Anzeigen</button>
+    <button class="btn dashboard-right-button-mobile" (click)="toggleAllGroups()"
+      [class.btn-primary]="viewAllGroups === 'visible'">
+      Anzeigen
+    </button>
     <hr />
 
     <div [@inOutAnimation]="viewAllGroups">
@@ -36,7 +49,7 @@
       </ng-container>
 
       <ng-container *ngIf="groups">
-        <dashboard-groups [groups]="groups"></dashboard-groups>
+        <dashboard-groups [groups]="groups" (refresh)="reload($event)"></dashboard-groups>
       </ng-container>
 
       <br />
@@ -44,15 +57,22 @@
     </div>
   </div>
 
-  <br />
-
   <div id="myGroups">
-    <button class="btn dashboard-right-button-desktop" (click)="toggleMyGroups()">Anzeigen</button>
+    <button class="btn dashboard-right-button-desktop" (click)="toggleMyGroups()"
+      [class.btn-primary]="viewMyGroups === 'visible'">
+      Anzeigen
+    </button>
     <h2>Meine Arbeitsgruppen</h2>
-    <button class="btn dashboard-right-button-mobile" (click)="toggleMyGroups()">Anzeigen</button>
+    <button class="btn dashboard-right-button-mobile" (click)="toggleMyGroups()"
+      [class.btn-primary]="viewMyGroups === 'visible'">
+      Anzeigen
+    </button>
     <hr />
 
     <div [@inOutAnimation]="viewMyGroups">
+      <span *ngIf="!userGroups?.length">
+        <h3>Keine Arbeitsgruppen</h3>
+      </span>
       <ng-container *ngFor="let g of userGroups;let i = index">
         <h3>Mitarbeiter*innen der Gruppe {{g.bezeichnung}}</h3>
 
@@ -60,9 +80,9 @@
           <button class="btn" (click)="addUser(i)">Mitarbeiter*in hinzufügen</button>
           <button class="btn" (click)="removeUser(i)">Mitarbeiter*in entfernen</button>
 
-          <dashboard-add-user-to-group [(opened)]="addToGroup[i]" [mode]="'add'" [group]="g">
+          <dashboard-add-user-to-group [(opened)]="addToGroup[i]" [mode]="'add'" [group]="g" (refresh)="reload($event)">
           </dashboard-add-user-to-group>
-          <dashboard-add-user-to-group [(opened)]="removeFromGroup[i]" [mode]="'remove'" [group]="g">
+          <dashboard-add-user-to-group [(opened)]="removeFromGroup[i]" [mode]="'remove'" [group]="g" (refresh)="reload($event)">
           </dashboard-add-user-to-group>
         </ng-container>
 
@@ -74,9 +94,5 @@
       </ng-container>
     </div>
   </div>
-
-  <br />
-  <br />
-  <br />
 
 </div>

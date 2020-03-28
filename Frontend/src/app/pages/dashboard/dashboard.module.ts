@@ -14,6 +14,7 @@ import { AddGroupMobileComponent } from './mobile/add-group-mobile/add-group-mob
 import { PanelsComponent } from './mobile/panels/panels.component';
 import { EmployeeDatagridComponent } from './employee-datagrid/employee-datagrid.component';
 import { HeaderComponent } from './header/header.component';
+import { HeaderComponent as MobileHeader } from "./mobile/header/header.component";
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { HeaderComponent } from './header/header.component';
     PanelsComponent,
     EmployeeDatagridComponent,
     HeaderComponent,
+    MobileHeader
   ],
   imports: [
     CommonModule,

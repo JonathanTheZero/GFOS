@@ -14,7 +14,7 @@ import Swal from 'sweetalert2';
     trigger(
       'inOutAnimation', [
       state('invisible', style({ height: 0, opacity: 0, pointerEvents: "none" })),
-      state('visible', style({ height: '100%', opacity: 1})),
+      state('visible', style({ height: '100%', opacity: 1 })),
       transition('invisible => visible', animate('1500ms')),
       transition('visible => invisible', animate('1000ms'))
     ])
@@ -48,29 +48,34 @@ export class DashboardComponent implements OnInit {
     this.requestGroups();
   }
 
-  public openWizard() {
-    this.open = !this.open;
-  }
-
   public requestGroups(): void {
     this.api.getAllGroups().then(g => this.groups = g);
-
-    this.api.getGroupsFromUser().then((answer) => {
-      if ((answer as apiAnswer)?.fehler) 
+    this.api.getGroupsFromUser().then(answer => {
+      if ((answer as apiAnswer)?.fehler)
         return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + (answer as apiAnswer)?.fehler, "error");
-      this.userGroups = answer as Arbeitsgruppe[];
+      //keeping groups up-to-date
+      this.dataService.setGroups(answer as Arbeitsgruppe[]);
+      this.userGroups = this.dataService.getGroups();
 
-      //fill the binding for the modals
-      this.addToGroup.fill(false, 0, this.userGroups.length);
-      this.removeFromGroup.fill(false, 0, this.userGroups.length);
+      this.addToGroup.fill(false, 0, this.userGroups?.length);
+      this.removeFromGroup.fill(false, 0, this.userGroups?.length);
     });
 
-    
     this.api.getDepartment().then((answer) => {
       if ((answer as apiAnswer)?.fehler)
         return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + (answer as apiAnswer)?.fehler, "error");
       this.departmentUsers = answer as Mitarbeiter[];
     });
+  }
+
+  reload(r: boolean) {
+    if (!r) return;
+    this.user = this.dataService.getUser();
+    this.requestGroups();
+  }
+
+  public openWizard() {
+    this.open = !this.open;
   }
 
   public addUser(index: number): void {

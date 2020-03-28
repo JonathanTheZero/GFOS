@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ApiService } from 'src/app/utils/services/api.service';
 import { DataService } from 'src/app/utils/services/data.service';
 import { Mitarbeiter } from 'src/app/utils/interfaces/default.model';
@@ -16,6 +16,7 @@ export class HeaderComponent implements OnInit {
   public user: Mitarbeiter;
   public status: string;
   public reason?: string;
+  @Output() refresh = new EventEmitter<boolean>();
 
   constructor(public api: ApiService,
     public dataService: DataService) { }
@@ -31,7 +32,7 @@ export class HeaderComponent implements OnInit {
         return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + answer.fehler, "error");
       Swal.fire("", "Ihr Status wurde erfolgreich übernommen", "success");
       this.dataService.getUser().status = this.status;
-    });
+    }).then(() => this.refresh.emit(true));
   }
 
   public alterErreichbar(): void {
@@ -39,8 +40,8 @@ export class HeaderComponent implements OnInit {
       if (answer.fehler)
         return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + answer.fehler, "error");
       Swal.fire("", "Ihr Status wurde erfolgreich übernommen", "success");
-      this.dataService.getUser().erreichbar = !this.dataService.getUser().erreichbar;
-    });
+      this.user.erreichbar = !this.user.erreichbar;
+    }).then(() => this.refresh.emit(true));
   }
 
   public changeReason(): void {
@@ -49,7 +50,7 @@ export class HeaderComponent implements OnInit {
         return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + answer.fehler, "error");
       Swal.fire("", "Ihr Status wurde erfolgreich übernommen", "success");
       this.user.grundDAbw = this.reason;
-    });
+    }).then(() => this.refresh.emit(true));
   }
 
 }

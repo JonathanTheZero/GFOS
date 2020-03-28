@@ -1,11 +1,13 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Arbeitsgruppe, Mitarbeiter, apiAnswer } from 'src/app/utils/interfaces/default.model';
-import { ApiService } from 'src/app/utils/services/api.service';
-import { employeeSamples } from 'src/app/utils/mock.data';
-import { environment } from 'src/environments/environment';
-import Swal from 'sweetalert2';
-import { DataService } from 'src/app/utils/services/data.service';
-import { ClrDatagridSortOrder } from '@clr/angular';
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+import {
+  Arbeitsgruppe,
+  Mitarbeiter,
+  apiAnswer
+} from "src/app/utils/interfaces/default.model";
+import { ApiService } from "src/app/utils/services/api.service";
+import Swal from "sweetalert2";
+import { DataService } from "src/app/utils/services/data.service";
+import { ClrDatagridSortOrder } from "@clr/angular";
 
 @Component({
   selector: 'dashboard-groups',
@@ -16,6 +18,7 @@ import { ClrDatagridSortOrder } from '@clr/angular';
 export class GroupsComponent implements OnInit {
 
   @Input() groups: Array<Arbeitsgruppe>;
+  @Output() refresh = new EventEmitter<boolean>();
   public groupMembers: Array<Array<Mitarbeiter>> = [];
   public leaders: Array<Mitarbeiter> = [];
   public user: Mitarbeiter;
@@ -34,9 +37,9 @@ export class GroupsComponent implements OnInit {
     this.dataService.getUser(true).subscribe(u => this.user = u);
     this.allowedToDelete = ['root', 'admin'].includes(this.user.rechteklasse);
 
-    for(let g of this.groups){
+    for (let g of this.groups) {
       this.api.getAllUsersFromGroup(g.arbeitsgruppenID).then(answer => {
-        if((answer as apiAnswer)?.fehler) 
+        if ((answer as apiAnswer)?.fehler)
           return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + (answer as apiAnswer).fehler, "error");
         this.groupMembers.push(answer[1] as Mitarbeiter[]);
         this.leaders.push(answer[0] as Mitarbeiter);
