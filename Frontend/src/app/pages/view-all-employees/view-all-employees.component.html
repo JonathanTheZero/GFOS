@@ -6,8 +6,8 @@
   <clr-dg-column>Erreichbar</clr-dg-column>
   <clr-dg-column>Personalnummer</clr-dg-column>
 
-  <clr-dg-row *clrDgItems="let u of users; let i = index">
-    <clr-dg-cell>{{u | employeeName}}</clr-dg-cell>
+  <clr-dg-row *clrDgItems="let u of users; let i = index">  
+      <clr-dg-cell><a routerLink="/employee/{{u.personalnummer}}">{{u | employeeName}}</a></clr-dg-cell>
     <clr-dg-cell>{{u.status}}</clr-dg-cell>
     <clr-dg-cell>
 
