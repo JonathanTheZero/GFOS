@@ -45,11 +45,8 @@ export class SidebarComponent implements OnInit {
   constructor(public dataService: DataService, public api: ApiService) {}
 
   ngOnInit() {
-    this.dataService.getUser(true).subscribe(u => (this.user = u));
-    this.dataService.getGroups(true).subscribe(g => (this.groups = g));
-    //interval so it is automatically updated if user loggs in or his
-    //attributes are changed
-    interval(1000).subscribe(() => {
+    this.dataService.getUser(true).subscribe(u => {
+      this.user = u;
       if (["admin", "root", "personnelDepartment"].includes(this.user?.rechteklasse))
         this.sidebarLinks[1] = {
           title: "Benutzerverwaltung",
@@ -75,6 +72,8 @@ export class SidebarComponent implements OnInit {
         };
       else delete this.sidebarLinks[1];
     });
+    
+    this.dataService.getGroups(true).subscribe(g => (this.groups = g));
   }
 
   public changeIcon(index: number, toggle: boolean): void {
