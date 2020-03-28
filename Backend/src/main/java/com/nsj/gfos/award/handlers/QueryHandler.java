@@ -6,11 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import javax.annotation.Resource;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.sql.DataSource;
-
 import com.nsj.gfos.award.dataWrappers.Arbeitsgruppe;
 import com.nsj.gfos.award.dataWrappers.Mitarbeiter;
 
@@ -18,18 +13,15 @@ import com.nsj.gfos.award.dataWrappers.Mitarbeiter;
  * Die Klasse <i>QueryHandler</i> stellt Methoden bereit, um SQL-Statements auf
  * der Datenbank auszuführen author Schnuels
  */
-//@Resource(name="jdbc/gfos", type=javax.sql.DataSource.class)
+// @Resource(name="jdbc/gfos", type=javax.sql.DataSource.class)
 public class QueryHandler {
 
 	private static Connection connection = null;
 
 	private static void openConnection() {
 		try {
-			/* Context initContext = new InitialContext();
-            DataSource ds = (DataSource) initContext.lookup("java:/comp/env/jdbc/jdbc/gfos");
-			connection = ds.getConnection(); */
-			connection = DriverManager.getConnection("jdbc:mysql://192.168.178.45/gfos?useSSL=false", "desktop",
-					"gfos2020");
+			connection = DriverManager.getConnection("jdbc:mysql://" + ConfigHandler.getHost() + "/gfos?useSSL=false",
+					ConfigHandler.getUser(), ConfigHandler.getPassword());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
