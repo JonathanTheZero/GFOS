@@ -11,11 +11,13 @@ import Swal from 'sweetalert2';
 
 export class DeleteComponent implements OnInit {
 
+  //binding for forms
   public form: any = {
     username: "",
     password: ""
   }
 
+  //error object which is passed to error-component
   public err: errorObj = {
     reason: ""
   };
@@ -26,6 +28,7 @@ export class DeleteComponent implements OnInit {
 
   }
 
+  //validate user input and change the error object if needed, otherwise send data to api
   public send(): void {
     if(!this.form.username){
       this.err.reason = "Bitte geben Sie die Personalnummer an!";

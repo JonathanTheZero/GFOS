@@ -5,7 +5,9 @@ import { errorObj } from 'src/app/utils/interfaces/register.model';
   selector: 'form-error',
   templateUrl: './error.component.html'
 })
+
 export class ErrorComponent implements OnInit {
+  //input to display
   @Input() error: errorObj;
   
   constructor() { }

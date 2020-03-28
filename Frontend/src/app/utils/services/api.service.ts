@@ -5,7 +5,6 @@ import { apiAnswer, Mitarbeiter, Arbeitsgruppe, MitarbeiterAtribut } from "../in
 import { environment } from "src/environments/environment";
 import { DataService } from "./data.service";
 import { employeeSamples, groupSamples } from '../mock.data';
-import Swal from 'sweetalert2';
 import { ClrControlError } from '@clr/angular';
 
 @Injectable({
@@ -392,8 +391,9 @@ export class ApiService {
     }
     catch {
       if (!environment.production) return groupSamples[0];
-      Swal.fire("Fehler", "Es konnte keine Verbindung zum Server hergestellt werden", "error");
-      return undefined;
+      return {
+        fehler: "Es konnte keine Verbindung zum Server hergestellt werden"
+      };
     }
   }
 
@@ -401,7 +401,7 @@ export class ApiService {
    * Requests all groups from the server
    * @returns an Array including all current groups from the server
    */
-  public async getAllGroups(): Promise<Array<Arbeitsgruppe>> | undefined {
+  public async getAllGroups(): Promise<Array<Arbeitsgruppe> | apiAnswer> {
     try {
       return await this.http
         .get<Array<Arbeitsgruppe>>(`${this.url}/arbeitsgruppen/getAll:auth=${this.dataService.getAuth()}`)
@@ -409,8 +409,9 @@ export class ApiService {
     }
     catch {
       if (!environment.production) return groupSamples;
-      Swal.fire("Fehler", "Es konnte keine Verbindung zum Server hergestellt werden", "error");
-      return undefined;
+      return {
+        fehler: "Es konnte keine Verbindung zum Server hergestellt werden"
+      };
     }
   }
 

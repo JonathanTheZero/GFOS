@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 
 export class RemoveGroupComponent implements OnInit {
 
+  //inputs for template binding and api requests
   @Input() opened: boolean;
   @Output() openedChange = new EventEmitter<boolean>();
   @Output() refresh = new EventEmitter<boolean>();
@@ -21,10 +22,14 @@ export class RemoveGroupComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  //close form
   close() {
     this.opened = false;
   }
 
+  /**
+   * close the form and validate the API output
+   */
   closeAndSend() {
     this.opened = false;
     this.api.deleteGroup(this.password, this.groupID).then((res) => {

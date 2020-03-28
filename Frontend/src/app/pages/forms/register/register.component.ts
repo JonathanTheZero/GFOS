@@ -15,6 +15,7 @@ import { DataService } from 'src/app/utils/services/data.service';
 
 export class RegisterComponent implements OnInit {
 
+  //template binding and error object
   public form: registerForm = {
     name: "",
     lastName: "",

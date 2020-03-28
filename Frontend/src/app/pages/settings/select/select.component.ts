@@ -11,8 +11,10 @@ import { DataService } from 'src/app/utils/services/data.service';
 
 export class SelectComponent implements OnInit {
 
+  //input on what type and what to display
   @Input() options: options;
   @Input() type: "idle" | "logOut";
+  //select for binding to selected option
   public select: number;
 
   constructor(public dataService: DataService) { }
@@ -20,6 +22,7 @@ export class SelectComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  //change the settings and passing it to the DataService
   public changeSettings(): void {
     if (!this.select) {
       Swal.fire(

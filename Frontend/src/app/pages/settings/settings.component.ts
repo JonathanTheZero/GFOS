@@ -9,6 +9,7 @@ import { DataService } from 'src/app/utils/services/data.service';
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss']
 })
+
 export class SettingsComponent implements OnInit {
 
   //data to fill the account option -> dynamically adding components

@@ -12,9 +12,11 @@ import { apiAnswer, Arbeitsgruppe } from 'src/app/utils/interfaces/default.model
 
 export class AddGroupWizardComponent implements OnInit {
 
+  //to control the form, for exact explanation see Angular and Clarity form docs
   @ViewChild("wizard") wizard: ClrWizard;
   @Input() open: boolean;
   @Output() openChange = new EventEmitter<boolean>();
+  //template binding for form input
   public model: any = {
     name: "",
     admin: "",
@@ -27,6 +29,9 @@ export class AddGroupWizardComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  /**
+   * reset form
+   */
   finish() {
     this.openChange.emit(false);
     this.wizard.reset();
@@ -37,14 +42,24 @@ export class AddGroupWizardComponent implements OnInit {
     };
   }
 
+  /**
+   * remove from employee list
+   * @param i index
+   */
   public removeEmployeeFromList(i: number | string) {
     this.model.mitglieder.splice(i, 1);
   }
 
+  /**
+   * add to employee list 
+   */
   public addToList() {
     this.model.mitglieder.push(this.current);
   }
 
+  /**
+   * send data and validate the api answering
+   */
   public send(): void {
     this.api.addGroup(this.model.name, this.model.admin).then(async answer => {
       if ((answer as apiAnswer)?.fehler) {

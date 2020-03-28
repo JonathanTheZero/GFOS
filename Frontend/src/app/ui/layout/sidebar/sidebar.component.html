@@ -1,7 +1,7 @@
 <clr-vertical-nav [clrVerticalNavCollapsible]="false" checked>
 
   <ng-container *ngFor="let current of sidebarLinks;let i = index">
-    <clr-vertical-nav-group routerLinkActive="active" (clrVerticalNavGroupExpandedChange)="changeIcon(i, $event)" *ngIf="current">
+    <clr-vertical-nav-group routerLinkActive="active" (clrVerticalNavGroupExpandedChange)="changeIcon(i, $event)" *ngIf="parseCondition(current.condition)">
 
       <clr-icon [attr.shape]="current.icon" clrVerticalNavIcon></clr-icon>
       {{current.title}}

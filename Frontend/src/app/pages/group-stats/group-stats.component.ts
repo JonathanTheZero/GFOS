@@ -26,6 +26,8 @@ export class GroupStatsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    //same behaviour as group stats: listen to route param changes
+    //and after that fetching data from the api based on the given param (which is a group ID)
     this.route.paramMap.subscribe(async params => {
       let id: string = params.get("id");
 

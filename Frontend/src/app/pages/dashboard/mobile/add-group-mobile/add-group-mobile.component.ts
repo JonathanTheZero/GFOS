@@ -12,18 +12,19 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 export class AddGroupMobileComponent implements OnInit {
 
-  @Input() mobile: boolean;
+  //in/output for open or closing window
   @Input() open: boolean;
   @Output() openChange = new EventEmitter<boolean>();
 
+  //form and input binding
   public createNewGroup: FormGroup;
   public members: string[] = [];
-
   public current: string = "";
 
   constructor(public api: ApiService,
     private formBuilder: FormBuilder) { }
 
+    //initialize form group
   ngOnInit(): void {
     this.createNewGroup = this.formBuilder.group({
       name: ["", Validators.required],
@@ -31,10 +32,15 @@ export class AddGroupMobileComponent implements OnInit {
     });
   }
 
+  //close
   finish() {
     this.openChange.emit(false);
   }
 
+  /**
+   * send data to api (using the api service)
+   * chaining requests for various employees -> validate result
+   */
   public send(): void {
     this.api.addGroup(this.createNewGroup.value.name, this.createNewGroup.value.leader).then(async answer => {
       if ((answer as apiAnswer)?.fehler) {
@@ -53,14 +59,17 @@ export class AddGroupMobileComponent implements OnInit {
     });
   }
 
+  //close window
   close(): void {
     this.openChange.emit(false);
   }
 
+  //remove from employees array
   public removeEmployeeFromList(i: number) {
     this.members.splice(i, 1);
   }
 
+  //add to employees array
   public addToList() {
     this.members.push(this.current);
   }

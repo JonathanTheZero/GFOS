@@ -13,6 +13,7 @@ import Swal from 'sweetalert2';
 })
 
 export class EmployeeStatsComponent implements OnInit {
+
   public user: Mitarbeiter;
   public groups: Arbeitsgruppe[];
   public vertreter: Mitarbeiter;
@@ -24,8 +25,10 @@ export class EmployeeStatsComponent implements OnInit {
     private titleService: Title) { }
 
   ngOnInit(): void {
+    //subscribe to route changes
     this.route.paramMap.subscribe(async params => {
 
+      //if route is me, fetch data from dataService, not from the api -> faster
       if (params.get("id") === "me") {
         this.user = this.dataService.getUser();
         this.groupText = "Meine Arbeitsgruppen:";
@@ -37,7 +40,7 @@ export class EmployeeStatsComponent implements OnInit {
           return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + (res as apiAnswer)?.fehler, "error");
         this.vertreter = res as Mitarbeiter;
       } else {
-
+        //otherwise fetch from the api, depending on the route params, just fetch from API and validate answer
         var res: any = await this.api.getUser(params.get("id"));
         if ((res as apiAnswer)?.fehler)
           return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + (res as apiAnswer)?.fehler, "error");

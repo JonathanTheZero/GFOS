@@ -11,6 +11,9 @@ import Swal from 'sweetalert2';
 
 export class PanelsComponent implements OnInit {
 
+  //inputs optional but one of those should be given
+  //either displaying given employees or reqeusting those of
+  //the group whichs ID was given
   @Input() employees?: Mitarbeiter[];
   @Input() group?: string;
   

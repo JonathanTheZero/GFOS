@@ -14,8 +14,11 @@ import { passwordMatchers } from 'src/app/utils/validators';
 })
 
 export class AccountComponent implements OnInit {
+
+  //input on what type and what text to display
   @Input() input: Array<accountSettingsForm>;
   @Input() onSubmit: "password" | "email";
+  //view child to deal with forms: more on this in Angular and Clarity docs
   @ViewChild(ClrForm, { static: true }) clrForm: ClrForm;
 
   form: FormGroup;
@@ -56,8 +59,7 @@ export class AccountComponent implements OnInit {
             "Fehler",
             "Es konnte keine Verbindung zum Server hergestellt werden!",
             "error"
-          )
-          );
+          ));
       }
       else if (this.onSubmit === "password") {
         this.api.changePassword(
@@ -68,12 +70,12 @@ export class AccountComponent implements OnInit {
             "Fehler",
             "Es konnte keine Verbindung zum Server hergestellt werden!",
             "error"
-          )
-          );
+          ));
       }
     }
   }
 
+  //just to make it a bit shorter
   private fireChangeAlert(answer: apiAnswer) {
     if (answer.fehler) {
       Swal.fire(

@@ -24,6 +24,9 @@ export class HeaderComponent implements OnInit {
     this.user = this.dataService.getUser();
   }
 
+  /*
+    All 3 behaving similar: Sending specific request and validating output
+  */
   public changeStatus(): void {
     this.api
       .alterStatus(this.status)

@@ -14,6 +14,8 @@ import Swal from "sweetalert2";
 })
 
 export class LoginComponent implements OnInit {
+
+  //template binding and error handling
   form: loginForm = {
     username: "",
     password: ""
@@ -23,6 +25,7 @@ export class LoginComponent implements OnInit {
     reason: ""
   };
 
+  //save possible redirect url
   url?: string;
 
   constructor(

@@ -13,15 +13,19 @@ import { interval } from "rxjs";
   templateUrl: "./sidebar.component.html",
   styleUrls: ["./sidebar.component.scss"]
 })
+
 export class SidebarComponent implements OnInit {
+  //data about user and what to display in the sidebar
   user: Mitarbeiter;
   groups: Arbeitsgruppe[];
 
+  //input for dynamic binding -> easier to maintain
   public sidebarLinks: Array<routerLinks> = [
     {
       title: "Allgemein",
       icon: "folder-open",
       iconWhenClosed: "folder",
+      condition: "true",
       links: [
         {
           link: "/dashboard",
@@ -42,37 +46,37 @@ export class SidebarComponent implements OnInit {
     }
   ];
 
-  constructor(public dataService: DataService, public api: ApiService) {}
+  constructor(public dataService: DataService,
+    public api: ApiService
+  ) { }
 
   ngOnInit() {
-    this.dataService.getUser(true).subscribe(u => {
-      this.user = u;
-      if (["admin", "root", "personnelDepartment"].includes(this.user?.rechteklasse))
-        this.sidebarLinks[1] = {
-          title: "Benutzerverwaltung",
-          icon: "folder-open",
-          iconWhenClosed: "folder",
-          links: [
-            {
-              link: "/register",
-              title: "Benutzer hinzufügen",
-              icon: "assign-user"
-            },
-            {
-              link: "/delete",
-              title: "Benutzer löschen",
-              icon: "times-circle"
-            },
-            {
-              link: "/view-all",
-              title: "Alle Benutzer sehen",
-              icon: "users"
-            }
-          ]
-        };
-      else delete this.sidebarLinks[1];
-    });
-    
+    //check if user has permissions and display things based on that
+    this.user = this.dataService.getUser();
+    this.sidebarLinks[1] = {
+      title: "Benutzerverwaltung",
+      icon: "folder-open",
+      iconWhenClosed: "folder",
+      condition: '["admin", "root", "personnelDepartment"].includes(this.user?.rechteklasse)',
+      links: [
+        {
+          link: "/register",
+          title: "Benutzer hinzufügen",
+          icon: "assign-user"
+        },
+        {
+          link: "/delete",
+          title: "Benutzer löschen",
+          icon: "times-circle"
+        },
+        {
+          link: "/view-all",
+          title: "Alle Benutzer sehen",
+          icon: "users"
+        }
+      ]
+    };
+
     this.dataService.getGroups(true).subscribe(g => (this.groups = g));
   }
 
@@ -85,11 +89,9 @@ export class SidebarComponent implements OnInit {
     ];
   }
 
-  test() {
-    this.user.rechteklasse = "user";
-  }
-
-  test2() {
-    this.user.rechteklasse = "admin";
+  //workaround for conditions since subscribing won't work if object isn't initialized at start
+  //which isn't the case because the user isn't logged in at the beginning
+  public parseCondition(str: string){
+    return eval(str);
   }
 }

@@ -13,6 +13,7 @@ import { DataService } from 'src/app/utils/services/data.service';
 
 export class ViewAllEmployeesComponent implements OnInit {
 
+  //bindings for HTML, what data to display etc, fetched in ngOnInit
   users: Mitarbeiter[];
   user: Mitarbeiter;
   total: number;
@@ -27,6 +28,7 @@ export class ViewAllEmployeesComponent implements OnInit {
 
   }
 
+  //initialize site with getting Data from services
   ngOnInit() {
     this.user = this.dataService.getUser();
     this.api.getAllUsers().then((answer: apiAnswer | Mitarbeiter[]) => {
@@ -38,16 +40,18 @@ export class ViewAllEmployeesComponent implements OnInit {
     });
   }
 
+  //open or close modal
   public openModal(index: number) {
     this.opened[index] = true;
   }
 
-  close(index: number){
+  public closeModal(index: number){
     this.opened[index] = false;
   }
 
-  closeAndSend(index: number){
-    this.close(index);
+  //sending data to api, validate answer
+  public closeAndSend(index: number){
+    this.closeModal(index);
     let u = this.users[index];
     this.api.alterAccess(this.models[index], u.personalnummer).then(answer => {
       if (answer.fehler)

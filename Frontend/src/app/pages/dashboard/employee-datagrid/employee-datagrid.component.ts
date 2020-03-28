@@ -13,6 +13,7 @@ import Swal from 'sweetalert2';
 
 export class EmployeeDatagridComponent implements OnInit {
 
+  //names should be self explaining, mostly for template binding
   @Input() group?: string;
   @Input() employees?: Mitarbeiter[];
   @Input() mode: "group" | "department";
@@ -26,6 +27,7 @@ export class EmployeeDatagridComponent implements OnInit {
     public dataService: DataService, ) {
   }
 
+  //fetching data, initializing
   ngOnInit(): void {
     this.user = this.dataService.getUser();
 

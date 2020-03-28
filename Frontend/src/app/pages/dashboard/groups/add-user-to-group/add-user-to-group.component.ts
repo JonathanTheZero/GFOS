@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 
 export class AddUserToGroupComponent implements OnInit {
 
+  //template binding and inputs for HTML
   @Input() group: Arbeitsgruppe;
   @Input() mode: "add" | "remove";
   @Input() opened: boolean;
@@ -23,10 +24,16 @@ export class AddUserToGroupComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  /**
+   * close form
+   */
   public close(): void {
     this.opened = false;
   }
 
+  /**
+   * depending on mode send different request to api and validate result
+   */
   public closeAndSend(): void {
     this.close();
     if (this.mode === "add") {
