@@ -14,10 +14,11 @@ export class HeaderComponent implements OnInit {
   public user: Mitarbeiter;
   public status: string;
   public reason?: string;
+  public hours: string;
   //send true when dashboard should be refreshed
   @Output() refresh = new EventEmitter<boolean>();
 
-  constructor(public api: ApiService, public dataService: DataService) {}
+  constructor(public api: ApiService, public dataService: DataService) { }
 
   ngOnInit(): void {
     this.dataService.isMobile().subscribe(m => (this.isMobile = m));
@@ -73,5 +74,18 @@ export class HeaderComponent implements OnInit {
         this.user.grundDAbw = this.reason;
       })
       .then(() => this.refresh.emit(true));
+  }
+
+  public addHours(): void {
+    this.api.addHours(this.hours).then(answer => {
+      if (answer.fehler)
+        return Swal.fire(
+          "Fehler",
+          "Es ist folgender Fehler aufgetreten: " + answer.fehler,
+          "error"
+        );
+      Swal.fire("", "Ihr Status wurde erfolgreich übernommen", "success");
+      this.user.arbeitskonto += parseInt(this.hours);
+    }).then(() => this.refresh.emit(true));
   }
 }

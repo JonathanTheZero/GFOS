@@ -17,8 +17,9 @@ export class HeaderComponent implements OnInit {
 
   status: string;
   reason: string;
+  hours: string;
 
-  constructor(public api: ApiService, public dataService: DataService) {}
+  constructor(public api: ApiService, public dataService: DataService) { }
 
   ngOnInit(): void {
     this.user = this.dataService.getUser();
@@ -74,4 +75,18 @@ export class HeaderComponent implements OnInit {
       })
       .then(() => this.refresh.emit(true));
   }
+
+  public addHours(): void {
+    this.api.addHours(this.hours).then(answer => {
+      if (answer.fehler)
+        return Swal.fire(
+          "Fehler",
+          "Es ist folgender Fehler aufgetreten: " + answer.fehler,
+          "error"
+        );
+      Swal.fire("", "Ihr Status wurde erfolgreich übernommen", "success");
+      this.user.arbeitskonto += parseInt(this.hours);
+    }).then(() => this.refresh.emit(true));
+  }
+  
 }

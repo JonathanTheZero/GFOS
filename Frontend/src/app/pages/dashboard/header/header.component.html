@@ -48,8 +48,17 @@
               <option [value]="'Abwesend'"></option>
               <option [value]="'Nicht stören'"></option>
             </datalist>
+            <clr-control-helper>Ändern Sie Ihren Status</clr-control-helper>
+          </clr-datalist-container>
+        </form>
+      </td>
+      <td>
+        <form clrForm (submit)="addHours()" clrLayout="vertical">
+          <clr-datalist-container>
+            <label>Arbeitskonto</label>
+            <input name="status" placeholder={{user.arbeitskonto}} clrDatalistInput [(ngModel)]="hours" />
             <clr-control-helper>
-                Ändern Sie Ihren Status                      <span></span>
+                Wie viele Stunden haben Sie heute gearbeitet?
             </clr-control-helper>
           </clr-datalist-container>
         </form>

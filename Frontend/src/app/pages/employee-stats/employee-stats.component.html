@@ -2,7 +2,7 @@
   <div class="clr-col-lg-5 clr-col-md-8 clr-col-12">
     <div class="card">
       <div class="card-header" id="employee-stats-header">
-        {{user | employeeName}}
+        {{employee | employeeName}}
       </div>
       <div class="card-block">
         <div class="card-title">
@@ -12,15 +12,65 @@
           <table>
             <tr>
               <td>E-Mail:</td>
-              <td>{{user.email}}</td>
+              <td>{{employee.email}}</td>
             </tr>
             <tr>
               <td>Abteilung:</td>
-              <td>{{user.abteilung}}</td>
+              <td>
+                <div class="signpost-item" *ngIf="['root', 'admin'].includes(user.rechteklasse)" class="signpost-right">
+                  <clr-signpost (click)="openDepModal()">
+                    <clr-icon shape="pencil" class="is-highlight" clrSignpostTrigger></clr-icon>
+                  </clr-signpost>
+                  <clr-modal [(clrModalOpen)]="openedDep">
+                    <h3 class="modal-title">Abteilung ändern</h3>
+                    <div class="modal-body">
+                      <form clrForm clrLayout="vertical">
+                        <clr-input-container>
+                          <label>Neue Abteilung</label>
+                          <input placeholder="Abteilung" clrInput [(ngModel)]="newDep" required name="div"/>
+                          <clr-control-helper>Geben Sie die neue Abteilung an</clr-control-helper>
+                        </clr-input-container>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-outline" (click)="closeDepModal()">Abbrechen</button>
+                      <button type="button" class="btn btn-success-outline" (click)="closeAndSendDep()" [disabled]="!newDep?.length">Ändern</button>
+                    </div>
+                  </clr-modal>
+                </div>
+                {{employee.abteilung}}
+              </td>
             </tr>
             <tr>
               <td>Vertreter:</td>
               <td>
+                <div class="signpost-item" *ngIf="['root', 'admin'].includes(user.rechteklasse)" class="signpost-right">
+                  <clr-signpost (click)="openRepModal()">
+                    <clr-icon shape="pencil" class="is-highlight" clrSignpostTrigger></clr-icon>
+                  </clr-signpost>
+                  <clr-modal [(clrModalOpen)]="openedRep">
+                    <h3 class="modal-title">Vertreter ändern</h3>
+                    <div class="modal-body">
+                      <form clrForm clrLayout="vertical">
+                        <clr-input-container>
+                          <label>Neuer Vertreter</label>
+                          <input placeholder="Personalnummer" clrInput [(ngModel)]="newRep" name="rep" required
+                            minlength="12" maxlength="12" />
+                          <clr-control-helper>
+                            Geben Sie die Personalnummer des neuen Vertreters ein
+                          </clr-control-helper>
+                          <clr-control-error>
+                            Geben Sie die 12-stellige Personalnummer des neuen Vertreters ein
+                          </clr-control-error>
+                        </clr-input-container>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-outline" (click)="closeRepModal()">Abbrechen</button>
+                      <button type="button" class="btn btn-success-outline" (click)="closeAndSendRep()" [disabled]="!newRep?.length">Ändern</button>
+                    </div>
+                  </clr-modal>
+                </div>
                 <a routerLink="/employee/{{vertreter?.personalnummer}}">
                   {{vertreter | employeeName}}
                 </a>
@@ -28,7 +78,7 @@
             </tr>
             <tr>
               <td>Arbeitskonto:</td>
-              <td>{{user.arbeitskonto}} Stunden</td>
+              <td>{{employee.arbeitskonto}} Stunden</td>
             </tr>
             <tr>
               <td>
@@ -60,11 +110,11 @@
           <table>
             <tr>
               <td>Erreichbar:</td>
-              <td>{{user.erreichbar | reachable}}</td>
+              <td>{{employee.erreichbar | reachable}}</td>
             </tr>
             <tr>
               <td>Status</td>
-              <td>{{user.status}}</td>
+              <td>{{employee.status}}</td>
             </tr>
           </table>
         </div>
@@ -77,13 +127,13 @@
           <table>
             <tr>
               <td>Rechteklasse:</td>
-              <td>{{user.rechteklasse | accessRights}}</td>
+              <td>{{employee.rechteklasse | accessRights}}</td>
             </tr>
           </table>
         </div>
       </div>
       <div class="card-footer" id="employee-stats-footer">
-        <a href="mailto:{{user.email}}" target="_blank">
+        <a href="mailto:{{employee.email}}" target="_blank">
           <button class="btn btn-sm btn-link">
             E-Mail schreiben
           </button>
