@@ -37,6 +37,8 @@ public class LogoutResource {
 		if (sessionID.split("=").length != 2)
 			return JsonHandler.fehler("Falsche Formatierung des Parameters.");
 		String auth = sessionID.split("=")[1];
+		if(!SessionHandler.checkSessionID(auth))
+			return JsonHandler.fehler("SessionID existiert nicht.");
 		if (!SessionHandler.changeStatus(Utils.getPersonalnummerFromSessionID(auth), "Offline"))
 			return JsonHandler.fehler("Status konnte aufgrund eines Fehlers nicht geändert werden.");
 		if (!SessionHandler.changeErreichbar(Utils.getPersonalnummerFromSessionID(auth), 0))

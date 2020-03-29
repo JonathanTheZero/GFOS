@@ -28,8 +28,6 @@ public class SessionHandler {
 		String sessionID = args[0];
 		String personalnummer = args[1];
 		String sqlStmt = "INSERT INTO gfos.active_sessions VALUES (\"" + sessionID + "\",\"" + personalnummer + "\");";
-		if (checkSessionID(sessionID))
-			return JsonHandler.fehler("ID existiert bereits.");
 		try {
 			int rs = QueryHandler.update(sqlStmt);
 			if (rs == 0)
