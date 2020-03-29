@@ -4,7 +4,7 @@
 
     <clr-accordion-content *clrIfExpanded>
       <a routerLink="/employee/me">Mein Profil</a>
-      <div style="float: right">
+      <div class="header-item-right">
         <button type="button" class="btn btn-icon btn-success" aria-label="done" *ngIf="user.erreichbar"
           (click)="alterErreichbar()">
           <clr-icon shape="check"></clr-icon>

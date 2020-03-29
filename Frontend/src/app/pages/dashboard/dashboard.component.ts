@@ -23,17 +23,19 @@ import Swal from 'sweetalert2';
     ])
   ]
 })
+
 export class DashboardComponent implements OnInit {
   //variables for template binding, names are self-explaining
   public isMobile: boolean;
   public user: Mitarbeiter;
-  public openAddGroup: boolean = false;
   public groups: Array<Arbeitsgruppe>;
   public userGroups: Array<Arbeitsgruppe>;
-  //arrays if there's more than one field
+  public departmentUsers: Mitarbeiter[] = [];
+
+  //booleans for open or closing windows, arrays if there's more than one field
   public addToGroup: boolean[] = [];
   public removeFromGroup: boolean[] = [];
-  public departmentUsers: Mitarbeiter[] = [];
+  public openAddGroup: boolean = false;
 
   //state changers using angular animations
   public viewMyGroups: "visible" | "invisible" = "invisible";
@@ -119,4 +121,5 @@ export class DashboardComponent implements OnInit {
     this.viewDepartment =
       this.viewDepartment === "visible" ? "invisible" : "visible";
   }
+
 }

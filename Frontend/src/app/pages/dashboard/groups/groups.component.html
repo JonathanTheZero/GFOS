@@ -8,7 +8,7 @@
 
   <clr-dg-row *ngFor="let group of groups; let i = index">
     <clr-dg-cell>
-      <div class="signpost-item" *ngIf="allowedToDelete" style="display: inline-block;">
+      <div class="signpost-item" *ngIf="allowedToDelete" id="info-signpost">
         <clr-signpost (click)="deleteGroup(i)">
           <clr-icon shape="trash" class="is-danger has-badge-info" clrSignpostTrigger></clr-icon>
         </clr-signpost>

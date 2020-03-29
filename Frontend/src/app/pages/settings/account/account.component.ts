@@ -80,7 +80,7 @@ export class AccountComponent implements OnInit {
     if (answer.fehler) {
       Swal.fire(
         "Fehler",
-        "Der Server hat folgenden Fehler gemeldet: " + answer.fehler,
+        "Es ist folgender Fehler aufgetreten: " + answer.fehler,
         "error"
       );
     }

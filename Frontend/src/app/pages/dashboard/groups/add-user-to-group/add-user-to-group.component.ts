@@ -22,6 +22,7 @@ export class AddUserToGroupComponent implements OnInit {
   constructor(public api: ApiService) { }
 
   ngOnInit(): void {
+    this.mode = this.mode || "add"; //setting default
   }
 
   /**
