@@ -11,9 +11,9 @@ import com.nsj.gfos.award.dataWrappers.Mitarbeiter;
 
 /**
  * Die Klasse <i>QueryHandler</i> stellt Methoden bereit, um SQL-Statements auf
- * der Datenbank auszuführen author Schnuels
+ * der Datenbank auszuführen 
+ * @author Schnuels
  */
-// @Resource(name="jdbc/gfos", type=javax.sql.DataSource.class)
 public class QueryHandler {
 
 	private static Connection connection = null;
