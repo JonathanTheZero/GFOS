@@ -1,21 +1,24 @@
-table {
-  border: none;
-  width: 100%;
-
-  tr {
-    text-align: left;
+#dashboard-header {
+  
+  table {
+    border: none;
     width: 100%;
 
-    td {
-      width: 20%;
+    tr {
+      text-align: left;
+      width: 100%;
 
-      form {
-        margin: 0;
+      td {
+        width: 20%;
+
+        form {
+          margin: 0;
+        }
       }
     }
   }
-}
 
-.datagrid-input {
-  white-space: nowrap;
+  .datagrid-input {
+    white-space: nowrap;
+  }
 }

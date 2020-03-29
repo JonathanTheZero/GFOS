@@ -11,7 +11,7 @@
     <clr-dg-cell>{{u.status}}</clr-dg-cell>
     <clr-dg-cell>
 
-      <div class="signpost-item" *ngIf="['root', 'admin'].includes(user.rechteklasse)" style="display: inline-block;">
+      <div class="signpost-item" *ngIf="['root', 'admin'].includes(user.rechteklasse)" id="signpost-right">
         <clr-signpost (click)="openModal(i)">
           <clr-icon shape="pencil" class="is-highlight" clrSignpostTrigger></clr-icon>
         </clr-signpost>
