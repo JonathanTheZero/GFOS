@@ -60,4 +60,19 @@
       </form>
     </clr-accordion-content>
   </clr-accordion-panel>
+
+  <clr-accordion-panel>
+    <clr-accordion-title>Arbeitskonto</clr-accordion-title>
+    <clr-accordion-content *clrIfExpanded>
+      <form clrForm (submit)="addHours()" clrLayout="vertical">
+        <clr-datalist-container>
+          <label>Arbeitskonto</label>
+          <input name="status" placeholder={{user.arbeitskonto}} clrDatalistInput [(ngModel)]="hours" />
+          <clr-control-helper>
+            Wie viele Stunden haben Sie heute gearbeitet?
+          </clr-control-helper>
+        </clr-datalist-container>
+      </form>
+    </clr-accordion-content>
+  </clr-accordion-panel>
 </clr-accordion>

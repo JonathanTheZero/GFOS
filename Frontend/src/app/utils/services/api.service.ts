@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { apiAnswer, Mitarbeiter, Arbeitsgruppe, MitarbeiterAtribut } from "../interfaces/default.model";
+import { apiAnswer, Mitarbeiter, Arbeitsgruppe } from "../interfaces/default.model";
 import { environment } from "src/environments/environment";
 import { DataService } from "./data.service";
 import { employeeSamples, groupSamples } from '../mock.data';
@@ -133,6 +133,63 @@ export class ApiService {
     window.addEventListener("unload", 
       () => navigator.sendBeacon(`${this.url}/logout:auth=${this.dataService.getAuth()}`, this.dataService.getAuth())
     );
+  }
+
+  /**
+   * Sends a request to change the representative of a user
+   * @param newRep the ID of the new represnatative
+   * @param pn the ID of whom it should be changed, if not given the one of the current logged in user is used
+   * @returns a Promise that holds the answer of the API
+   */
+  public async alterRep(newRep: string, pn=this.dataService.getUser().personalnummer): Promise<apiAnswer> {
+    try {
+      return await this.http
+        .get<apiAnswer>(`${this.url}/mitarbeiter/alter:auth=${this.dataService.getAuth()}&pn=${pn}&ve=${newRep}`)
+        .toPromise();
+    }
+    catch {
+      return {
+        fehler: "Es konnte keine Verbindung zum Server hergestellt werden"
+      };
+    }
+  }
+
+  /**
+   * Sens a request to change the department of a user
+   * @param newDep the new Department
+   * @param pn the ID of the user whose department should be changed, if not given the one of the current user is used
+   * @returns a Promise that holds the answer of the API
+   */
+  public async alterDep(newDep: string, pn=this.dataService.getUser().personalnummer): Promise<apiAnswer> {
+    try {
+      return await this.http
+        .get<apiAnswer>(`${this.url}/mitarbeiter/alter:auth=${this.dataService.getAuth()}&pn=${pn}&ab=${newDep}`)
+        .toPromise();
+    }
+    catch {
+      return {
+        fehler: "Es konnte keine Verbindung zum Server hergestellt werden"
+      };
+    }
+  }
+
+  /**
+   * sends a request to add hours for the currently logged in user
+   * @param hours the amount of hours that should be added
+   * @returns a Promise that holds the answer of the API
+   */
+  public async addHours(hours: string): Promise<apiAnswer> {
+    try {
+      let newHours: number = Math.floor(this.dataService.getUser().arbeitskonto) + parseInt(hours);
+      return await this.http
+        .get<apiAnswer>(`${this.url}/mitarbeiter/alter:auth=${this.dataService.getAuth()}&pn=${this.dataService.getUser().personalnummer}&ak=${newHours}`)
+        .toPromise();
+    }
+    catch {
+      return {
+        fehler: "Es konnte keine Verbindung zum Server hergestellt werden"
+      };
+    }
   }
 
   /**

@@ -13,8 +13,6 @@ export interface Mitarbeiter {
     grundDAbw: string;
 }
 
-export type MitarbeiterAtribut = "personalnummer" | "name" | "vorname" | "erreichbar" | "arbeitskonto" | "email" | "status" | "rechteklasse" | "abteilung" | "vertreter" | "grundDAbw";
-
 export interface apiAnswer {
     fehler?: string;
     erfolg?: string;
