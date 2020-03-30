@@ -18,5 +18,10 @@
     <servlet-mapping>
         <servlet-name>Jersey Web Application</servlet-name>
         <url-pattern>/api/*</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>   
+    <resource-ref>
+        <description>JDBC Connection Pool</description>
+        <res-ref-name>jdbc/gfosAward</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+    </resource-ref>
 </web-app>
