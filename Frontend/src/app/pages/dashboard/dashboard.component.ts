@@ -59,7 +59,7 @@ export class DashboardComponent implements OnInit {
   public requestGroups(): void {
     this.api.getAllGroups().then(g => this.groups = g as Arbeitsgruppe[]);
     this.api.getGroupsFromUser().then(answer => {
-      if ((answer as apiAnswer)?.fehler)
+      if ((answer as apiAnswer)?.fehler && (answer as apiAnswer)?.fehler !== "Leere Rückgabe der Datenbank.")
         return Swal.fire(
           "Fehler",
           "Es ist folgender Fehler aufgetreten: " +

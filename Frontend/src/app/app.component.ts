@@ -24,7 +24,13 @@ export class AppComponent implements OnInit {
 
 
   @HostListener('window:beforeunload', ['$event'])
-  logoutBeforeUnloading() {
+  logoutBeforeUnloading($event) {
+    $event.returnValue = "Bitte loggen Sie sich vorher aus";
+  }
+
+  @HostListener('window:onunload', ['$event'])
+  logout(){
+    console.log(true)
     this.api.logout();
   }
 

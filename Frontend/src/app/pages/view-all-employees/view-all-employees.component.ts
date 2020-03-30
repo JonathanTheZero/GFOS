@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ClrDatagridSortOrder } from "@clr/angular";
 import { Mitarbeiter, apiAnswer } from 'src/app/utils/interfaces/default.model';
 import { ApiService } from 'src/app/utils/services/api.service';
@@ -45,12 +45,12 @@ export class ViewAllEmployeesComponent implements OnInit {
     this.opened[index] = true;
   }
 
-  public closeModal(index: number){
+  public closeModal(index: number) {
     this.opened[index] = false;
   }
 
   //sending data to api, validate answer
-  public closeAndSend(index: number){
+  public closeAndSend(index: number) {
     this.closeModal(index);
     let u = this.users[index];
     this.api.alterAccess(this.models[index], u.personalnummer).then(answer => {

@@ -1,13 +1,13 @@
 <clr-datagrid [clrDgLoading]="loading">
   <clr-dg-column [clrDgField]="'name'" [clrDgSortOrder]="descSort">Name</clr-dg-column>
   <clr-dg-column>Status</clr-dg-column>
-  <clr-dg-column [clrDgField]="'creation'">Rechteklasse</clr-dg-column>
+  <clr-dg-column>Rechteklasse</clr-dg-column>
   <clr-dg-column [clrDgField]="'abteilung'">Abteilung</clr-dg-column>
   <clr-dg-column>Erreichbar</clr-dg-column>
   <clr-dg-column>Personalnummer</clr-dg-column>
 
-  <clr-dg-row *clrDgItems="let u of users; let i = index">  
-      <clr-dg-cell><a routerLink="/employee/{{u.personalnummer}}">{{u | employeeName}}</a></clr-dg-cell>
+  <clr-dg-row *clrDgItems="let u of users; let i = index">
+    <clr-dg-cell><a routerLink="/employee/{{u.personalnummer}}">{{u | employeeName}}</a></clr-dg-cell>
     <clr-dg-cell>{{u.status}}</clr-dg-cell>
     <clr-dg-cell>
 
@@ -31,7 +31,8 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline" (click)="closeModal(i)">Abbrechen</button>
-            <button type="button" class="btn btn-success-outline" (click)="closeAndSend(i)" [disabled]="!models[i]">Ändern</button>
+            <button type="button" class="btn btn-success-outline" (click)="closeAndSend(i)"
+              [disabled]="!models[i]">Ändern</button>
           </div>
         </clr-modal>
       </div>
