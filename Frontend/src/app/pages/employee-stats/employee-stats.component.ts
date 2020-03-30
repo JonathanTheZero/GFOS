@@ -63,12 +63,12 @@ export class EmployeeStatsComponent implements OnInit {
           this.groupText = "Gemeinsame Arbeitsgruppen:";
         }
 
-        if ((res as apiAnswer)?.fehler && (answer as apiAnswer)?.fehler !== "Leere Rückgabe der Datenbank.")
+        if ((res as apiAnswer)?.fehler && (res as apiAnswer)?.fehler !== "Leere Rückgabe der Datenbank.")
           return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + (res as apiAnswer)?.fehler, "error");
         this.groups = res as Arbeitsgruppe[];
 
         res = await this.api.getUser(this.employee.vertreter);
-        if ((res as apiAnswer)?.fehler && (answer as apiAnswer)?.fehler !== "Leere Rückgabe der Datenbank.")
+        if ((res as apiAnswer)?.fehler && (res as apiAnswer)?.fehler !== "Leere Rückgabe der Datenbank.")
           return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + (res as apiAnswer)?.fehler, "error");
         this.vertreter = res as Mitarbeiter;
       }
