@@ -22,7 +22,7 @@ public class RightHandler {
 	private static final String[] allRightclasses = { "root", "admin", "personnelDepartment", "headOfDepartment",
 			"user" };
 	private static final String[] allActions = { "getAllMitarbeiter", "addMitarbeiter", "addAdmin", "removeAdmin",
-			"removeMitarbeiter", "test", "selfGet", "unrestrictedGet", "restrictedGet", "userGet", "selfAlter",
+			"removeMitarbeiter", "selfGet", "unrestrictedGet", "restrictedGet", "userGet", "selfAlter",
 			"unrestrictedAlter", "restrictedAlter", "getArbeitsgruppe", "alterLeiter", "addArbeitsgruppe",
 			"removeArbeitsgruppe", "removeMitarbeiterFromArbeitsgruppe", "addMitarbeiterToArbeitsgruppe",
 			"becomeLeiter", "getArbeitsgruppenFromMitarbeiter", "getAllArbeitsgruppen", "getAddedToArbeitsgruppe" };
