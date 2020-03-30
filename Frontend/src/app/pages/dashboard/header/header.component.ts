@@ -39,7 +39,7 @@ export class HeaderComponent implements OnInit {
             "error"
           );
         Swal.fire("", "Ihr Status wurde erfolgreich übernommen", "success");
-        this.dataService.getUser().status = this.status;
+        this.user.status = this.status;
       })
       .then(() => this.refresh.emit(true));
   }
@@ -77,6 +77,14 @@ export class HeaderComponent implements OnInit {
   }
 
   public addHours(): void {
+    if(parseInt(this.hours, 0) > 12 || parseInt(this.hours, 0) < 0) {
+      Swal.fire(
+        "Fehler",
+        "Ungültige Stundenanzahl angegeben!",
+        "error"
+      );
+      return;
+    }
     this.api.addHours(this.hours).then(answer => {
       if (answer.fehler)
         return Swal.fire(
@@ -84,7 +92,7 @@ export class HeaderComponent implements OnInit {
           "Es ist folgender Fehler aufgetreten: " + answer.fehler,
           "error"
         );
-      Swal.fire("", "Ihr Status wurde erfolgreich übernommen", "success");
+      Swal.fire("", "Ihr Arbeitskonto wurde aktualisiert", "success");
       this.user.arbeitskonto += parseInt(this.hours);
     }).then(() => this.refresh.emit(true));
   }

@@ -91,6 +91,7 @@ export class EmployeeStatsComponent implements OnInit {
         return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + answer.fehler, "error");
       Swal.fire("", "Ihre Änderungen wurden erfolgreich übernommen", "success");
     });
+    this.user.vertreter = this.newRep;
   }
 
   openDepModal(){
@@ -108,5 +109,6 @@ export class EmployeeStatsComponent implements OnInit {
         return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + answer.fehler, "error");
       Swal.fire("", "Ihre Änderungen wurden erfolgreich übernommen", "success");
     });
+    this.user.abteilung = this.newDep;
   }
 }

@@ -66,15 +66,15 @@ export class SettingsComponent implements OnInit {
   public readonly warningOptions: options = [
     {
       value: 2,
-      text: "5 Mintuen"
+      text: "5 Minuten"
     },
     {
       value: 10,
-      text: "10 Mintuen (Standard)"
+      text: "10 Minuten (Standard)"
     },
     {
       value: 15,
-      text: "15 Mintuen"
+      text: "15 Minuten"
     },
   ];
 

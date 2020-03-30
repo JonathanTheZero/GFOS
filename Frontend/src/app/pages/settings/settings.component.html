@@ -1,13 +1,11 @@
 <div id="settings">
   <h1>Einstellungen</h1>
-  Ihre aktuellen Einstellungen sehen Sie <a routerLink="/employee/me">hier</a>
+  Ihre aktuellen Einstellungen sehen Sie <a routerLink="/employee/me">hier</a> | Ihren Vertreter und Ihre Abteilung können Sie in Ihrem Profil ändern.
   <br />
   <hr />
   <h2>Account Daten ändern</h2>
   <div class="wrapper" id="change-account-settings">
-    <h3>E-Mail ändern:</h3>
     <change-account-settings class="left" [input]="changeEmail" [onSubmit]="'email'"></change-account-settings>
-    <h3 class="right">Passwort ändern:</h3>
     <change-account-settings class="right" [input]="changePassword" [onSubmit]="'password'"></change-account-settings>
   </div>
   <hr />
@@ -16,13 +14,13 @@
   <div class="wrapper" id="logout">
     <div class="left">
       Erste Warnung erhalten nach:
-        <settings-select [options]="warningOptions" [type]="'idle'" class="centered"></settings-select>
+        <settings-select [options]="warningOptions" [type]="'idle'" class="centered">{{currentSettings.idle}}</settings-select>
       <br />
       Aktuell: {{currentSettings.idle || 10}} Minuten
     </div>
     <div class="right">
       Automatisches ausloggen nach weiteren Minuten:
-        <settings-select [options]="logoutOptions" [type]="'logOut'" class="centered"></settings-select>
+        <settings-select [options]="logoutOptions" [type]="'logOut'" class="centered">{{currentSettings.logOut}}</settings-select>
       <br />
       Aktuell: {{currentSettings.logOut || 2}} Minuten
     </div>
