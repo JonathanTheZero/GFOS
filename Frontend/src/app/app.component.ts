@@ -1,10 +1,10 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { ApiService } from './utils/services/api.service';
-import { apiAnswer } from './utils/interfaces/default.model';
 import Swal from 'sweetalert2';
 import { Router } from '@angular/router';
 import { Idle, DEFAULT_INTERRUPTSOURCES } from '@ng-idle/core';
 import { DataService } from './utils/services/data.service';
+import { ClarityIcons } from '@clr/icons';
 
 @Component({
   selector: 'app-root',
@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
     private dataService: DataService) {
   }
 
-  
+
   @HostListener('window:beforeunload', ['$event'])
   logoutBeforeUnloading() {
     this.api.logout();

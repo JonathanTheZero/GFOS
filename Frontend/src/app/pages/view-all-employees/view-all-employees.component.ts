@@ -29,7 +29,7 @@ export class ViewAllEmployeesComponent implements OnInit {
   }
 
   //initialize site with getting Data from services
-  ngOnInit() {
+  ngOnInit(): void {
     this.user = this.dataService.getUser();
     this.api.getAllUsers().then((answer: apiAnswer | Mitarbeiter[]) => {
       if ((answer as apiAnswer)?.fehler)

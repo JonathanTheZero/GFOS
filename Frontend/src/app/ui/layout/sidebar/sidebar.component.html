@@ -1,28 +1,44 @@
 <clr-vertical-nav [clrVerticalNavCollapsible]="false" checked>
 
-  <ng-container *ngFor="let current of sidebarLinks;let i = index">
-    <clr-vertical-nav-group routerLinkActive="active" (clrVerticalNavGroupExpandedChange)="changeIcon(i, $event)" *ngIf="parseCondition(current.condition)">
+  <clr-vertical-nav-group routerLinkActive="active" (clrVerticalNavGroupExpandedChange)="changeIcon(0, $event)">
 
-      <clr-icon [attr.shape]="current.icon" clrVerticalNavIcon></clr-icon>
-      {{current.title}}
+    <clr-icon [attr.shape]="sidebarLinks[0].icon" clrVerticalNavIcon></clr-icon>
+    {{sidebarLinks[0].title}}
 
-      <clr-vertical-nav-group-children *clrIfExpanded="true">
-        <a clrVerticalNavLink routerLink="{{sub.link}}" routerLinkActive="active" *ngFor="let sub of current.links">
-          <clr-icon [attr.shape]="sub.icon"></clr-icon>
-          {{sub.title}}
-        </a>
-      </clr-vertical-nav-group-children>
+    <clr-vertical-nav-group-children *clrIfExpanded="true">
+      <a clrVerticalNavLink routerLink="{{sub.link}}" routerLinkActive="active"
+        *ngFor="let sub of sidebarLinks[0].links">
+        <clr-icon [attr.shape]="sub.icon"></clr-icon>
+        {{sub.title}}
+      </a>
+    </clr-vertical-nav-group-children>
 
-    </clr-vertical-nav-group>
+  </clr-vertical-nav-group>
 
-  </ng-container>
+
+  <clr-vertical-nav-group routerLinkActive="active" (clrVerticalNavGroupExpandedChange)="changeIcon(1, $event)"
+    *ngIf='["admin", "root", "personnelDepartment"].includes(this.user?.rechteklasse)'>
+
+    <clr-icon [attr.shape]="sidebarLinks[1].icon" clrVerticalNavIcon></clr-icon>
+    {{sidebarLinks[1].title}}
+
+    <clr-vertical-nav-group-children>
+      <a clrVerticalNavLink routerLink="{{sub.link}}" routerLinkActive="active"
+        *ngFor="let sub of sidebarLinks[1].links">
+        <clr-icon [attr.shape]="sub.icon"></clr-icon>
+        {{sub.title}}
+      </a>
+    </clr-vertical-nav-group-children>
+
+  </clr-vertical-nav-group>
+
 
   <ng-container *ngIf="user && groups?.length">
     <clr-vertical-nav-group routerLinkActive="active">
 
       <clr-icon shape="employee-group" clrVerticalNavIcon></clr-icon>
       Meine Gruppen
-      <clr-vertical-nav-group-children *clrIfExpanded="true">
+      <clr-vertical-nav-group-children *clrIfExpanded="false">
         <a clrVerticalNavLink routerLink="/group/{{g.arbeitsgruppenID}}" routerLinkActive="active"
           *ngFor="let g of groups">
           {{g.bezeichnung}}
@@ -38,5 +54,5 @@
     <clr-icon shape="certificate" clrVerticalNavIcon></clr-icon>
     Credit
   </a>
-
+  
 </clr-vertical-nav>

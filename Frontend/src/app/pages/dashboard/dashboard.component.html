@@ -42,6 +42,7 @@
     <hr />
 
     <div [@inOutAnimation]="viewAllGroups">
+
       <ng-container *ngIf="['admin', 'root'].includes(user.rechteklasse)">
         <button class="btn" (click)="openAddGroupWizard()">Arbeitsgruppe hinzufügen</button>
         <dashboard-add-group-wizard [(open)]="openAddGroup" *ngIf="!isMobile"></dashboard-add-group-wizard>
@@ -51,6 +52,7 @@
       <ng-container *ngIf="groups">
         <dashboard-groups [groups]="groups" (refresh)="reload($event)"></dashboard-groups>
       </ng-container>
+      
       <span *ngIf="!groups?.length">
         <h3>Keine Arbeitsgruppen</h3>
       </span>

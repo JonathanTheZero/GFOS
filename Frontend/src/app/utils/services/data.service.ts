@@ -19,6 +19,7 @@ export class DataService {
   private currentUser: Mitarbeiter;
   private auth: string;
   private groups: Arbeitsgruppe[];
+  public userSetHours: boolean = false;
 
   //initialize subjects using the already stored values
   public idleCounter: BehaviorSubject<string> = new BehaviorSubject<string>(this.getIdle());

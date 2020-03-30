@@ -77,12 +77,12 @@ export class HeaderComponent implements OnInit {
   }
 
   public addHours(): void {
-    if(parseInt(this.hours, 0) > 12 || parseInt(this.hours, 0) < 0) {
-      Swal.fire(
-        "Fehler",
-        "Ungültige Stundenanzahl angegeben!",
-        "error"
-      );
+    if (this.dataService.userSetHours) {
+      Swal.fire("Fehler", "Sie haben Ihr Arbeitskonto heute bereits aktualisiert", "error");
+      return;
+    }
+    if (parseInt(this.hours) > 12 || parseInt(this.hours) < 0 || isNaN(parseInt(this.hours))) {
+      Swal.fire("Fehler", "Ungültige Stundenanzahl angegeben!", "error");
       return;
     }
     this.api.addHours(this.hours).then(answer => {
@@ -94,6 +94,7 @@ export class HeaderComponent implements OnInit {
         );
       Swal.fire("", "Ihr Arbeitskonto wurde aktualisiert", "success");
       this.user.arbeitskonto += parseInt(this.hours);
+      this.dataService.userSetHours = true;
     }).then(() => this.refresh.emit(true));
   }
 }

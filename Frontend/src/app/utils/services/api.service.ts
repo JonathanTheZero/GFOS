@@ -15,7 +15,7 @@ import { ClrControlError } from '@clr/angular';
  * @author Jonathan
  */
 export class ApiService {
-  private readonly url: string = "http://localhost:4200/Backend/api";
+  private readonly url: string = window.location.origin + "/Backend/api";
 
   private httpOptions = {
     headers: new HttpHeaders({

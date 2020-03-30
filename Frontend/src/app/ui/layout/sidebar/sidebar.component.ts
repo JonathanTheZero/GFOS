@@ -7,6 +7,7 @@ import {
 } from "src/app/utils/interfaces/default.model";
 import { ApiService } from "src/app/utils/services/api.service";
 import { interval } from "rxjs";
+import { employeeSamples } from 'src/app/utils/mock.data';
 
 @Component({
   selector: "app-sidebar",
@@ -25,7 +26,6 @@ export class SidebarComponent implements OnInit {
       title: "Allgemein",
       icon: "folder-open",
       iconWhenClosed: "folder",
-      condition: "true",
       links: [
         {
           link: "/dashboard",
@@ -43,21 +43,11 @@ export class SidebarComponent implements OnInit {
           icon: "user"
         }
       ]
-    }
-  ];
-
-  constructor(public dataService: DataService,
-    public api: ApiService
-  ) { }
-
-  ngOnInit() {
-    //check if user has permissions and display things based on that
-    this.user = this.dataService.getUser();
-    this.sidebarLinks[1] = {
+    },
+    {
       title: "Benutzerverwaltung",
       icon: "folder-open",
       iconWhenClosed: "folder",
-      condition: '["admin", "root", "personnelDepartment"].includes(this.user?.rechteklasse)',
       links: [
         {
           link: "/register",
@@ -75,9 +65,16 @@ export class SidebarComponent implements OnInit {
           icon: "users"
         }
       ]
-    };
+    }
+  ];
 
-    this.dataService.getGroups(true).subscribe(g => (this.groups = g));
+  constructor(public dataService: DataService,
+    public api: ApiService
+  ) { }
+
+  ngOnInit() {
+    this.dataService.getUser(true).subscribe(u => this.user = u);
+    this.dataService.getGroups(true).subscribe(g => this.groups = g);
   }
 
   public changeIcon(index: number, toggle: boolean): void {
@@ -87,13 +84,5 @@ export class SidebarComponent implements OnInit {
       this.sidebarLinks[index].iconWhenClosed,
       this.sidebarLinks[index].icon
     ];
-  }
-
-  //workaround for conditions since subscribing won't work if object isn't initialized at start
-  //which isn't the case because the user isn't logged in at the beginning
-  //so the condition are passed as string and evaluated at runtime providing live updates
-  //could probably be better but idk, it's late night and this works
-  public parseCondition(str: string){
-    return eval(str);
   }
 }
