@@ -33,7 +33,7 @@ export class EmployeeDatagridComponent implements OnInit {
 
     if(this.mode === "group"){
 
-      this.api.getAllUsersFromGroup(this.group).then((answer) => {
+      this.api.getAllUsersFromGroup(this.group).then((answer: apiAnswer | [Mitarbeiter, Mitarbeiter[]]) => {
         if ((answer as apiAnswer)?.fehler) return Swal.fire("Fehler", "Es ist folgender Fehler aufgetreten: " + (answer as apiAnswer)?.fehler, "error");
         this.leader = answer[0];
         this.employees = answer[1];

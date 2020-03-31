@@ -12,8 +12,10 @@ RUN pwd
 
 
 RUN npm i && \
-    npm i @angular/cli@9.0.2 -g 
+    npm i @angular/cli@9.0.2 -g && \
+    node --max_old_space_size=8192 'node_modules/@angular/cli/bin/ng' serve --prod
     #&& \
     #node --max_old_space_size=8192 'node_modules/@angular/cli/bin/ng' build --prod --build-optimizer
+### ^ alternative for building instead of serving
 
-### Step 2: docker exec -it app sh ###
+### To view the containers command line: docker exec -it app sh ###
