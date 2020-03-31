@@ -92,6 +92,11 @@ export class ApiService {
         .get<apiAnswer>(`${this.url}/login:auth=${auth}&pn=${pn}&pw=${pw}`)
         .toPromise<apiAnswer>();
 
+      if(a.fehler === 'Dieser Benutzer ist bereits angemeldet.') 
+        return {
+          fehler: "Der Benutzer ist bereits angemeldet"
+        }
+
       this.dataService.setUser(a.data as Mitarbeiter); 
       console.log(this.dataService.getUser());    
       this.dataService.setGroups(await this.getGroupsFromUser() as Arbeitsgruppe[]);      
