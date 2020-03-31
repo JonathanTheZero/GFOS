@@ -19,7 +19,7 @@
   <clr-vertical-nav-group routerLinkActive="active" (clrVerticalNavGroupExpandedChange)="changeIcon(1, $event)"
     *ngIf='["admin", "root", "personnelDepartment"].includes(this.user?.rechteklasse)'>
 
-    <clr-icon [attr.shape]="sidebarLinks[1].icon" clrVerticalNavIcon></clr-icon>
+    <clr-icon [attr.shape]="sidebarLinks[1].iconWhenClosed" clrVerticalNavIcon></clr-icon>
     {{sidebarLinks[1].title}}
 
     <clr-vertical-nav-group-children>

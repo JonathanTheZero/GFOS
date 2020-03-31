@@ -65,7 +65,7 @@ export class SettingsComponent implements OnInit {
   //data to fill the select, again making advantage of Angulars dynamic component features
   public readonly warningOptions: options = [
     {
-      value: 2,
+      value: 5,
       text: "5 Minuten"
     },
     {

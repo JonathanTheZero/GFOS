@@ -69,7 +69,7 @@ export class AppComponent implements OnInit {
       console.log('You\'ve gone idle!');
       Swal.fire(
         "Inaktivität",
-        "Aufgrund von Inaktivität werden Sie in kürze automatisch ausgeloggt",
+        "Aufgrund von Inaktivität werden Sie in Kürze automatisch ausgeloggt",
         "info"
       ).then(() => this.reset()) //if the user is online again
     });

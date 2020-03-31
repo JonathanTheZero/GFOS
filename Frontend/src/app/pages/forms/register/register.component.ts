@@ -98,7 +98,7 @@ export class RegisterComponent implements OnInit {
       else {
         Swal.fire(
           "Ein neuer Account wurde registriert!",
-          "Sie werden in kürze weitergeleitet.",
+          "Sie werden in Kürze weitergeleitet.",
           "success"
         ).then(() => this.router.navigate(['dashboard']));
         setTimeout(() => this.router.navigate(['dashboard']), 5000);
