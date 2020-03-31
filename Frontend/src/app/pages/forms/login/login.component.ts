@@ -43,6 +43,10 @@ export class LoginComponent implements OnInit {
   }
 
   public submit() {
+    if(this.form.password.length == 0 || this.form.username.length == 0) {
+      this.err.reason = 'Bitte füllen Sie die Felder aus.';
+      return;
+    }
     this.api.login(
       this.form.username,
       this.form.password
